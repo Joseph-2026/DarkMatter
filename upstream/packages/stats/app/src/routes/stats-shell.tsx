@@ -1,4 +1,4 @@
-import opencodeWordmarkDark from "../asset/logo-ornate-dark.svg"
+import apt5WordmarkDark from "../asset/logo-ornate-dark.svg"
 import { query } from "@solidjs/router"
 import { createEffect, createMemo, createSignal, For, onCleanup, onMount, Show } from "solid-js"
 import { useI18n } from "../context/i18n"
@@ -203,7 +203,7 @@ function DataWordmark() {
   )
 }
 
-function OpenCodeMark() {
+function Apt5Mark() {
   return (
     <svg data-slot="opencode-mark" width="40" height="40" viewBox="0 0 40 40" fill="none" aria-hidden="true">
       <path d="M40 40H0V0H40V40Z" fill="var(--stats-logo-bg)" />
@@ -253,7 +253,7 @@ export function Footer(props: {
       <Show when={bridge()}>{(link) => <SectionBridge label={link().label} href={link().href} />}</Show>
       <div data-slot="footer-grid">
         <a data-slot="footer-mark" href="https://github.com/Joseph-2026/DarkMatter" aria-label={i18n.t("footer.homeAria")}>
-          <OpenCodeMark />
+          <Apt5Mark />
         </a>
         <FooterColumn title={i18n.t("footer.modelData")} links={modelStats} localHref={localHref} />
         <FooterColumn title={i18n.t("footer.legal")} links={legal} localHref={localHref} />
@@ -434,7 +434,7 @@ function SubscribeModal(props: { onClose: () => void }) {
       <div data-slot="modal-scrim" aria-hidden="true" onClick={props.onClose} />
       <div data-slot="modal-panel">
         <div data-slot="modal-brand">
-          <img data-slot="modal-logo" src={opencodeWordmarkDark} alt="OpenCode" />
+          <img data-slot="modal-logo" src={apt5WordmarkDark} alt="OpenCode" />
           <button
             data-slot="modal-close"
             type="button"

@@ -18,9 +18,9 @@ export const GenerateCommand = {
           {
             lang: "js",
             source: [
-              `import { createOpencodeClient } from "@apt5/sdk`,
+              `import { createApt5Client } from "@apt5/sdk`,
               ``,
-              `const client = createOpencodeClient()`,
+              `const client = createApt5Client()`,
               `await client.${operation.operationId}({`,
               `  ...`,
               `})`,

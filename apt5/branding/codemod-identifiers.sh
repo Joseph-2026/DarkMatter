@@ -10,14 +10,18 @@ SCOPE="${1:?usage: codemod-identifiers.sh <scope-dir>}"
 cd "$ROOT"
 
 # camelCase: opencodeXxx -> apt5Xxx (word boundary before 'o' OR start; handles x.opencodeX too)
-grep -rlE "(^|[^A-Za-z0-9_])opencode[A-Z]" --exclude-dir=node_modules --exclude-dir=.git "$SCOPE" 2>/dev/null \
+grep -rlE "(^|[^A-Za-z0-9_])opencode[A-Z]" --exclude-dir=node_modules --exclude-dir=.git --exclude='*.md' --exclude-dir=i18n "$SCOPE" 2>/dev/null \
   | while read -r f; do perl -pi -e 's/(^|[^A-Za-z0-9_])opencode([A-Z])/$1apt5$2/g' "$f"; echo "camel: $f"; done
 # PascalCase / mid-word Capitals: OpencodeXxx -> Apt5Xxx (WslOpencodeCheck -> WslApt5Check)
-grep -rlE "Opencode[A-Z]" --exclude-dir=node_modules --exclude-dir=.git "$SCOPE" 2>/dev/null \
+grep -rlE "Opencode[A-Z]" --exclude-dir=node_modules --exclude-dir=.git --exclude='*.md' --exclude-dir=i18n "$SCOPE" 2>/dev/null \
   | while read -r f; do perl -pi -e 's/Opencode([A-Z])/Apt5$1/g' "$f"; echo "pascal: $f"; done
+# Capital-C variant: OpenCodeXxx -> Apt5Xxx (OpenCodeClient -> Apt5Client). Mixed with OpencodeX in codebase.
+grep -rlE "OpenCode[A-Z0-9]" --exclude-dir=node_modules --exclude-dir=.git --exclude='*.md' --exclude-dir=i18n "$SCOPE" 2>/dev/null \
+  | while read -r f; do perl -pi -e 's/OpenCode([A-Z0-9])/Apt5$1/g' "$f"; echo "capC: $f"; done
 
 echo "== VERIFY residuals in $SCOPE (must be 0) =="
-n1=$(grep -rE "(^|[^A-Za-z0-9_])opencode[A-Z]" --exclude-dir=node_modules --exclude-dir=.git "$SCOPE" 2>/dev/null | wc -l || true)
-n2=$(grep -rE "Opencode[A-Z]" --exclude-dir=node_modules --exclude-dir=.git "$SCOPE" 2>/dev/null | wc -l || true)
-echo "camel residuals=$n1 pascal residuals=$n2"
-[ "$n1" = "0" ] && [ "$n2" = "0" ] && echo "IDENTIFIERS COMPLETE" || { echo "IDENTIFIERS REMAIN"; exit 1; }
+n1=$(grep -rE "(^|[^A-Za-z0-9_])opencode[A-Z]" --exclude-dir=node_modules --exclude-dir=.git --exclude='*.md' --exclude-dir=i18n "$SCOPE" 2>/dev/null | wc -l || true)
+n2=$(grep -rE "Opencode[A-Z]" --exclude-dir=node_modules --exclude-dir=.git --exclude='*.md' --exclude-dir=i18n "$SCOPE" 2>/dev/null | wc -l || true)
+n3=$(grep -rE "OpenCode[A-Z0-9]" --exclude-dir=node_modules --exclude-dir=.git --exclude='*.md' --exclude-dir=i18n "$SCOPE" 2>/dev/null | wc -l || true)
+echo "camel residuals=$n1 pascal residuals=$n2 capC residuals=$n3"
+[ "$n1" = "0" ] && [ "$n2" = "0" ] && [ "$n3" = "0" ] && echo "IDENTIFIERS COMPLETE" || { echo "IDENTIFIERS REMAIN"; exit 1; }

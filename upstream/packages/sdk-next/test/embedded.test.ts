@@ -4,7 +4,7 @@ import { tmpdir } from "node:os"
 import { join } from "node:path"
 import { Flag } from "@apt5/core/flag/flag"
 import { Deferred, Effect, Latch, Option, Schema, Stream } from "effect"
-import type { OpenCodeEvent } from "../src"
+import type { Apt5Event } from "../src"
 
 test("embedded client uses the real router and handlers", async () => {
   const directory = await mkdtemp(join(tmpdir(), "opencode-embedded-"))
@@ -115,7 +115,7 @@ test("Location-owned runner events reach the ready global client", async () => {
     const program = Effect.gen(function* () {
       const opencode = yield* OpenCode.create()
       const connected = yield* Latch.make(false)
-      const prompted = yield* Deferred.make<OpenCodeEvent>()
+      const prompted = yield* Deferred.make<Apt5Event>()
       yield* opencode.events.subscribe().pipe(
         Stream.runForEach((event) =>
           event.type === "server.connected"
@@ -159,7 +159,7 @@ test("independent embedded hosts do not share live notifications", async () => {
       const firstEvent = yield* Latch.make(false)
       const secondEvent = yield* Latch.make(false)
       const observe = (ready: Latch.Latch, event: Latch.Latch) =>
-        Stream.runForEach((notification: OpenCodeEvent) =>
+        Stream.runForEach((notification: Apt5Event) =>
           notification.type === "server.connected"
             ? ready.open
             : notification.type === "session.next.agent.switched" && notification.data.sessionID === sessionID

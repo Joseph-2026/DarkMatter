@@ -754,7 +754,7 @@ function createEventResponse(chunks: unknown[], includeDone = false) {
 
 describe("session.llm.stream", () => {
   const vivgridFixture = { providerID: "vivgrid", modelID: "gemini-3.1-pro-preview" }
-  const opencodeFixture = { providerID: "opencode-test", modelID: vivgridFixture.modelID }
+  const apt5Fixture = { providerID: "opencode-test", modelID: vivgridFixture.modelID }
 
   it.instance(
     "sends the parent session header for opencode providers",
@@ -769,8 +769,8 @@ describe("session.llm.stream", () => {
           }),
         )
         const resolved = yield* Provider.use.getModel(
-          ProviderV2.ID.make(opencodeFixture.providerID),
-          ModelV2.ID.make(opencodeFixture.modelID),
+          ProviderV2.ID.make(apt5Fixture.providerID),
+          ModelV2.ID.make(apt5Fixture.modelID),
         )
         const sessionID = SessionID.make("session-child")
         const parentSessionID = SessionID.make("session-parent")
@@ -787,7 +787,7 @@ describe("session.llm.stream", () => {
           time: { created: Date.now() },
           agent: agent.name,
           model: {
-            providerID: ProviderV2.ID.make(opencodeFixture.providerID),
+            providerID: ProviderV2.ID.make(apt5Fixture.providerID),
             modelID: resolved.id,
           },
         } satisfies SessionV1.User
@@ -809,9 +809,9 @@ describe("session.llm.stream", () => {
       config: () => {
         const fixture = loadFixture(vivgridFixture.providerID, vivgridFixture.modelID)
         return {
-          enabled_providers: [opencodeFixture.providerID],
+          enabled_providers: [apt5Fixture.providerID],
           provider: {
-            [opencodeFixture.providerID]: {
+            [apt5Fixture.providerID]: {
               name: "OpenCode Test",
               npm: "@ai-sdk/openai-compatible",
               models: { [fixture.model.id]: configModel(fixture.model) as ConfigModel },

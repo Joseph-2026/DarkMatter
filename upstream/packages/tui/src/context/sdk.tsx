@@ -1,4 +1,4 @@
-import { createOpencodeClient } from "@apt5/sdk/v2"
+import { createApt5Client } from "@apt5/sdk/v2"
 import type { GlobalEvent } from "@apt5/sdk/v2"
 import { Flag } from "@apt5/core/flag/flag"
 import { createSimpleContext } from "./helper"
@@ -21,7 +21,7 @@ export const { use: useSDK, provider: SDKProvider } = createSimpleContext({
     let sse: AbortController | undefined
 
     function createSDK() {
-      return createOpencodeClient({
+      return createApt5Client({
         baseUrl: props.url,
         signal: abort.signal,
         directory: props.directory,

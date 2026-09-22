@@ -1,6 +1,6 @@
 import { Binary } from "@apt5/core/util/binary"
 import { retry } from "@apt5/core/util/retry"
-import type { OpenCodeEvent, SessionApi, SessionMessageInfo } from "@apt5/client/promise"
+import type { Apt5Event, SessionApi, SessionMessageInfo } from "@apt5/client/promise"
 import type {
   Message,
   Apt5Client,
@@ -933,7 +933,7 @@ export function createServerSession(
       .catch(() => {})
   }
 
-  const applyV2 = (event: OpenCodeEvent) => {
+  const applyV2 = (event: Apt5Event) => {
     if (!("data" in event) || !("sessionID" in event.data) || typeof event.data.sessionID !== "string") return
     const sessionID = event.data.sessionID
     const reduction = v2.reduce(data.session_message[sessionID] ?? [], event)

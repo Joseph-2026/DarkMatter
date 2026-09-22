@@ -14,4 +14,4 @@ export {
   SessionInput,
   SessionMessage,
 } from "@apt5/client/effect"
-export type { OpenCodeEvent } from "@apt5/client/effect"
+export type { Apt5Event } from "@apt5/client/effect"

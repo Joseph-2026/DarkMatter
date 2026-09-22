@@ -31,7 +31,7 @@ import {
 } from "@agentclientprotocol/sdk"
 import { InstallationVersion } from "@apt5/core/installation/version"
 import { AppNodeBuilder } from "@apt5/core/effect/app-node-builder"
-import type { AssistantMessage, Message, OpencodeClient, Session, SessionMessageResponse } from "@apt5/sdk/v2"
+import type { AssistantMessage, Message, Apt5Client, Session, SessionMessageResponse } from "@apt5/sdk/v2"
 import { Context, Effect, Layer, ManagedRuntime } from "effect"
 import * as ACPError from "./error"
 import { buildConfigOptions, DEFAULT_VARIANT_VALUE, parseModelSelection } from "./config-option"
@@ -73,7 +73,7 @@ export type Interface = {
 export class Service extends Context.Service<Service, Interface>()("@opencode/ACP/Service") {}
 
 export function make(input: {
-  sdk: OpencodeClient
+  sdk: Apt5Client
   connection?: ServiceConnection
   directory?: Directory.Interface
   session?: ACPSession.Interface
@@ -598,7 +598,7 @@ function makeSessionService() {
   )
 }
 
-function makeDirectoryService(sdk: OpencodeClient) {
+function makeDirectoryService(sdk: Apt5Client) {
   return ManagedRuntime.make(
     AppNodeBuilder.build(Directory.node, [
       [
@@ -614,7 +614,7 @@ function makeDirectoryService(sdk: OpencodeClient) {
   ).runSync(Directory.Service.use((service) => Effect.succeed(service)))
 }
 
-function makeUsageService(sdk: OpencodeClient) {
+function makeUsageService(sdk: Apt5Client) {
   const limits = new Map<string, Promise<number | undefined>>()
   const contextLimit: UsageService.Interface["contextLimit"] = Effect.fn("ACP.promptUsage.contextLimit")(
     function* (params) {
@@ -740,7 +740,7 @@ function profiledRequest<T>(name: string, fn: () => Promise<T | SdkResponse<T>>,
   return request(() => ACPProfile.measure(name, fn), service)
 }
 
-async function loadDirectorySnapshot(sdk: OpencodeClient, directory: string) {
+async function loadDirectorySnapshot(sdk: Apt5Client, directory: string) {
   return ACPProfile.measure("acp.directory.load", async () => {
     const [providersResponse, agentsResponse, commandsResponse, skillsResponse, configResponse] = await Promise.all([
       ACPProfile.measure("acp.directory.provider.list", () =>
@@ -807,9 +807,9 @@ function defaultModelFromConfig(
   // First-session ACP startup must not scan historical sessions just to infer
   // a default. Configured model, opencode provider, then sorted best model keep
   // the protocol response deterministic without extra session/message reads.
-  const opencodeProvider = providers[ProviderV2.ID.make("opencode")]
-  const opencodeModel = opencodeProvider ? Provider.sort(Object.values(opencodeProvider.models))[0] : undefined
-  if (opencodeProvider && opencodeModel) return { providerID: opencodeProvider.id, modelID: opencodeModel.id }
+  const apt5Provider = providers[ProviderV2.ID.make("opencode")]
+  const apt5Model = apt5Provider ? Provider.sort(Object.values(apt5Provider.models))[0] : undefined
+  if (apt5Provider && apt5Model) return { providerID: apt5Provider.id, modelID: apt5Model.id }
 
   const best = Provider.sort(Object.values(providers).flatMap((provider) => Object.values(provider.models)))[0]
   if (best) return { providerID: best.providerID, modelID: best.id }
@@ -894,7 +894,7 @@ function promptErrorMessage(error: AssistantError) {
 
 function sendUsageUpdate(
   usage: UsageService.Interface | undefined,
-  sdk: OpencodeClient,
+  sdk: Apt5Client,
   connection: ServiceConnection | undefined,
   sessionID: string,
   directory: string,
@@ -1008,7 +1008,7 @@ function sendAvailableCommands(
 }
 
 function registerMcpServers(
-  sdk: OpencodeClient,
+  sdk: Apt5Client,
   registered: Map<string, Set<string>>,
   directory: string,
   sessionId: string,

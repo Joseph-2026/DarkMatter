@@ -1,5 +1,5 @@
 import { expect, test, type Page } from "@playwright/test"
-import { mockOpenCodeServer } from "../utils/mock-server"
+import { mockApt5Server } from "../utils/mock-server"
 import { expectAppVisible, expectSessionTitle } from "../utils/waits"
 import {
   analyzeVisualObservations,
@@ -313,7 +313,7 @@ async function mockServer(
   events: { directory: string; payload: Record<string, unknown> }[] = [],
   fixtureMessages = messages,
 ) {
-  await mockOpenCodeServer(page, {
+  await mockApt5Server(page, {
     directory,
     project: project(),
     provider: provider(),

@@ -1,18 +1,18 @@
 export * from "./client.js"
 export * from "./server.js"
 
-import { createOpencodeClient } from "./client.js"
-import { createOpencodeServer } from "./server.js"
+import { createApt5Client } from "./client.js"
+import { createApt5Server } from "./server.js"
 import type { ServerOptions } from "./server.js"
 
 export * as data from "./data.js"
 
 export async function createOpencode(options?: ServerOptions) {
-  const server = await createOpencodeServer({
+  const server = await createApt5Server({
     ...options,
   })
 
-  const client = createOpencodeClient({
+  const client = createApt5Client({
     baseUrl: server.url,
   })
 

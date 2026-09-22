@@ -1,4 +1,4 @@
-import type { OpenCodeEventEncoded } from "@apt5/protocol/groups/event"
+import type { Apt5EventEncoded } from "@apt5/protocol/groups/event"
 
 export type JsonValue =
   | null
@@ -2538,7 +2538,7 @@ export type SkillsListOutput = {
   }>
 }
 
-export type EventsSubscribeOutput = OpenCodeEventEncoded
+export type EventsSubscribeOutput = Apt5EventEncoded
 
 export type PtysListInput = {
   readonly location?: {

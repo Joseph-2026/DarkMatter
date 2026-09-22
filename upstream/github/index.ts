@@ -6,7 +6,7 @@ import * as core from "@actions/core"
 import * as github from "@actions/github"
 import type { Context as GitHubContext } from "@actions/github/lib/context"
 import type { IssueCommentEvent, PullRequestReviewCommentEvent } from "@octokit/webhooks-types"
-import { createOpencodeClient } from "@apt5/sdk"
+import { createApt5Client } from "@apt5/sdk"
 import { spawn } from "node:child_process"
 import { setTimeout as sleep } from "node:timers/promises"
 
@@ -127,7 +127,7 @@ type PromptFiles = Awaited<ReturnType<typeof getUserPrompt>>["promptFiles"]
 try {
   assertContextEvent("issue_comment", "pull_request_review_comment")
   assertPayloadKeyword()
-  await assertOpencodeConnected()
+  await assertApt5Connected()
 
   accessToken = await getAccessToken()
   octoRest = new Octokit({ auth: accessToken })
@@ -233,7 +233,7 @@ function createOpencode() {
   const port = 4096
   const url = `http://${host}:${port}`
   const proc = spawn(`opencode`, [`serve`, `--hostname=${host}`, `--port=${port}`])
-  const client = createOpencodeClient({ baseUrl: url })
+  const client = createApt5Client({ baseUrl: url })
 
   return {
     server: { url, close: () => proc.kill() },
@@ -267,7 +267,7 @@ function getReviewCommentContext() {
   }
 }
 
-async function assertOpencodeConnected() {
+async function assertApt5Connected() {
   let retry = 0
   let connected = false
   do {

@@ -13,8 +13,8 @@ await Effect.runPromise(
         emitPromise(contract, {
           outputTypes: {
             "events.subscribe": {
-              name: "OpenCodeEventEncoded",
-              import: 'import type { OpenCodeEventEncoded } from "@apt5/protocol/groups/event"',
+              name: "Apt5EventEncoded",
+              import: 'import type { Apt5EventEncoded } from "@apt5/protocol/groups/event"',
             },
           },
         }),

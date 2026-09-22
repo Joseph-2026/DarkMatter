@@ -8,7 +8,7 @@ import { Integration } from "@apt5/core/integration"
 import { ModelV2 } from "@apt5/core/model"
 import { PluginV2 } from "@apt5/core/plugin"
 import { PluginHost } from "@apt5/core/plugin/host"
-import { OpencodePlugin } from "@apt5/core/plugin/provider/opencode"
+import { Apt5Plugin } from "@apt5/core/plugin/provider/opencode"
 import { ProviderV2 } from "@apt5/core/provider"
 import { testEffect } from "../lib/effect"
 import { PluginTestLayer } from "./fixture"
@@ -21,7 +21,7 @@ const addPlugin = Effect.fn(function* (http?: HttpClient.HttpClient) {
   const events = yield* EventV2.Service
   const integration = yield* Integration.Service
   const client = yield* HttpClient.HttpClient
-  yield* OpencodePlugin.effect(host).pipe(
+  yield* Apt5Plugin.effect(host).pipe(
     Effect.provideService(EventV2.Service, events),
     Effect.provideService(Integration.Service, integration),
     Effect.provideService(HttpClient.HttpClient, http ?? client),
@@ -70,7 +70,7 @@ function withEnv<A, E, R>(vars: Record<string, string | undefined>, effect: () =
 
 const cost = (input: number, output = 0) => [{ input, output, cache: { read: 0, write: 0 } }]
 
-describe("OpencodePlugin", () => {
+describe("Apt5Plugin", () => {
   it.effect("registers account and service account methods", () =>
     Effect.gen(function* () {
       yield* addPlugin()

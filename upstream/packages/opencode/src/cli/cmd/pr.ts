@@ -98,7 +98,7 @@ export const PrCommand = effectCmd({
     UI.println("Starting opencode...")
     UI.println()
 
-    const opencodeArgs = sessionId ? ["-s", sessionId] : []
+    const apt5Args = sessionId ? ["-s", sessionId] : []
     const code = yield* Effect.promise(
       () =>
         Process.spawn(["darkmatter", ...apt5Args], {

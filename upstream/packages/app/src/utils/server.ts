@@ -1,5 +1,5 @@
 import { createApt5Client } from "@apt5/sdk/v2/client"
-import { OpenCode, type OpenCodeClient } from "@apt5/client/promise"
+import { OpenCode, type Apt5Client } from "@apt5/client/promise"
 import type { ServerConnection } from "@/context/server"
 import { decode64 } from "@/utils/base64"
 
@@ -44,7 +44,7 @@ export function createSdkForServer({
 export function createApiForServer(input: {
   server: ServerConnection.HttpBase
   fetch?: typeof globalThis.fetch
-}): OpenCodeClient {
+}): Apt5Client {
   return OpenCode.make({
     baseUrl: input.server.url,
     fetch: input.fetch,
@@ -59,4 +59,4 @@ export function createApiForServer(input: {
   })
 }
 
-export type ServerApi = OpenCodeClient
+export type ServerApi = Apt5Client

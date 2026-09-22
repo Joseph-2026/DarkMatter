@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test"
 import type { retry } from "@apt5/core/util/retry"
-import type { OpenCodeEvent, SessionApi } from "@apt5/client/promise"
+import type { Apt5Event, SessionApi } from "@apt5/client/promise"
 import type { Message, Apt5Client, Part, Session } from "@apt5/sdk/v2/client"
 import { createServerSession } from "./server-session"
 import type { ServerApi } from "@/utils/server"
@@ -173,7 +173,7 @@ describe("server session", () => {
         time: { created: 1 },
       },
     ])
-    const apply = (input: object) => ctx.store.applyV2(input as OpenCodeEvent)
+    const apply = (input: object) => ctx.store.applyV2(input as Apt5Event)
 
     apply({
       id: "evt_step",

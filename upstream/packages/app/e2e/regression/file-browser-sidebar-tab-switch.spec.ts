@@ -1,6 +1,6 @@
 import { base64Encode } from "@apt5/core/util/encode"
 import { expect, test, type Page } from "@playwright/test"
-import { mockOpenCodeServer } from "../utils/mock-server"
+import { mockApt5Server } from "../utils/mock-server"
 import { expectSessionTitle } from "../utils/waits"
 
 const directory = "C:/OpenCode/FileBrowserSidebar"
@@ -111,7 +111,7 @@ async function setup(
   page: Page,
   findFiles?: (input: { query: string; dirs?: string; limit?: number }) => unknown | Promise<unknown>,
 ) {
-  await mockOpenCodeServer(page, {
+  await mockApt5Server(page, {
     directory,
     project: {
       id: projectID,

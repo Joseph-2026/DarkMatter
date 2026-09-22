@@ -2,7 +2,7 @@
 
 import { ShikiStreamTokenizer } from "@shikijs/stream"
 import { createMarkdownParser } from "@apt5/ui/context/marked-parser"
-import { OpenCodeTheme } from "@apt5/ui/context/marked-theme"
+import { Apt5Theme } from "@apt5/ui/context/marked-theme"
 import {
   bundledLanguages,
   createHighlighter,
@@ -141,7 +141,7 @@ async function highlight(request: Extract<MarkdownWorkerRequest, { type: "highli
 }
 
 function getHighlighter() {
-  return (highlighter ??= createHighlighter({ themes: [OpenCodeTheme], langs: [] }))
+  return (highlighter ??= createHighlighter({ themes: [Apt5Theme], langs: [] }))
 }
 
 function post(response: MarkdownWorkerResponse) {

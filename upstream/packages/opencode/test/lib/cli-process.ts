@@ -16,7 +16,7 @@
 // Today only `opencode.run` is fully wired. The shape supports adding more
 // builders (`opencode.serve(opts)`, `opencode.acp(opts)`, `opencode.auth(...)`)
 // without changing the fixture. Long-lived commands like `serve` will need a
-// different return shape — see the TODO at the bottom of OpencodeCli.
+// different return shape — see the TODO at the bottom of Apt5Cli.
 import { test, type TestOptions } from "bun:test"
 import { FSUtil } from "@apt5/core/fs-util"
 import { AppNodeBuilder } from "@apt5/core/effect/app-node-builder"
@@ -30,8 +30,8 @@ import { TestLLMServer } from "./llm-server"
 import { testProviderConfig } from "./test-provider"
 import { it } from "./effect"
 
-const opencodeRoot = path.resolve(import.meta.dir, "../../")
-const cliEntry = path.join(opencodeRoot, "src/index.ts")
+const apt5Root = path.resolve(import.meta.dir, "../../")
+const cliEntry = path.join(apt5Root, "src/index.ts")
 
 export const testModelID = "test/test-model"
 
@@ -152,7 +152,7 @@ export type AcpHandle = {
   readonly exited: Promise<number>
 }
 
-export type OpencodeCli = {
+export type Apt5Cli = {
   // High-level: run a single prompt against the test model. Short-lived.
   readonly run: (message: string, opts?: RunOpts) => Effect.Effect<RunResult>
   readonly startRun: (message: string, opts?: RunOpts) => Effect.Effect<RunHandle, never, Scope.Scope>
@@ -179,7 +179,7 @@ export type OpencodeCli = {
 export type CliFixture = {
   readonly llm: TestLLMServer["Service"]
   readonly home: string
-  readonly opencode: OpencodeCli
+  readonly opencode: Apt5Cli
 }
 
 // Provisions a TestLLMServer + tmpdir + spawn helper and invokes fn. Cleans
@@ -464,7 +464,7 @@ export function withCliFixture<A, E>(
       } satisfies AcpHandle
     })
 
-    const opencode: OpencodeCli = { run, startRun, serve, acp, spawn, expectExit, parseJsonEvents }
+    const opencode: Apt5Cli = { run, startRun, serve, acp, spawn, expectExit, parseJsonEvents }
 
     return yield* fn({ llm, home, opencode })
     // FetchHttpClient is provided so test bodies can `yield* HttpClient.HttpClient`

@@ -27,7 +27,7 @@ interface MigrateInput {
  * skips only locations where a tui.json already exists.
  */
 export async function migrateTuiConfig(input: MigrateInput) {
-  const opencode = await opencodeFiles(input)
+  const opencode = await apt5Files(input)
   for (const file of opencode) {
     const source = await Filesystem.readText(file).catch(() => undefined)
     if (!source) continue
@@ -112,7 +112,7 @@ async function backupAndStripLegacy(file: string, source: string) {
     .catch(() => false)
 }
 
-async function opencodeFiles(input: { directories: string[]; cwd: string }) {
+async function apt5Files(input: { directories: string[]; cwd: string }) {
   const files = [
     ...ConfigPaths.fileInDirectory(Global.Path.config, "darkmatter"),
     ...(await Filesystem.findUp(["opencode.json", "opencode.jsonc"], input.cwd, undefined, { rootFirst: true })),

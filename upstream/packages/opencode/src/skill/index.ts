@@ -32,7 +32,7 @@ const SKILL_PATTERN = "**/SKILL.md"
 const CUSTOMIZE_APT5_SKILL_NAME = "customize-opencode"
 const CUSTOMIZE_APT5_SKILL_DESCRIPTION =
   "Use ONLY when the user is editing or creating opencode's own configuration: opencode.json, opencode.jsonc, files under .apt5/, or files under ~/.config/opencode/. Also use when creating or fixing opencode agents, subagents, skills, plugins, MCP servers, or permission rules. Do not use for the user's own application code, or for any project that is not configuring opencode itself."
-const CUSTOMIZE_APT5_SKILL_BODY = SkillPlugin.CustomizeOpencodeContent
+const CUSTOMIZE_APT5_SKILL_BODY = SkillPlugin.CustomizeApt5Content
 
 export const Info = Schema.Struct({
   name: Schema.String,

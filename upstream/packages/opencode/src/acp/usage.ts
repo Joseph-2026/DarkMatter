@@ -1,5 +1,5 @@
 import type { AgentSideConnection, Usage } from "@agentclientprotocol/sdk"
-import type { AssistantMessage as OpenCodeAssistantMessage, Message } from "@apt5/sdk/v2"
+import type { AssistantMessage as Apt5AssistantMessage, Message } from "@apt5/sdk/v2"
 import { InstanceRef } from "@/effect/instance-ref"
 import { InstanceBootstrap } from "@/project/bootstrap"
 import { InstanceStore } from "@/project/instance-store"
@@ -10,11 +10,11 @@ import { ModelV2 } from "@apt5/core/model"
 import { Provider } from "@/provider/provider"
 import { Context, Effect, Layer, SynchronizedRef } from "effect"
 
-export type AssistantTokenCost = Pick<OpenCodeAssistantMessage, "cost" | "tokens">
+export type AssistantTokenCost = Pick<Apt5AssistantMessage, "cost" | "tokens">
 
 export type AssistantMessage = AssistantTokenCost &
-  Pick<OpenCodeAssistantMessage, "role"> &
-  Partial<Pick<OpenCodeAssistantMessage, "providerID" | "modelID">>
+  Pick<Apt5AssistantMessage, "role"> &
+  Partial<Pick<Apt5AssistantMessage, "providerID" | "modelID">>
 
 export type SessionMessage = {
   readonly info: { readonly role: Message["role"] } | AssistantMessage

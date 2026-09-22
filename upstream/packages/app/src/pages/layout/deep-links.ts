@@ -36,13 +36,13 @@ export const collectOpenProjectDeepLinks = (urls: string[]) =>
 export const collectNewSessionDeepLinks = (urls: string[]) =>
   urls.map(parseNewSessionDeepLink).filter((link): link is { directory: string; prompt?: string } => !!link)
 
-type OpenCodeWindow = Window & {
+type Apt5Window = Window & {
   __APT5__?: {
     deepLinks?: string[]
   }
 }
 
-export const drainPendingDeepLinks = (target: OpenCodeWindow) => {
+export const drainPendingDeepLinks = (target: Apt5Window) => {
   const pending = target.__APT5__?.deepLinks ?? []
   if (pending.length === 0) return []
   if (target.__APT5__) target.__APT5__.deepLinks = []

@@ -58,7 +58,7 @@ await createClient({
     },
     {
       name: "@hey-api/sdk",
-      instance: "OpencodeClient",
+      instance: "Apt5Client",
       exportFromIndex: false,
       auth: false,
       paramsStructure: "flat",

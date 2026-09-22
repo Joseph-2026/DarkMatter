@@ -1,6 +1,6 @@
 import { base64Encode } from "@apt5/core/util/encode"
 import { expect, test, type Page } from "@playwright/test"
-import { currentSession, mockOpenCodeServer } from "../utils/mock-server"
+import { currentSession, mockApt5Server } from "../utils/mock-server"
 import { expectSessionTitle } from "../utils/waits"
 
 const directory = "C:/OpenCode/SubagentNavigation"
@@ -44,7 +44,7 @@ test("shows the not found fallback when the viewed session is deleted", async ({
 })
 
 async function setup(page: Page, events?: () => EventPayload[]) {
-  await mockOpenCodeServer(page, {
+  await mockApt5Server(page, {
     directory,
     project: {
       id: projectID,

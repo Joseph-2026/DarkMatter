@@ -10,11 +10,11 @@ import { TestTuiContexts } from "../../fixture/tui-environment"
 import { discoverEditorConnection } from "@apt5/tui/editor"
 
 const originalClaudePort = process.env.CLAUDE_CODE_SSE_PORT
-const originalOpencodePort = process.env.APT5_EDITOR_SSE_PORT
+const originalApt5Port = process.env.APT5_EDITOR_SSE_PORT
 
 afterEach(() => {
   process.env.CLAUDE_CODE_SSE_PORT = originalClaudePort
-  process.env.APT5_EDITOR_SSE_PORT = originalOpencodePort
+  process.env.APT5_EDITOR_SSE_PORT = originalApt5Port
 })
 
 function nextTick() {

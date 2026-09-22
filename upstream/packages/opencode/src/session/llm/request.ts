@@ -174,7 +174,7 @@ export const prepare = Effect.fn("LLMRequestPrep.prepare")(function* (input: Pre
     })
   }
 
-  const opencodeProjectID = input.model.providerID.startsWith("darkmatter")
+  const apt5ProjectID = input.model.providerID.startsWith("darkmatter")
     ? (yield* InstanceState.context).project.id
     : undefined
 
@@ -187,7 +187,7 @@ export const prepare = Effect.fn("LLMRequestPrep.prepare")(function* (input: Pre
     headers: {
       ...(input.model.providerID.startsWith("darkmatter")
         ? {
-            ...(opencodeProjectID ? { "x-opencode-project": opencodeProjectID } : {}),
+            ...(apt5ProjectID ? { "x-opencode-project": apt5ProjectID } : {}),
             "x-opencode-session": input.sessionID,
             "x-opencode-request": input.user.id,
             "x-opencode-client": input.flags.client,

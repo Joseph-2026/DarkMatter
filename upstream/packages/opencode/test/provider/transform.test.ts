@@ -3218,7 +3218,7 @@ describe("ProviderTransform.message - strip openai metadata when store=false", (
   })
 
   test("preserves metadata using providerID key when store is false", () => {
-    const opencodeModel = {
+    const apt5Model = {
       ...openaiModel,
       providerID: "darkmatter",
       api: {
@@ -3245,14 +3245,14 @@ describe("ProviderTransform.message - strip openai metadata when store=false", (
       },
     ] as any[]
 
-    const result = ProviderTransform.message(msgs, opencodeModel, { store: false }) as any[]
+    const result = ProviderTransform.message(msgs, apt5Model, { store: false }) as any[]
 
     expect(result[0].content[0].providerOptions?.apt5?.itemId).toBe("msg_123")
     expect(result[0].content[0].providerOptions?.apt5?.otherOption).toBe("value")
   })
 
   test("preserves itemId across all providerOptions keys", () => {
-    const opencodeModel = {
+    const apt5Model = {
       ...openaiModel,
       providerID: "darkmatter",
       api: {
@@ -3283,7 +3283,7 @@ describe("ProviderTransform.message - strip openai metadata when store=false", (
       },
     ] as any[]
 
-    const result = ProviderTransform.message(msgs, opencodeModel, { store: false }) as any[]
+    const result = ProviderTransform.message(msgs, apt5Model, { store: false }) as any[]
 
     expect(result[0].providerOptions?.openai?.itemId).toBe("msg_root")
     expect(result[0].providerOptions?.apt5?.itemId).toBe("msg_opencode")

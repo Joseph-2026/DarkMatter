@@ -83,7 +83,7 @@ function oauth(http: HttpClient.HttpClient) {
   } satisfies IntegrationOAuthMethodRegistration
 }
 
-export const OpencodePlugin = define<HttpClient.HttpClient | EventV2.Service | Scope.Scope>({
+export const Apt5Plugin = define<HttpClient.HttpClient | EventV2.Service | Scope.Scope>({
   id: "darkmatter",
   effect: Effect.fn(function* (ctx) {
     const events = yield* EventV2.Service
@@ -92,7 +92,7 @@ export const OpencodePlugin = define<HttpClient.HttpClient | EventV2.Service | S
     let connected = false
     let providers: typeof ConfigV1.Info.Type.provider | undefined
 
-    const load = Effect.fn("OpencodePlugin.load")(function* () {
+    const load = Effect.fn("Apt5Plugin.load")(function* () {
       const connection = yield* ctx.integration.connection.active("darkmatter")
       const credential = connection
         ? yield* ctx.integration.connection.resolve(connection).pipe(Effect.catch(() => Effect.succeed(undefined)))
