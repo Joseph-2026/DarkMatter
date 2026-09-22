@@ -103,3 +103,20 @@ Kila layer: schema + state machine + events + policy boundary + service interfac
 3. Hakuna secrets kwenye git — `.env` + API keys kwenye env/CI pekee.
 4. Kila transition na actor/policy/timestamp/evidence/audit.
 5. Tenant-aware kila mahali; control plane inalindwa dhidi ya storms.
+
+## 10. QUALITY BAR (lazima — hakuna placeholder/mockup)
+- **Real systems only:** kila feature lazima ifanye kazi kweli + test inayothibitisha (unit/contract/integration).
+  Mfano: Work Board lazima ihifadhi WorkItems durable na leases zinaz expire kweli; Memory lazima isome/kuandika na
+  provenance kweli; Ledger lazima ibalance kweli. Kitu chochote kisichofanya kazi hairuhusiwi ku-merge — kinawekwa
+  nyuma ya feature flag au kinaondolewa.
+- **No mocks in production paths:** mocks zinaruhusiwa kwenye tests pekee (na zimeandikwa wazi).
+  Production code inayodanganya (fake success, hardcoded results) ni marufuku na itakataliwa kwenye review.
+- **Deep rebrand checklist (mtu wa opencode asijue foundation):**
+  binary `apt-5`, package names, config dir `~/.apt5`, env `APT5_*`, TUI theme/layout/strings zote, `--help/--version`,
+  docs/README/site text, error messages, default endpoints/URLs, telemetry identifiers, desktop/IDE extension names.
+  Kivuli pekee kinachobaki ni `LICENSE` + `CREDITS.md` attribution (lazima kisheria cha MIT — kimefichwa kwenye
+  docs, sio kwenye UI ya kila siku).
+- **Bila kuiharibu:** rebrand na civilization zinawekwa kama layers juu ya engine contracts; core loop/tools/model
+  gateway hazibadilishwi kwa kuvunja API. Kila phase lazima baseline tests ziwe green kabla na baada.
+- **Awesome kila sehemu:** TUI (theme, spacing, icons, status), CLI help text, error messages zenye suluhisho,
+  docs na examples halisi, `doctor` inayojirekebisha. Kila screen inapimwa na snapshot test + screenshot.
