@@ -38,7 +38,7 @@
   },
   "dependencies": {
     "@kobalte/core": "catalog:",
-    "@apt5/client": "file:../app/vendor/opencode-ai-client-1.17.13-v2.tgz",
+    "@apt5/client": "file:../app/vendor/apt5-client-1.17.13-apt5.0.tgz",
     "@apt5/core": "workspace:*",
     "@apt5/sdk": "workspace:*",
     "@apt5/ui": "workspace:*",
