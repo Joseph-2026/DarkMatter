@@ -1,6 +1,6 @@
-import { base64Encode } from "@opencode-ai/core/util/encode"
+import { base64Encode } from "@apt5/core/util/encode"
 import { expect, test, type Page } from "@playwright/test"
-import { mockOpenCodeServer } from "../utils/mock-server"
+import { mockApt5Server } from "../utils/mock-server"
 import { expectSessionTitle } from "../utils/waits"
 
 const directory = "C:/OpenCode/TodoDockNavigation"
@@ -29,7 +29,7 @@ test("animates todo lifecycle without replaying it across session tabs", async (
   const todos: Record<string, typeof activeTodos> = { [sourceID]: [], [otherID]: [] }
   const sessionStatus: Record<string, { type: "busy" | "idle" }> = {}
 
-  await mockOpenCodeServer(page, {
+  await mockApt5Server(page, {
     directory,
     project: {
       id: projectID,
@@ -42,7 +42,7 @@ test("animates todo lifecycle without replaying it across session tabs", async (
     provider: {
       all: [
         {
-          id: "opencode",
+          id: "darkmatter",
           name: "OpenCode",
           models: {
             "claude-opus-4-6": {
@@ -53,8 +53,8 @@ test("animates todo lifecycle without replaying it across session tabs", async (
           },
         },
       ],
-      connected: ["opencode"],
-      default: { providerID: "opencode", modelID: "claude-opus-4-6" },
+      connected: ["darkmatter"],
+      default: { providerID: "darkmatter", modelID: "claude-opus-4-6" },
     },
     sessions: [session(sourceID, sourceTitle, 1700000000000), session(otherID, otherTitle, 1700000001000)],
     sessionStatus: { [sourceID]: { type: "busy" } },

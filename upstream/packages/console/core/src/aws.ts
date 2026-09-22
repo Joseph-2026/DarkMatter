@@ -1,5 +1,5 @@
 import { z } from "zod"
-import { Resource } from "@opencode-ai/console-resource"
+import { Resource } from "@apt5/console-resource"
 import { AwsClient } from "aws4fetch"
 import { fn } from "./util/fn"
 

@@ -34,7 +34,7 @@ To use a custom OpenCode executable instead, add it to your [Zed](https://zed.de
   "agent_servers": {
     "OpenCode": {
       "type": "custom",
-      "command": "opencode",
+      "command": "darkmatter",
       "args": ["acp"]
     }
   }
@@ -56,7 +56,7 @@ You can also bind a keyboard shortcut by editing your `keymap.json`:
             "custom": {
               "name": "OpenCode",
               "command": {
-                "command": "opencode",
+                "command": "darkmatter",
                 "args": ["acp"]
               }
             }
@@ -96,8 +96,8 @@ Add to your [Avante.nvim](https://github.com/yetone/avante.nvim) configuration:
 ```lua
 {
   acp_providers = {
-    ["opencode"] = {
-      command = "opencode",
+    ["darkmatter"] = {
+      command = "darkmatter",
       args = { "acp" }
     }
   }
@@ -109,11 +109,11 @@ If you need to pass environment variables:
 ```lua {6-8}
 {
   acp_providers = {
-    ["opencode"] = {
-      command = "opencode",
+    ["darkmatter"] = {
+      command = "darkmatter",
       args = { "acp" },
       env = {
-        OPENCODE_API_KEY = os.getenv("OPENCODE_API_KEY")
+        APT5_API_KEY = os.getenv("APT5_API_KEY")
       }
     }
   }
@@ -131,7 +131,7 @@ require("codecompanion").setup({
   interactions = {
     chat = {
       adapter = {
-        name = "opencode",
+        name = "darkmatter",
         model = "claude-sonnet-4",
       },
     },
@@ -141,7 +141,7 @@ require("codecompanion").setup({
 
 This config sets up CodeCompanion to use OpenCode as the ACP agent for chat.
 
-If you need to pass environment variables (like `OPENCODE_API_KEY`), refer to [Configuring Adapters: Environment Variables](https://codecompanion.olimorris.dev/getting-started#setting-an-api-key) in the CodeCompanion.nvim documentation for full details.
+If you need to pass environment variables (like `APT5_API_KEY`), refer to [Configuring Adapters: Environment Variables](https://codecompanion.olimorris.dev/getting-started#setting-an-api-key) in the CodeCompanion.nvim documentation for full details.
 
 ## Support
 

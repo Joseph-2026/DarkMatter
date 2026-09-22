@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test"
-import type { Hooks } from "@opencode-ai/plugin"
+import type { Hooks } from "@apt5/plugin"
 import { CopilotAuthPlugin } from "@/plugin/github-copilot/copilot"
 
 type ChatHeaders = NonNullable<Hooks["chat.headers"]>

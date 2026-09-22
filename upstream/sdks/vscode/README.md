@@ -1,10 +1,10 @@
 # opencode VS Code Extension
 
-A Visual Studio Code extension that integrates [opencode](https://opencode.ai) directly into your development workflow.
+A Visual Studio Code extension that integrates [opencode](https://github.com/Joseph-2026/DarkMatter) directly into your development workflow.
 
 ## Prerequisites
 
-This extension requires the [opencode CLI](https://opencode.ai) to be installed on your system. Visit [opencode.ai](https://opencode.ai) for installation instructions.
+This extension requires the [opencode CLI](https://github.com/Joseph-2026/DarkMatter) to be installed on your system. Visit [github.com/Joseph-2026/DarkMatter](https://github.com/Joseph-2026/DarkMatter) for installation instructions.
 
 ## Features
 

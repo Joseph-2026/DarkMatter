@@ -1,8 +1,8 @@
 import { WorkerPoolManager } from "@pierre/diffs/worker"
 import ShikiWorkerUrl from "@pierre/diffs/worker/worker.js?worker&url"
-import { registerOpenCodeTheme } from "@opencode-ai/ui/context/marked-theme-register"
+import { registerApt5Theme } from "@apt5/ui/context/marked-theme-register"
 
-registerOpenCodeTheme()
+registerApt5Theme()
 
 export type WorkerPoolStyle = "unified" | "split"
 

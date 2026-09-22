@@ -34,7 +34,7 @@ Para usar um executável personalizado do OpenCode, adicione-o à configuração
   "agent_servers": {
     "OpenCode": {
       "type": "custom",
-      "command": "opencode",
+      "command": "darkmatter",
       "args": ["acp"]
     }
   }
@@ -56,7 +56,7 @@ Você também pode vincular um atalho de teclado editando seu `keymap.json`:
             "custom": {
               "name": "OpenCode",
               "command": {
-                "command": "opencode",
+                "command": "darkmatter",
                 "args": ["acp"]
               }
             }
@@ -96,8 +96,8 @@ Adicione à sua configuração do [Avante.nvim](https://github.com/yetone/avante
 ```lua
 {
   acp_providers = {
-    ["opencode"] = {
-      command = "opencode",
+    ["darkmatter"] = {
+      command = "darkmatter",
       args = { "acp" }
     }
   }
@@ -109,11 +109,11 @@ Se você precisar passar variáveis de ambiente:
 ```lua {6-8}
 {
   acp_providers = {
-    ["opencode"] = {
-      command = "opencode",
+    ["darkmatter"] = {
+      command = "darkmatter",
       args = { "acp" },
       env = {
-        OPENCODE_API_KEY = os.getenv("OPENCODE_API_KEY")
+        APT5_API_KEY = os.getenv("APT5_API_KEY")
       }
     }
   }
@@ -131,7 +131,7 @@ require("codecompanion").setup({
   interactions = {
     chat = {
       adapter = {
-        name = "opencode",
+        name = "darkmatter",
         model = "claude-sonnet-4",
       },
     },
@@ -141,7 +141,7 @@ require("codecompanion").setup({
 
 Esta configuração configura o CodeCompanion para usar opencode como o agente ACP para chat.
 
-Se você precisar passar variáveis de ambiente (como `OPENCODE_API_KEY`), consulte [Configurando Adaptadores: Variáveis de Ambiente](https://codecompanion.olimorris.dev/getting-started#setting-an-api-key) na documentação do CodeCompanion.nvim para detalhes completos.
+Se você precisar passar variáveis de ambiente (como `APT5_API_KEY`), consulte [Configurando Adaptadores: Variáveis de Ambiente](https://codecompanion.olimorris.dev/getting-started#setting-an-api-key) na documentação do CodeCompanion.nvim para detalhes completos.
 
 ## Suporte
 

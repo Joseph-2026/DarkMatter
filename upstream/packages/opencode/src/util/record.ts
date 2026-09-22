@@ -1,1 +1,1 @@
-export * from "@opencode-ai/tui/util/record"
+export * from "@apt5/tui/util/record"

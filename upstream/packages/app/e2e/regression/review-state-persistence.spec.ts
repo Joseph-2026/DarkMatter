@@ -1,6 +1,6 @@
-import { base64Encode } from "@opencode-ai/core/util/encode"
+import { base64Encode } from "@apt5/core/util/encode"
 import { expect, test, type Page } from "@playwright/test"
-import { mockOpenCodeServer } from "../utils/mock-server"
+import { mockApt5Server } from "../utils/mock-server"
 import { expectSessionTitle } from "../utils/waits"
 
 const directory = "C:/OpenCode/ReviewStatePersistence"
@@ -64,7 +64,7 @@ async function switchSession(page: Page, title: string) {
 }
 
 async function setup(page: Page) {
-  await mockOpenCodeServer(page, {
+  await mockApt5Server(page, {
     protocol: "v1",
     directory,
     project: {
@@ -78,13 +78,13 @@ async function setup(page: Page) {
     provider: {
       all: [
         {
-          id: "opencode",
+          id: "darkmatter",
           name: "OpenCode",
           models: { test: { id: "test", name: "Test", limit: { context: 200_000 } } },
         },
       ],
-      connected: ["opencode"],
-      default: { providerID: "opencode", modelID: "test" },
+      connected: ["darkmatter"],
+      default: { providerID: "darkmatter", modelID: "test" },
     },
     sessions: [session(sessionA, titleA, 1700000000000), session(sessionB, titleB, 1700000001000)],
     pageMessages: () => ({ items: [] }),

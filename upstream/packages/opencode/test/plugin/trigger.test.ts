@@ -1,7 +1,7 @@
 import { describe, expect } from "bun:test"
 import { Effect } from "effect"
-import { CrossSpawnSpawner } from "@opencode-ai/core/cross-spawn-spawner"
-import { Npm } from "@opencode-ai/core/npm"
+import { CrossSpawnSpawner } from "@apt5/core/cross-spawn-spawner"
+import { Npm } from "@apt5/core/npm"
 import path from "path"
 import { pathToFileURL } from "url"
 import { Account } from "../../src/account/account"
@@ -14,10 +14,10 @@ import { testEffect } from "../lib/effect"
 import { AccountTest } from "../fake/account"
 import { AuthTest } from "../fake/auth"
 import { NpmTest } from "../fake/npm"
-import { ProviderV2 } from "@opencode-ai/core/provider"
-import { ModelV2 } from "@opencode-ai/core/model"
-import { AppNodeBuilder } from "@opencode-ai/core/effect/app-node-builder"
-import { LayerNode } from "@opencode-ai/core/effect/layer-node"
+import { ProviderV2 } from "@apt5/core/provider"
+import { ModelV2 } from "@apt5/core/model"
+import { AppNodeBuilder } from "@apt5/core/effect/app-node-builder"
+import { LayerNode } from "@apt5/core/effect/layer-node"
 
 const it = testEffect(
   AppNodeBuilder.build(LayerNode.group([Plugin.node, CrossSpawnSpawner.node]), [
@@ -41,7 +41,7 @@ function withProject<A, E, R>(source: string, self: Effect.Effect<A, E, R>) {
             path.join(test.directory, "opencode.json"),
             JSON.stringify(
               {
-                $schema: "https://opencode.ai/config.json",
+                $schema: "https://github.com/Joseph-2026/DarkMatter/config.json",
                 plugin: [pathToFileURL(file).href],
               },
               null,

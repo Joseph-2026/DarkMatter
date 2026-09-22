@@ -3,7 +3,7 @@
  */
 export const config = {
   // Base URL
-  baseUrl: "https://opencode.ai",
+  baseUrl: "https://github.com/Joseph-2026/DarkMatter",
 
   // GitHub
   github: {

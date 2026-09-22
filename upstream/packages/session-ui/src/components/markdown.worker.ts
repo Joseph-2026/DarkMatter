@@ -1,8 +1,8 @@
 /// <reference lib="webworker" />
 
 import { ShikiStreamTokenizer } from "@shikijs/stream"
-import { createMarkdownParser } from "@opencode-ai/ui/context/marked-parser"
-import { OpenCodeTheme } from "@opencode-ai/ui/context/marked-theme"
+import { createMarkdownParser } from "@apt5/ui/context/marked-parser"
+import { Apt5Theme } from "@apt5/ui/context/marked-theme"
 import {
   bundledLanguages,
   createHighlighter,
@@ -141,7 +141,7 @@ async function highlight(request: Extract<MarkdownWorkerRequest, { type: "highli
 }
 
 function getHighlighter() {
-  return (highlighter ??= createHighlighter({ themes: [OpenCodeTheme], langs: [] }))
+  return (highlighter ??= createHighlighter({ themes: [Apt5Theme], langs: [] }))
 }
 
 function post(response: MarkdownWorkerResponse) {

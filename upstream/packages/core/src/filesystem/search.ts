@@ -5,7 +5,7 @@ import path from "path"
 import { Context, Effect, Layer, Scope } from "effect"
 import { Fff } from "#fff"
 import fuzzysort from "fuzzysort"
-import { Entry, Match } from "@opencode-ai/schema/filesystem"
+import { Entry, Match } from "@apt5/schema/filesystem"
 import type { FileSystem } from "../filesystem"
 import { FSUtil } from "../fs-util"
 import { Location } from "../location"
@@ -233,7 +233,7 @@ export const fffLayer = Layer.effect(
   }),
 )
 
-const layer = Layer.unwrap(Effect.sync(() => (Flag.OPENCODE_DISABLE_FFF || !Fff.available() ? ripgrepLayer : fffLayer)))
+const layer = Layer.unwrap(Effect.sync(() => (Flag.APT5_DISABLE_FFF || !Fff.available() ? ripgrepLayer : fffLayer)))
 
 export const locationLayer = layer
 

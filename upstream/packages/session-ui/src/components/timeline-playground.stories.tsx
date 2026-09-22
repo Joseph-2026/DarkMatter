@@ -11,9 +11,9 @@ import type {
   ToolPart,
   FilePart,
   AgentPart,
-} from "@opencode-ai/sdk/v2"
+} from "@apt5/sdk/v2"
 import { DataProvider } from "../context/data"
-import { FileComponentProvider } from "@opencode-ai/ui/context/file"
+import { FileComponentProvider } from "@apt5/ui/context/file"
 import { SessionTurn } from "./session-turn"
 
 // ---------------------------------------------------------------------------

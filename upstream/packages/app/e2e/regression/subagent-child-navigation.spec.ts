@@ -1,6 +1,6 @@
-import { base64Encode } from "@opencode-ai/core/util/encode"
+import { base64Encode } from "@apt5/core/util/encode"
 import { expect, test, type Page } from "@playwright/test"
-import { currentSession, mockOpenCodeServer } from "../utils/mock-server"
+import { currentSession, mockApt5Server } from "../utils/mock-server"
 import { expectSessionTitle } from "../utils/waits"
 
 const directory = "C:/OpenCode/SubagentNavigation"
@@ -44,7 +44,7 @@ test("shows the not found fallback when the viewed session is deleted", async ({
 })
 
 async function setup(page: Page, events?: () => EventPayload[]) {
-  await mockOpenCodeServer(page, {
+  await mockApt5Server(page, {
     directory,
     project: {
       id: projectID,
@@ -57,15 +57,15 @@ async function setup(page: Page, events?: () => EventPayload[]) {
     provider: {
       all: [
         {
-          id: "opencode",
+          id: "darkmatter",
           name: "OpenCode",
           models: {
             "claude-opus-4-6": { id: "claude-opus-4-6", name: "Claude Opus 4.6", limit: { context: 200_000 } },
           },
         },
       ],
-      connected: ["opencode"],
-      default: { providerID: "opencode", modelID: "claude-opus-4-6" },
+      connected: ["darkmatter"],
+      default: { providerID: "darkmatter", modelID: "claude-opus-4-6" },
     },
     sessions: [session(parentID, parentTitle, 1700000000000), childSession()],
     pageMessages: (sessionID) => ({ items: sessionID === parentID ? parentMessages() : [] }),
@@ -129,7 +129,7 @@ function parentMessages() {
         role: "user",
         time: { created: 1700000000000 },
         agent: "build",
-        model: { providerID: "opencode", modelID: "claude-opus-4-6" },
+        model: { providerID: "darkmatter", modelID: "claude-opus-4-6" },
       },
       parts: [
         {
@@ -149,7 +149,7 @@ function parentMessages() {
         time: { created: 1700000001000, completed: 1700000002000 },
         parentID: userID,
         modelID: "claude-opus-4-6",
-        providerID: "opencode",
+        providerID: "darkmatter",
         mode: "build",
         agent: "build",
         path: { cwd: directory, root: directory },

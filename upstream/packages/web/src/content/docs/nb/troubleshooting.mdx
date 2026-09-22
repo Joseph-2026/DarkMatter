@@ -65,7 +65,7 @@ Hvis du har konfigurert plugins, deaktiver dem midlertidig ved å fjerne nøkkel
 
 ```jsonc
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "plugin": [],
 }
 ```
@@ -78,7 +78,7 @@ OpenCode kan også laste lokale plugins fra disken. Flytt disse midlertidig ut a
   - **macOS/Linux**: `~/.config/opencode/plugins/`
   - **Windows**: Trykk `WIN+R` og lim inn `%USERPROFILE%\.config\opencode\plugins`
 - **Prosjektplugins** (bare hvis du bruker konfigurasjon per prosjekt)
-  - `<your-project>/.opencode/plugins/`
+  - `<your-project>/.apt5/plugins/`
 
 Hvis appen begynner å fungere igjen, aktiverer du plugins én om gangen for å finne ut hvilken som forårsaker problemet.
 
@@ -115,9 +115,9 @@ Hvis `opencode.json(c)` inneholder en `server`-del, fjern den midlertidig og sta
 
 #### Sjekk miljøvariabler
 
-Hvis du har `OPENCODE_PORT` satt i miljøet ditt, vil skrivebordsappen prøve å bruke den porten for den lokale serveren.
+Hvis du har `APT5_PORT` satt i miljøet ditt, vil skrivebordsappen prøve å bruke den porten for den lokale serveren.
 
-- Deaktiver `OPENCODE_PORT` (eller velg en ledig port) og start på nytt.
+- Deaktiver `APT5_PORT` (eller velg en ledig port) og start på nytt.
 
 ---
 

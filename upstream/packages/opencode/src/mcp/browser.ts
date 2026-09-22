@@ -1,4 +1,4 @@
-import { LayerNode } from "@opencode-ai/core/effect/layer-node"
+import { LayerNode } from "@apt5/core/effect/layer-node"
 import { Context, Effect, Layer } from "effect"
 import open from "open"
 

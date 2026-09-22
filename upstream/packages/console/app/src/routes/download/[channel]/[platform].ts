@@ -24,7 +24,7 @@ export async function GET({ params: { platform, channel } }: APIEvent) {
   if (!assetName) return new Response(null, { status: 404 })
 
   const release = await fetch(
-    `https://opencode.ai/update/api/${channel === "stable" ? "latest" : "beta"}/desktop/opencode`,
+    `https://github.com/Joseph-2026/DarkMatter/update/api/${channel === "stable" ? "latest" : "beta"}/desktop/opencode`,
   )
   if (!release.ok) return new Response(null, { status: release.status })
   const location = getAssetUrl(await release.json(), assetName)

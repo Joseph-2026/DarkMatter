@@ -1,5 +1,5 @@
-import { TuiConfig } from "@opencode-ai/tui/config"
-import { isRecord } from "@opencode-ai/tui/util/record"
+import { TuiConfig } from "@apt5/tui/config"
+import { isRecord } from "@apt5/tui/util/record"
 import { Filesystem } from "@/util/filesystem"
 import { Schema } from "effect"
 

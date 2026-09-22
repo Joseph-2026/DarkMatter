@@ -1,6 +1,6 @@
-import { createOpencodeClient } from "@opencode-ai/sdk/v2"
+import { createApt5Client } from "@apt5/sdk/v2"
 import { RGBA, type CliRenderer } from "@opentui/core"
-import type { HostPluginApi } from "@opencode-ai/tui/plugin/slots"
+import type { HostPluginApi } from "@apt5/tui/plugin/slots"
 import { createTuiResolvedConfig } from "./tui-runtime"
 
 type Count = {
@@ -127,7 +127,7 @@ export function createTuiPluginApi(opts: Opts = {}): HostPluginApi {
   const kv: Record<string, unknown> = {}
   const count = opts.count
   const ctrl = new AbortController()
-  const own = createOpencodeClient({
+  const own = createApt5Client({
     baseUrl: "http://localhost:4096",
   })
   const fallback = () => own
@@ -141,7 +141,7 @@ export function createTuiPluginApi(opts: Opts = {}): HostPluginApi {
   let depth = 0
   let size: "medium" | "large" | "xlarge" = "medium"
   const has = opts.theme?.has ?? (() => false)
-  let selected = opts.theme?.selected ?? "opencode"
+  let selected = opts.theme?.selected ?? "darkmatter"
   const set =
     opts.theme?.set ??
     ((name: string) => {

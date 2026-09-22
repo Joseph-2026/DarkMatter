@@ -14,7 +14,7 @@
   node_modules ? callPackage ./node-modules.nix { },
 }:
 stdenvNoCC.mkDerivation (finalAttrs: {
-  pname = "opencode";
+  pname = "darkmatter";
   inherit (node_modules) version src;
   inherit node_modules;
 
@@ -45,9 +45,9 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   '';
 
   env.MODELS_DEV_API_JSON = "${models-dev}/dist/_api.json";
-  env.OPENCODE_DISABLE_MODELS_FETCH = true;
-  env.OPENCODE_VERSION = finalAttrs.version;
-  env.OPENCODE_CHANNEL = "prod";
+  env.APT5_DISABLE_MODELS_FETCH = true;
+  env.APT5_VERSION = finalAttrs.version;
+  env.APT5_CHANNEL = "prod";
 
   buildPhase = ''
     runHook preBuild
@@ -91,7 +91,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     writableTmpDirAsHomeHook
   ];
   doInstallCheck = true;
-  versionCheckKeepEnvironment = [ "HOME" "OPENCODE_DISABLE_MODELS_FETCH" ];
+  versionCheckKeepEnvironment = [ "HOME" "APT5_DISABLE_MODELS_FETCH" ];
   versionCheckProgramArg = "--version";
 
   passthru = {
@@ -101,9 +101,9 @@ stdenvNoCC.mkDerivation (finalAttrs: {
 
   meta = {
     description = "The open source coding agent";
-    homepage = "https://opencode.ai";
+    homepage = "https://github.com/Joseph-2026/DarkMatter";
     license = lib.licenses.mit;
-    mainProgram = "opencode";
+    mainProgram = "darkmatter";
     inherit (node_modules.meta) platforms;
   };
 })

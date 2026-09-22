@@ -136,7 +136,7 @@ export function JuneTotals() {
             fontWeight: 500,
           }}
         >
-          <div style={{ color: c.ink }}>opencode.ai/data</div>
+          <div style={{ color: c.ink }}>github.com/Joseph-2026/DarkMatter/data</div>
         </div>
       </div>
     </AbsoluteFill>

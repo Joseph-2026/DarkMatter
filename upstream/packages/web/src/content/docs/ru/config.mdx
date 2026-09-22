@@ -13,9 +13,9 @@ opencode поддерживает форматы **JSON** и **JSONC** (JSON с 
 
 ```jsonc title="opencode.jsonc"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   // Theme configuration
-  "theme": "opencode",
+  "theme": "darkmatter",
   "model": "anthropic/claude-sonnet-4-5",
   "autoupdate": true,
 }
@@ -34,7 +34,7 @@ opencode поддерживает форматы **JSON** и **JSONC** (JSON с 
 
 Файлы конфигурации объединяются, а не заменяются. Настройки из следующих мест конфигурации объединяются. Более поздние конфигурации переопределяют предыдущие только в случае конфликта ключей. Неконфликтные настройки из всех конфигов сохраняются.
 
-Например, если ваша глобальная конфигурация устанавливает `theme: "opencode"` и `autoupdate: true`, а конфигурация вашего проекта устанавливает `model: "anthropic/claude-sonnet-4-5"`, окончательная конфигурация будет включать все три параметра.
+Например, если ваша глобальная конфигурация устанавливает `theme: "darkmatter"` и `autoupdate: true`, а конфигурация вашего проекта устанавливает `model: "anthropic/claude-sonnet-4-5"`, окончательная конфигурация будет включать все три параметра.
 
 ---
 
@@ -44,15 +44,15 @@ opencode поддерживает форматы **JSON** и **JSONC** (JSON с 
 
 1. **Удаленная конфигурация** (от `.well-known/opencode`) – организационные настройки по умолчанию.
 2. **Глобальная конфигурация** (`~/.config/opencode/opencode.json`) — настройки пользователя.
-3. **Пользовательская конфигурация** (`OPENCODE_CONFIG` env var) – пользовательские переопределения
+3. **Пользовательская конфигурация** (`APT5_CONFIG` env var) – пользовательские переопределения
 4. **Конфигурация проекта** (`opencode.json` в проекте) — настройки, специфичные для проекта.
-5. **Каталоги `.opencode`** — агенты, команды, плагины
-6. **Встроенная конфигурация** (`OPENCODE_CONFIG_CONTENT` env var) – переопределяет время выполнения
+5. **Каталоги `.apt5`** — агенты, команды, плагины
+6. **Встроенная конфигурация** (`APT5_CONFIG_CONTENT` env var) – переопределяет время выполнения
 
 Это означает, что конфигурации проекта могут переопределять глобальные настройки по умолчанию, а глобальные конфигурации могут переопределять настройки по умолчанию для удаленной организации.
 
 :::note
-В каталогах `.opencode` и `~/.config/opencode` для подкаталогов используются **множественные имена**: `agents/`, `commands/`, `modes/`, `plugins/`, `skills/`, `tools/` и `themes/`. Единственные имена (например, `agent/`) также поддерживаются для обратной совместимости.
+В каталогах `.apt5` и `~/.config/opencode` для подкаталогов используются **множественные имена**: `agents/`, `commands/`, `modes/`, `plugins/`, `skills/`, `tools/` и `themes/`. Единственные имена (например, `agent/`) также поддерживаются для обратной совместимости.
 :::
 
 ---
@@ -121,10 +121,10 @@ opencode поддерживает форматы **JSON** и **JSONC** (JSON с 
 
 ### Пользовательский путь
 
-Укажите собственный путь к файлу конфигурации, используя переменную среды `OPENCODE_CONFIG`.
+Укажите собственный путь к файлу конфигурации, используя переменную среды `APT5_CONFIG`.
 
 ```bash
-export OPENCODE_CONFIG=/path/to/my/custom-config.json
+export APT5_CONFIG=/path/to/my/custom-config.json
 opencode run "Hello world"
 ```
 
@@ -134,22 +134,22 @@ opencode run "Hello world"
 
 ### Пользовательский каталог
 
-Укажите пользовательский каталог конфигурации, используя переменную среды `OPENCODE_CONFIG_DIR`. В этом каталоге будет выполняться поиск агентов, команд, режимов и плагинов (аналогично стандартному каталогу `.opencode`), и он должен иметь ту же структуру.
+Укажите пользовательский каталог конфигурации, используя переменную среды `APT5_CONFIG_DIR`. В этом каталоге будет выполняться поиск агентов, команд, режимов и плагинов (аналогично стандартному каталогу `.apt5`), и он должен иметь ту же структуру.
 
 ```bash
-export OPENCODE_CONFIG_DIR=/path/to/my/config-directory
+export APT5_CONFIG_DIR=/path/to/my/config-directory
 opencode run "Hello world"
 ```
 
-Пользовательский каталог загружается после каталогов global config и `.opencode`, поэтому он **может переопределить** их настройки.
+Пользовательский каталог загружается после каталогов global config и `.apt5`, поэтому он **может переопределить** их настройки.
 
 ---
 
 ## Схема
 
-Файл конфигурации имеет схему, определенную в [**`opencode.ai/config.json`**](https://opencode.ai/config.json).
+Файл конфигурации имеет схему, определенную в [**`github.com/Joseph-2026/DarkMatter/config.json`**](https://github.com/Joseph-2026/DarkMatter/config.json).
 
-Конфигурация TUI использует [**`opencode.ai/tui.json`**](https://opencode.ai/tui.json).
+Конфигурация TUI использует [**`github.com/Joseph-2026/DarkMatter/tui.json`**](https://github.com/Joseph-2026/DarkMatter/tui.json).
 
 Ваш редактор должен иметь возможность проверять и автозаполнять данные на основе схемы.
 
@@ -161,7 +161,7 @@ opencode run "Hello world"
 
 ```json title="tui.json"
 {
-  "$schema": "https://opencode.ai/tui.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/tui.json",
   "scroll_speed": 3,
   "scroll_acceleration": {
     "enabled": true
@@ -170,7 +170,7 @@ opencode run "Hello world"
 }
 ```
 
-Используйте `OPENCODE_TUI_CONFIG`, чтобы указать на пользовательский файл конфигурации TUI.
+Используйте `APT5_TUI_CONFIG`, чтобы указать на пользовательский файл конфигурации TUI.
 
 Устаревшие ключи `theme`, `keybinds` и `tui` в `opencode.json` устарели и автоматически переносятся, когда это возможно.
 
@@ -184,7 +184,7 @@ opencode run "Hello world"
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "server": {
     "port": 4096,
     "hostname": "0.0.0.0",
@@ -213,7 +213,7 @@ opencode run "Hello world"
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "tools": {
     "write": false,
     "bash": false
@@ -231,7 +231,7 @@ opencode run "Hello world"
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "provider": {},
   "model": "anthropic/claude-sonnet-4-5",
   "small_model": "anthropic/claude-haiku-4-5"
@@ -244,7 +244,7 @@ opencode run "Hello world"
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "provider": {
     "anthropic": {
       "options": {
@@ -273,7 +273,7 @@ Amazon Bedrock поддерживает конфигурацию, специфи
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "provider": {
     "amazon-bedrock": {
       "options": {
@@ -304,7 +304,7 @@ Amazon Bedrock поддерживает конфигурацию, специфи
 
 ```json title="tui.json"
 {
-  "$schema": "https://opencode.ai/tui.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/tui.json",
   "theme": "tokyonight"
 }
 ```
@@ -319,7 +319,7 @@ Amazon Bedrock поддерживает конфигурацию, специфи
 
 ```jsonc title="opencode.jsonc"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "agent": {
     "code-reviewer": {
       "description": "Reviews code for best practices and potential issues",
@@ -335,7 +335,7 @@ Amazon Bedrock поддерживает конфигурацию, специфи
 }
 ```
 
-Вы также можете определить агентов, используя файлы Markdown в `~/.config/opencode/agents/` или `.opencode/agents/`. [Подробнее здесь](/docs/agents).
+Вы также можете определить агентов, используя файлы Markdown в `~/.config/opencode/agents/` или `.apt5/agents/`. [Подробнее здесь](/docs/agents).
 
 ---
 
@@ -345,7 +345,7 @@ Amazon Bedrock поддерживает конфигурацию, специфи
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "default_agent": "plan"
 }
 ```
@@ -362,7 +362,7 @@ Amazon Bedrock поддерживает конфигурацию, специфи
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "share": "manual"
 }
 ```
@@ -383,7 +383,7 @@ Amazon Bedrock поддерживает конфигурацию, специфи
 
 ```jsonc title="opencode.jsonc"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "command": {
     "test": {
       "template": "Run the full test suite with coverage report and show any failures.\nFocus on the failing tests and suggest fixes.",
@@ -399,7 +399,7 @@ Amazon Bedrock поддерживает конфигурацию, специфи
 }
 ```
 
-Вы также можете определять команды, используя файлы Markdown в `~/.config/opencode/commands/` или `.opencode/commands/`. [Подробнее здесь](/docs/commands).
+Вы также можете определять команды, используя файлы Markdown в `~/.config/opencode/commands/` или `.apt5/commands/`. [Подробнее здесь](/docs/commands).
 
 ---
 
@@ -409,7 +409,7 @@ Amazon Bedrock поддерживает конфигурацию, специфи
 
 ```json title="tui.json"
 {
-  "$schema": "https://opencode.ai/tui.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/tui.json",
   "keybinds": {}
 }
 ```
@@ -424,7 +424,7 @@ opencode автоматически загрузит все новые обно�
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "autoupdate": false
 }
 ```
@@ -440,7 +440,7 @@ opencode автоматически загрузит все новые обно�
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "formatter": {
     "prettier": {
       "disabled": true
@@ -468,7 +468,7 @@ opencode автоматически загрузит все новые обно�
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "permission": {
     "edit": "ask",
     "bash": "ask"
@@ -486,7 +486,7 @@ opencode автоматически загрузит все новые обно�
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "compaction": {
     "auto": true,
     "prune": false,
@@ -507,7 +507,7 @@ opencode автоматически загрузит все новые обно�
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "watcher": {
     "ignore": ["node_modules/**", "dist/**", ".git/**"]
   }
@@ -524,7 +524,7 @@ opencode автоматически загрузит все новые обно�
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "mcp": {}
 }
 ```
@@ -537,11 +537,11 @@ opencode автоматически загрузит все новые обно�
 
 [Плагины](/docs/plugins) расширяют opencode с помощью пользовательских инструментов, перехватчиков и интеграций.
 
-Поместите файлы плагина в `.opencode/plugins/` или `~/.config/opencode/plugins/`. Вы также можете загружать плагины из npm с помощью опции `plugin`.
+Поместите файлы плагина в `.apt5/plugins/` или `~/.config/opencode/plugins/`. Вы также можете загружать плагины из npm с помощью опции `plugin`.
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "plugin": ["opencode-helicone-session", "@my-org/custom-plugin"]
 }
 ```
@@ -556,7 +556,7 @@ opencode автоматически загрузит все новые обно�
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "instructions": ["CONTRIBUTING.md", "docs/guidelines.md", ".cursor/rules/*.md"]
 }
 ```
@@ -571,7 +571,7 @@ opencode автоматически загрузит все новые обно�
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "disabled_providers": ["openai", "gemini"]
 }
 ```
@@ -594,7 +594,7 @@ opencode автоматически загрузит все новые обно�
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "enabled_providers": ["anthropic", "openai"]
 }
 ```
@@ -615,7 +615,7 @@ opencode автоматически загрузит все новые обно�
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "experimental": {}
 }
 ```
@@ -638,8 +638,8 @@ opencode автоматически загрузит все новые обно�
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
-  "model": "{env:OPENCODE_MODEL}",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
+  "model": "{env:APT5_MODEL}",
   "provider": {
     "anthropic": {
       "models": {},
@@ -661,7 +661,7 @@ opencode автоматически загрузит все новые обно�
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "instructions": ["./custom-instructions.md"],
   "provider": {
     "openai": {

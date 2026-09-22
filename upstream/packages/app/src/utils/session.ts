@@ -1,5 +1,5 @@
-import type { SessionApi, SessionInfo, SessionListInput } from "@opencode-ai/client/promise"
-import type { Session } from "@opencode-ai/sdk/v2/client"
+import type { SessionApi, SessionInfo, SessionListInput } from "@apt5/client/promise"
+import type { Session } from "@apt5/sdk/v2/client"
 import { withTimestampedFallback } from "./session-title"
 
 export function normalizeSessionInfo(input: SessionInfo | Session): Session {

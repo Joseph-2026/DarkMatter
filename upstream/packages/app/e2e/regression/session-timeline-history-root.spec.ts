@@ -1,4 +1,4 @@
-import { base64Encode } from "@opencode-ai/core/util/encode"
+import { base64Encode } from "@apt5/core/util/encode"
 import { expect, test, type Page } from "@playwright/test"
 import {
   assistantMessage,
@@ -13,7 +13,7 @@ import {
   userID,
   userMessage,
 } from "../performance/timeline-stability/fixture"
-import { mockOpenCodeServer } from "../utils/mock-server"
+import { mockApt5Server } from "../utils/mock-server"
 import { installSseTransport } from "../utils/sse-transport"
 import { expectSessionTitle } from "../utils/waits"
 
@@ -58,13 +58,13 @@ for (const scenario of scenarios) {
       server: `http://${process.env.PLAYWRIGHT_SERVER_HOST ?? "127.0.0.1"}:${process.env.PLAYWRIGHT_SERVER_PORT ?? "4096"}`,
       retry: 20,
     })
-    await mockOpenCodeServer(page, {
+    await mockApt5Server(page, {
       directory,
       project: project(),
       provider: {
         all: [
           {
-            id: "opencode",
+            id: "darkmatter",
             name: "OpenCode",
             models: {
               "claude-opus-4-6": {
@@ -75,8 +75,8 @@ for (const scenario of scenarios) {
             },
           },
         ],
-        connected: ["opencode"],
-        default: { providerID: "opencode", modelID: "claude-opus-4-6" },
+        connected: ["darkmatter"],
+        default: { providerID: "darkmatter", modelID: "claude-opus-4-6" },
       },
       sessions: [session()],
       sessionStatus: { [sessionID]: { type: "busy" } },

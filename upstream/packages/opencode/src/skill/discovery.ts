@@ -1,11 +1,11 @@
-import { LayerNode } from "@opencode-ai/core/effect/layer-node"
-import { httpClient, path } from "@opencode-ai/core/effect/app-node-platform"
+import { LayerNode } from "@apt5/core/effect/layer-node"
+import { httpClient, path } from "@apt5/core/effect/app-node-platform"
 import { NodePath } from "@effect/platform-node"
 import { Effect, Layer, Path, Schema, Context } from "effect"
 import { FetchHttpClient, HttpClient, HttpClientRequest, HttpClientResponse } from "effect/unstable/http"
 import { withTransientReadRetry } from "@/util/effect-http-client"
-import { FSUtil } from "@opencode-ai/core/fs-util"
-import { Global } from "@opencode-ai/core/global"
+import { FSUtil } from "@apt5/core/fs-util"
+import { Global } from "@apt5/core/global"
 
 const skillConcurrency = 4
 const fileConcurrency = 8
@@ -77,7 +77,7 @@ const layer: Layer.Layer<Service, never, FSUtil.Service | Path.Path | HttpClient
         (skill) =>
           Effect.gen(function* () {
             const root = path.join(cache, skill.name)
-            const versionFile = path.join(root, ".opencode-version")
+            const versionFile = path.join(root, ".apt5-version")
             const version = skill.version
             const current =
               version === undefined
@@ -102,7 +102,7 @@ const layer: Layer.Layer<Service, never, FSUtil.Service | Path.Path | HttpClient
                 )
                 if (!downloaded.every(Boolean)) return
                 if (!(yield* fs.exists(path.join(staging, "SKILL.md")).pipe(Effect.orDie))) return
-                yield* fs.writeFileString(path.join(staging, ".opencode-version"), version)
+                yield* fs.writeFileString(path.join(staging, ".apt5-version"), version)
                 yield* Effect.uninterruptible(
                   Effect.gen(function* () {
                     const cached = yield* fs.exists(root).pipe(Effect.orDie)

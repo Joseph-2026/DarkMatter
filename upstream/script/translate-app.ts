@@ -123,9 +123,9 @@ export function targetFiles(locale: Locale) {
 }
 
 export function glossaryFile(locale: Locale) {
-  if (locale === "zh") return ".opencode/glossary/zh-cn.md"
-  if (locale === "zht") return ".opencode/glossary/zh-tw.md"
-  return `.opencode/glossary/${locale}.md`
+  if (locale === "zh") return ".apt5/glossary/zh-cn.md"
+  if (locale === "zht") return ".apt5/glossary/zh-tw.md"
+  return `.apt5/glossary/${locale}.md`
 }
 
 export function findDrift(source: Dictionary, target: Dictionary, locale?: Locale) {
@@ -196,7 +196,7 @@ export function modelVariants(output: string, model: string) {
 
 export function translationConfig(agent: string, model: string, targets: string[]) {
   return {
-    $schema: "https://opencode.ai/config.json",
+    $schema: "https://github.com/Joseph-2026/DarkMatter/config.json",
     model,
     default_agent: agent,
     share: "disabled" as const,
@@ -416,8 +416,8 @@ async function translate(
   )
   const agent = `translate-app-${plan.locale}-${process.pid}`
   const env = isolatedEnvironment()
-  env.OPENCODE_DISABLE_PROJECT_CONFIG = "1"
-  env.OPENCODE_CONFIG_CONTENT = JSON.stringify(
+  env.APT5_DISABLE_PROJECT_CONFIG = "1"
+  env.APT5_CONFIG_CONTENT = JSON.stringify(
     translationConfig(
       agent,
       model,
@@ -427,7 +427,7 @@ async function translate(
 
   const proc = Bun.spawn(
     [
-      "opencode",
+      "darkmatter",
       "--pure",
       "run",
       "--dir",
@@ -459,7 +459,7 @@ async function translate(
   if (result[2] !== 0) return { locale: plan.locale, stdout: result[0], stderr: result[1], code: result[2] }
 
   const sessionID = sessionIDFromEvents(result[0])
-  const exported = Bun.spawn(["opencode", "--pure", "export", sessionID, "--sanitize"], {
+  const exported = Bun.spawn(["darkmatter", "--pure", "export", sessionID, "--sanitize"], {
     cwd: root,
     env,
     stdout: "pipe",
@@ -530,8 +530,8 @@ async function resolveModelVariant(model: string, variant: string) {
   const provider = model.split("/")[0]
   if (!provider || !model.includes("/")) throw new Error(`Model must use provider/model syntax: ${model}`)
   const env = isolatedEnvironment()
-  env.OPENCODE_DISABLE_PROJECT_CONFIG = "1"
-  const proc = Bun.spawn(["opencode", "--pure", "models", provider, "--verbose"], {
+  env.APT5_DISABLE_PROJECT_CONFIG = "1"
+  const proc = Bun.spawn(["darkmatter", "--pure", "models", provider, "--verbose"], {
     cwd: root,
     env,
     stdin: "ignore",
@@ -547,11 +547,11 @@ async function resolveModelVariant(model: string, variant: string) {
 
 function isolatedEnvironment() {
   const env = { ...process.env }
-  delete env.OPENCODE_CONFIG
-  delete env.OPENCODE_CONFIG_DIR
-  delete env.OPENCODE_CONFIG_CONTENT
-  delete env.OPENCODE_PERMISSION
-  delete env.OPENCODE_AUTO_SHARE
+  delete env.APT5_CONFIG
+  delete env.APT5_CONFIG_DIR
+  delete env.APT5_CONFIG_CONTENT
+  delete env.APT5_PERMISSION
+  delete env.APT5_AUTO_SHARE
   return env
 }
 

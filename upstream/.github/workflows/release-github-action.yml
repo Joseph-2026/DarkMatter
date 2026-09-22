@@ -25,5 +25,5 @@ jobs:
       - name: Release
         run: |
           git config --global user.email "opencode@sst.dev"
-          git config --global user.name "opencode"
+          git config --global user.name "darkmatter"
           ./github/script/release

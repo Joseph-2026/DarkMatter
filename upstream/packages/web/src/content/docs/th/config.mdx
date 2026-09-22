@@ -13,7 +13,7 @@ OpenCode รองรับทั้งรูปแบบ **JSON** และ **J
 
 ```jsonc title="opencode.jsonc"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "model": "anthropic/claude-sonnet-4-5",
   "autoupdate": true,
   "server": {
@@ -45,15 +45,15 @@ OpenCode รองรับทั้งรูปแบบ **JSON** และ **J
 
 1. **การกำหนดค่าระยะไกล** (จาก `.well-known/opencode`) - ค่าเริ่มต้นขององค์กร
 2. **การกำหนดค่าสากล** (`~/.config/opencode/opencode.json`) - การตั้งค่าของผู้ใช้
-3. **การกำหนดค่าแบบกำหนดเอง** (`OPENCODE_CONFIG` env var) - การแทนที่แบบกำหนดเอง
+3. **การกำหนดค่าแบบกำหนดเอง** (`APT5_CONFIG` env var) - การแทนที่แบบกำหนดเอง
 4. **การกำหนดค่าโครงการ** (`opencode.json` ในโครงการ) - การตั้งค่าเฉพาะโครงการ
-5. **`.opencode` ไดเรกทอรี** - ตัวแทน คำสั่ง ปลั๊กอิน
-6. **การกำหนดค่าแบบอินไลน์** (`OPENCODE_CONFIG_CONTENT` env var) - การแทนที่รันไทม์
+5. **`.apt5` ไดเรกทอรี** - ตัวแทน คำสั่ง ปลั๊กอิน
+6. **การกำหนดค่าแบบอินไลน์** (`APT5_CONFIG_CONTENT` env var) - การแทนที่รันไทม์
 
 ซึ่งหมายความว่าการกำหนดค่าโปรเจ็กต์สามารถแทนที่ค่าเริ่มต้นส่วนกลางได้ และการกำหนดค่าส่วนกลางสามารถแทนที่ค่าเริ่มต้นขององค์กรระยะไกลได้
 
 :::note
-ไดเรกทอรี `.opencode` และ `~/.config/opencode` ใช้ **ชื่อพหูพจน์** สำหรับไดเรกทอรีย่อย: `agents/`, `commands/`, `modes/`, `plugins/`, `skills/`, `tools/` และ `themes/` ชื่อเอกพจน์ (เช่น `agent/`) ยังรองรับความเข้ากันได้แบบย้อนหลังด้วย
+ไดเรกทอรี `.apt5` และ `~/.config/opencode` ใช้ **ชื่อพหูพจน์** สำหรับไดเรกทอรีย่อย: `agents/`, `commands/`, `modes/`, `plugins/`, `skills/`, `tools/` และ `themes/` ชื่อเอกพจน์ (เช่น `agent/`) ยังรองรับความเข้ากันได้แบบย้อนหลังด้วย
 :::
 
 ---
@@ -122,10 +122,10 @@ OpenCode รองรับทั้งรูปแบบ **JSON** และ **J
 
 ### เส้นทางที่กำหนดเอง
 
-ระบุเส้นทางไฟล์กำหนดค่าที่กำหนดเองโดยใช้ตัวแปรสภาพแวดล้อม `OPENCODE_CONFIG`
+ระบุเส้นทางไฟล์กำหนดค่าที่กำหนดเองโดยใช้ตัวแปรสภาพแวดล้อม `APT5_CONFIG`
 
 ```bash
-export OPENCODE_CONFIG=/path/to/my/custom-config.json
+export APT5_CONFIG=/path/to/my/custom-config.json
 opencode run "Hello world"
 ```
 
@@ -135,25 +135,25 @@ opencode run "Hello world"
 
 ### ไดเรกทอรีที่กำหนดเอง
 
-ระบุไดเร็กทอรีการกำหนดค่าที่กำหนดเองโดยใช้ `OPENCODE_CONFIG_DIR`
+ระบุไดเร็กทอรีการกำหนดค่าที่กำหนดเองโดยใช้ `APT5_CONFIG_DIR`
 ตัวแปรสภาพแวดล้อม ไดเร็กทอรีนี้จะถูกค้นหาตัวแทน, คำสั่ง,
-โหมดและปลั๊กอินเหมือนกับไดเร็กทอรี `.opencode` มาตรฐานและควร
+โหมดและปลั๊กอินเหมือนกับไดเร็กทอรี `.apt5` มาตรฐานและควร
 เป็นไปตามโครงสร้างเดียวกัน
 
 ```bash
-export OPENCODE_CONFIG_DIR=/path/to/my/config-directory
+export APT5_CONFIG_DIR=/path/to/my/config-directory
 opencode run "Hello world"
 ```
 
-ไดเร็กทอรีที่กำหนดเองถูกโหลดหลังจากไดเร็กทอรี config ส่วนกลางและ `.opencode` ดังนั้นจึง **สามารถแทนที่** การตั้งค่าได้
+ไดเร็กทอรีที่กำหนดเองถูกโหลดหลังจากไดเร็กทอรี config ส่วนกลางและ `.apt5` ดังนั้นจึง **สามารถแทนที่** การตั้งค่าได้
 
 ---
 
 ## สคีมา
 
-ไฟล์กำหนดค่ามีสคีมาที่กำหนดไว้ใน [**`opencode.ai/config.json`**](https://opencode.ai/config.json)
+ไฟล์กำหนดค่ามีสคีมาที่กำหนดไว้ใน [**`github.com/Joseph-2026/DarkMatter/config.json`**](https://github.com/Joseph-2026/DarkMatter/config.json)
 
-การกำหนดค่า TUI ใช้ [**`opencode.ai/tui.json`**](https://opencode.ai/tui.json)
+การกำหนดค่า TUI ใช้ [**`github.com/Joseph-2026/DarkMatter/tui.json`**](https://github.com/Joseph-2026/DarkMatter/tui.json)
 
 ผู้แก้ไขของคุณควรสามารถตรวจสอบและเติมข้อความอัตโนมัติตามสคีมาได้
 
@@ -165,7 +165,7 @@ opencode run "Hello world"
 
 ```json title="tui.json"
 {
-  "$schema": "https://opencode.ai/tui.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/tui.json",
   "scroll_speed": 3,
   "scroll_acceleration": {
     "enabled": true
@@ -174,7 +174,7 @@ opencode run "Hello world"
 }
 ```
 
-ใช้ `OPENCODE_TUI_CONFIG` เพื่อชี้ไปยังไฟล์กำหนดค่า TUI ที่กำหนดเอง
+ใช้ `APT5_TUI_CONFIG` เพื่อชี้ไปยังไฟล์กำหนดค่า TUI ที่กำหนดเอง
 
 คีย์ `theme`, `keybinds` และ `tui` แบบเดิมใน `opencode.json` เลิกใช้แล้วและจะถูกย้ายโดยอัตโนมัติเมื่อเป็นไปได้
 
@@ -188,7 +188,7 @@ opencode run "Hello world"
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "server": {
     "port": 4096,
     "hostname": "0.0.0.0",
@@ -217,7 +217,7 @@ opencode run "Hello world"
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "tools": {
     "write": false,
     "bash": false
@@ -235,7 +235,7 @@ opencode run "Hello world"
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "provider": {},
   "model": "anthropic/claude-sonnet-4-5",
   "small_model": "anthropic/claude-haiku-4-5"
@@ -248,7 +248,7 @@ opencode run "Hello world"
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "provider": {
     "anthropic": {
       "options": {
@@ -277,7 +277,7 @@ Amazon Bedrock รองรับ AWS-การกำหนดค่าเฉพ
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "provider": {
     "amazon-bedrock": {
       "options": {
@@ -308,7 +308,7 @@ Bearer Token (`AWS_BEARER_TOKEN_BEDROCK` หรือ `/connect`) มีคว�
 
 ```json title="tui.json"
 {
-  "$schema": "https://opencode.ai/tui.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/tui.json",
   "theme": "tokyonight"
 }
 ```
@@ -323,7 +323,7 @@ Bearer Token (`AWS_BEARER_TOKEN_BEDROCK` หรือ `/connect`) มีคว�
 
 ```jsonc title="opencode.jsonc"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "agent": {
     "code-reviewer": {
       "description": "Reviews code for best practices and potential issues",
@@ -339,7 +339,7 @@ Bearer Token (`AWS_BEARER_TOKEN_BEDROCK` หรือ `/connect`) มีคว�
 }
 ```
 
-คุณยังสามารถกำหนดตัวแทนโดยใช้ไฟล์ Markdown ใน `~/.config/opencode/agents/` หรือ `.opencode/agents/` [เรียนรู้เพิ่มเติมที่นี่](/docs/agents)
+คุณยังสามารถกำหนดตัวแทนโดยใช้ไฟล์ Markdown ใน `~/.config/opencode/agents/` หรือ `.apt5/agents/` [เรียนรู้เพิ่มเติมที่นี่](/docs/agents)
 
 ---
 
@@ -349,7 +349,7 @@ Bearer Token (`AWS_BEARER_TOKEN_BEDROCK` หรือ `/connect`) มีคว�
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "default_agent": "plan"
 }
 ```
@@ -366,7 +366,7 @@ Bearer Token (`AWS_BEARER_TOKEN_BEDROCK` หรือ `/connect`) มีคว�
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "share": "manual"
 }
 ```
@@ -387,7 +387,7 @@ Bearer Token (`AWS_BEARER_TOKEN_BEDROCK` หรือ `/connect`) มีคว�
 
 ```jsonc title="opencode.jsonc"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "command": {
     "test": {
       "template": "Run the full test suite with coverage report and show any failures.\nFocus on the failing tests and suggest fixes.",
@@ -403,7 +403,7 @@ Bearer Token (`AWS_BEARER_TOKEN_BEDROCK` หรือ `/connect`) มีคว�
 }
 ```
 
-คุณยังสามารถกำหนดคำสั่งโดยใช้ไฟล์ Markdown ใน `~/.config/opencode/commands/` หรือ `.opencode/commands/` [เรียนรู้เพิ่มเติมที่นี่](/docs/commands)
+คุณยังสามารถกำหนดคำสั่งโดยใช้ไฟล์ Markdown ใน `~/.config/opencode/commands/` หรือ `.apt5/commands/` [เรียนรู้เพิ่มเติมที่นี่](/docs/commands)
 
 ---
 
@@ -413,7 +413,7 @@ Bearer Token (`AWS_BEARER_TOKEN_BEDROCK` หรือ `/connect`) มีคว�
 
 ```json title="tui.json"
 {
-  "$schema": "https://opencode.ai/tui.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/tui.json",
   "keybinds": {}
 }
 ```
@@ -428,7 +428,7 @@ OpenCode จะดาวน์โหลดการอัปเดตใหม�
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "autoupdate": false
 }
 ```
@@ -444,7 +444,7 @@ OpenCode จะดาวน์โหลดการอัปเดตใหม�
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "formatter": {
     "prettier": {
       "disabled": true
@@ -472,7 +472,7 @@ OpenCode จะดาวน์โหลดการอัปเดตใหม�
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "permission": {
     "edit": "ask",
     "bash": "ask"
@@ -490,7 +490,7 @@ OpenCode จะดาวน์โหลดการอัปเดตใหม�
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "compaction": {
     "auto": true,
     "prune": false,
@@ -511,7 +511,7 @@ OpenCode จะดาวน์โหลดการอัปเดตใหม�
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "watcher": {
     "ignore": ["node_modules/**", "dist/**", ".git/**"]
   }
@@ -528,7 +528,7 @@ OpenCode จะดาวน์โหลดการอัปเดตใหม�
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "mcp": {}
 }
 ```
@@ -541,11 +541,11 @@ OpenCode จะดาวน์โหลดการอัปเดตใหม�
 
 [ปลั๊กอิน](/docs/plugins) ขยาย OpenCode ด้วยเครื่องมือที่กำหนดเอง hooks และการผสานรวม
 
-วางไฟล์ปลั๊กอินใน `.opencode/plugins/` หรือ `~/.config/opencode/plugins/` คุณยังสามารถโหลดปลั๊กอินจาก npm ผ่านตัวเลือก `plugin`
+วางไฟล์ปลั๊กอินใน `.apt5/plugins/` หรือ `~/.config/opencode/plugins/` คุณยังสามารถโหลดปลั๊กอินจาก npm ผ่านตัวเลือก `plugin`
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "plugin": ["opencode-helicone-session", "@my-org/custom-plugin"]
 }
 ```
@@ -560,7 +560,7 @@ OpenCode จะดาวน์โหลดการอัปเดตใหม�
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "instructions": ["CONTRIBUTING.md", "docs/guidelines.md", ".cursor/rules/*.md"]
 }
 ```
@@ -576,7 +576,7 @@ OpenCode จะดาวน์โหลดการอัปเดตใหม�
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "disabled_providers": ["openai", "gemini"]
 }
 ```
@@ -599,7 +599,7 @@ OpenCode จะดาวน์โหลดการอัปเดตใหม�
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "enabled_providers": ["anthropic", "openai"]
 }
 ```
@@ -620,7 +620,7 @@ OpenCode จะดาวน์โหลดการอัปเดตใหม�
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "experimental": {}
 }
 ```
@@ -643,8 +643,8 @@ OpenCode จะดาวน์โหลดการอัปเดตใหม�
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
-  "model": "{env:OPENCODE_MODEL}",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
+  "model": "{env:APT5_MODEL}",
   "provider": {
     "anthropic": {
       "models": {},
@@ -666,7 +666,7 @@ OpenCode จะดาวน์โหลดการอัปเดตใหม�
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "instructions": ["./custom-instructions.md"],
   "provider": {
     "openai": {

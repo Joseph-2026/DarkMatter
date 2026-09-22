@@ -1,7 +1,7 @@
-import type { Hooks, PluginInput } from "@opencode-ai/plugin"
-import type { Model } from "@opencode-ai/sdk/v2"
-import { InstallationVersion } from "@opencode-ai/core/installation/version"
-import { OauthCallbackPage } from "@opencode-ai/core/oauth/page"
+import type { Hooks, PluginInput } from "@apt5/plugin"
+import type { Model } from "@apt5/sdk/v2"
+import { InstallationVersion } from "@apt5/core/installation/version"
+import { OauthCallbackPage } from "@apt5/core/oauth/page"
 import { createServer } from "http"
 import open from "open"
 

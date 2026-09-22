@@ -34,7 +34,7 @@ Wenn Sie stattdessen eine benutzerdefinierte OpenCode-Programmdatei verwenden m�
   "agent_servers": {
     "OpenCode": {
       "type": "custom",
-      "command": "opencode",
+      "command": "darkmatter",
       "args": ["acp"]
     }
   }
@@ -56,7 +56,7 @@ Sie können auch eine Tastenkombination binden, indem Sie Ihren `keymap.json` be
             "custom": {
               "name": "OpenCode",
               "command": {
-                "command": "opencode",
+                "command": "darkmatter",
                 "args": ["acp"]
               }
             }
@@ -96,8 +96,8 @@ Fügen Sie Ihrer [Avante.nvim](https://github.com/yetone/avante.nvim)-Konfigurat
 ```lua
 {
   acp_providers = {
-    ["opencode"] = {
-      command = "opencode",
+    ["darkmatter"] = {
+      command = "darkmatter",
       args = { "acp" }
     }
   }
@@ -109,11 +109,11 @@ Wenn Sie Umgebungsvariablen übergeben müssen:
 ```lua {6-8}
 {
   acp_providers = {
-    ["opencode"] = {
-      command = "opencode",
+    ["darkmatter"] = {
+      command = "darkmatter",
       args = { "acp" },
       env = {
-        OPENCODE_API_KEY = os.getenv("OPENCODE_API_KEY")
+        APT5_API_KEY = os.getenv("APT5_API_KEY")
       }
     }
   }
@@ -131,7 +131,7 @@ require("codecompanion").setup({
   interactions = {
     chat = {
       adapter = {
-        name = "opencode",
+        name = "darkmatter",
         model = "claude-sonnet-4",
       },
     },
@@ -141,7 +141,7 @@ require("codecompanion").setup({
 
 Diese Konfiguration richtet CodeCompanion so ein, dass OpenCode als ACP-Agent für den Chat verwendet wird.
 
-Wenn Sie Umgebungsvariablen (wie `OPENCODE_API_KEY`) übergeben müssen, finden Sie ausführliche Informationen zu [Configuring Adapters: Environment Variables](https://codecompanion.olimorris.dev/getting-started#setting-an-api-key) in der Dokumentation zu CodeCompanion.nvim.
+Wenn Sie Umgebungsvariablen (wie `APT5_API_KEY`) übergeben müssen, finden Sie ausführliche Informationen zu [Configuring Adapters: Environment Variables](https://codecompanion.olimorris.dev/getting-started#setting-an-api-key) in der Dokumentation zu CodeCompanion.nvim.
 
 ## Unterstützung
 

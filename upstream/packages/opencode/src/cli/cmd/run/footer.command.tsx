@@ -966,7 +966,7 @@ export function RunModelSelectBody(props: {
             const current = props.current()?.providerID === provider.id && props.current()?.modelID === modelID
             const footer = current
               ? "current"
-              : model.cost?.input === 0 && provider.id === "opencode"
+              : model.cost?.input === 0 && provider.id === "darkmatter"
                 ? "Free"
                 : title !== modelID
                   ? modelID

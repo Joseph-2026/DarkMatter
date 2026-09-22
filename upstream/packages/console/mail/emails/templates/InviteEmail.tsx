@@ -15,7 +15,7 @@ import {
   buttonText,
 } from "../styles"
 
-const CONSOLE_URL = "https://opencode.ai/"
+const CONSOLE_URL = "https://github.com/Joseph-2026/DarkMatter/"
 
 interface InviteEmailProps {
   inviter: string

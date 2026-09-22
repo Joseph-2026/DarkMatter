@@ -6,22 +6,22 @@
 // the original /event race or #27371's invalid-model hang).
 //
 // Configuration flows through opencode's built-in test affordances:
-//   - OPENCODE_CONFIG_CONTENT      : provider config inline, no files to find
-//   - OPENCODE_TEST_HOME           : pins os.homedir() → tmpdir
-//   - OPENCODE_DISABLE_PROJECT_CONFIG : skip walking up for opencode.json
-//   - OPENCODE_PURE                : skip external plugin discovery + install
-//   - OPENCODE_DISABLE_AUTOUPDATE / AUTOCOMPACT / MODELS_FETCH : no background work
+//   - APT5_CONFIG_CONTENT      : provider config inline, no files to find
+//   - APT5_TEST_HOME           : pins os.homedir() → tmpdir
+//   - APT5_DISABLE_PROJECT_CONFIG : skip walking up for opencode.json
+//   - APT5_PURE                : skip external plugin discovery + install
+//   - APT5_DISABLE_AUTOUPDATE / AUTOCOMPACT / MODELS_FETCH : no background work
 // Plus HOME / XDG_* pointing at the tmpdir for belt-and-suspenders isolation.
 //
 // Today only `opencode.run` is fully wired. The shape supports adding more
 // builders (`opencode.serve(opts)`, `opencode.acp(opts)`, `opencode.auth(...)`)
 // without changing the fixture. Long-lived commands like `serve` will need a
-// different return shape — see the TODO at the bottom of OpencodeCli.
+// different return shape — see the TODO at the bottom of Apt5Cli.
 import { test, type TestOptions } from "bun:test"
-import { FSUtil } from "@opencode-ai/core/fs-util"
-import { AppNodeBuilder } from "@opencode-ai/core/effect/app-node-builder"
-import { LayerNode } from "@opencode-ai/core/effect/layer-node"
-import { AppProcess } from "@opencode-ai/core/process"
+import { FSUtil } from "@apt5/core/fs-util"
+import { AppNodeBuilder } from "@apt5/core/effect/app-node-builder"
+import { LayerNode } from "@apt5/core/effect/layer-node"
+import { AppProcess } from "@apt5/core/process"
 import { Deferred, Duration, Effect, Layer, Queue, Schedule, Scope, Stream } from "effect"
 import { FetchHttpClient, HttpClient } from "effect/unstable/http"
 import { ChildProcess } from "effect/unstable/process"
@@ -30,8 +30,8 @@ import { TestLLMServer } from "./llm-server"
 import { testProviderConfig } from "./test-provider"
 import { it } from "./effect"
 
-const opencodeRoot = path.resolve(import.meta.dir, "../../")
-const cliEntry = path.join(opencodeRoot, "src/index.ts")
+const apt5Root = path.resolve(import.meta.dir, "../../")
+const cliEntry = path.join(apt5Root, "src/index.ts")
 
 export const testModelID = "test/test-model"
 
@@ -61,19 +61,19 @@ function forkStderrDrain(stream: ReadableStream<Uint8Array>, into: string[]) {
 
 function isolatedEnv(home: string, configJson: string): Record<string, string> {
   return {
-    OPENCODE_TEST_HOME: home,
+    APT5_TEST_HOME: home,
     HOME: home,
     XDG_CONFIG_HOME: path.join(home, ".config"),
     XDG_DATA_HOME: path.join(home, ".local/share"),
     XDG_STATE_HOME: path.join(home, ".local/state"),
     XDG_CACHE_HOME: path.join(home, ".cache"),
-    OPENCODE_CONFIG_CONTENT: configJson,
-    OPENCODE_DISABLE_PROJECT_CONFIG: "1",
-    OPENCODE_PURE: "1",
-    OPENCODE_DISABLE_AUTOUPDATE: "1",
-    OPENCODE_DISABLE_AUTOCOMPACT: "1",
-    OPENCODE_DISABLE_MODELS_FETCH: "1",
-    OPENCODE_AUTH_CONTENT: "{}",
+    APT5_CONFIG_CONTENT: configJson,
+    APT5_DISABLE_PROJECT_CONFIG: "1",
+    APT5_PURE: "1",
+    APT5_DISABLE_AUTOUPDATE: "1",
+    APT5_DISABLE_AUTOCOMPACT: "1",
+    APT5_DISABLE_MODELS_FETCH: "1",
+    APT5_AUTH_CONTENT: "{}",
   }
 }
 
@@ -152,7 +152,7 @@ export type AcpHandle = {
   readonly exited: Promise<number>
 }
 
-export type OpencodeCli = {
+export type Apt5Cli = {
   // High-level: run a single prompt against the test model. Short-lived.
   readonly run: (message: string, opts?: RunOpts) => Effect.Effect<RunResult>
   readonly startRun: (message: string, opts?: RunOpts) => Effect.Effect<RunHandle, never, Scope.Scope>
@@ -179,7 +179,7 @@ export type OpencodeCli = {
 export type CliFixture = {
   readonly llm: TestLLMServer["Service"]
   readonly home: string
-  readonly opencode: OpencodeCli
+  readonly opencode: Apt5Cli
 }
 
 // Provisions a TestLLMServer + tmpdir + spawn helper and invokes fn. Cleans
@@ -266,7 +266,7 @@ export function withCliFixture<A, E>(
         ...opts,
         env: {
           ...opts.env,
-          OPENCODE_CONFIG_CONTENT: JSON.stringify({
+          APT5_CONFIG_CONTENT: JSON.stringify({
             ...testProviderConfig(llm.url),
             permission: opts.permission,
           }),
@@ -464,7 +464,7 @@ export function withCliFixture<A, E>(
       } satisfies AcpHandle
     })
 
-    const opencode: OpencodeCli = { run, startRun, serve, acp, spawn, expectExit, parseJsonEvents }
+    const opencode: Apt5Cli = { run, startRun, serve, acp, spawn, expectExit, parseJsonEvents }
 
     return yield* fn({ llm, home, opencode })
     // FetchHttpClient is provided so test bodies can `yield* HttpClient.HttpClient`
@@ -494,7 +494,7 @@ function normalizeLines(value: string) {
 
 // Convenience for the common assertion pattern. Dumps stderr/stdout when
 // the exit code doesn't match — saves debugging time on CI failures.
-function expectExit(result: RunResult, expected: number, label = "opencode") {
+function expectExit(result: RunResult, expected: number, label = "darkmatter") {
   if (result.exitCode === expected) return
   const tail = (s: string, n: number) => (s.length > n ? "..." + s.slice(-n) : s)
   // eslint-disable-next-line no-console

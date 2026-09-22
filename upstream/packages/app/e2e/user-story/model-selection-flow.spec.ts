@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test"
-import { mockOpenCodeServer } from "../utils/mock-server"
+import { mockApt5Server } from "../utils/mock-server"
 import { expectAppVisible } from "../utils/waits"
 
 const directory = "C:/OpenCode/NewProject"
@@ -9,7 +9,7 @@ test("creates a session in a new project, connects OpenCode Go, and selects its 
   let pendingGo = false
   const connections: Array<{ integrationID: string; body: unknown }> = []
 
-  await mockOpenCodeServer(page, {
+  await mockApt5Server(page, {
     directory,
     project: {
       id: "proj_model_selection_flow",
@@ -22,7 +22,7 @@ test("creates a session in a new project, connects OpenCode Go, and selects its 
     provider: () => ({
       all: [
         {
-          id: "opencode",
+          id: "darkmatter",
           name: "OpenCode",
           models: {
             "free-model": {
@@ -46,8 +46,8 @@ test("creates a session in a new project, connects OpenCode Go, and selects its 
           },
         },
       ],
-      connected: connectedGo ? ["opencode", "opencode-go"] : ["opencode"],
-      default: { providerID: "opencode", modelID: "free-model" },
+      connected: connectedGo ? ["darkmatter", "opencode-go"] : ["darkmatter"],
+      default: { providerID: "darkmatter", modelID: "free-model" },
     }),
     integrationMethods: { "opencode-go": [{ type: "api", label: "API key" }] },
     onConnectKey: (input) => {

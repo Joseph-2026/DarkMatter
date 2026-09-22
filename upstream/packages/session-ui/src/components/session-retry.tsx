@@ -1,9 +1,9 @@
 import { createEffect, createMemo, createSignal, on, onCleanup, Show } from "solid-js"
-import type { SessionStatus } from "@opencode-ai/sdk/v2/client"
-import { useI18n } from "@opencode-ai/ui/context/i18n"
-import { Card } from "@opencode-ai/ui/card"
-import { Tooltip } from "@opencode-ai/ui/tooltip"
-import { Spinner } from "@opencode-ai/ui/spinner"
+import type { SessionStatus } from "@apt5/sdk/v2/client"
+import { useI18n } from "@apt5/ui/context/i18n"
+import { Card } from "@apt5/ui/card"
+import { Tooltip } from "@apt5/ui/tooltip"
+import { Spinner } from "@apt5/ui/spinner"
 
 export function SessionRetry(props: { status: SessionStatus; show?: boolean }) {
   const i18n = useI18n()
