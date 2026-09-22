@@ -1,0 +1,54 @@
+name: DarkMatter CI (heavy work runs here, not on low-RAM dev machines)
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  secrets-guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fail if API keys or private keys are committed
+        run: |
+          ! grep -rInE "sk-or-v1[0-9A-Za-z_-]{10,}|sk-ant-[0-9A-Za-z_-]{10,}|ghp_[0-9A-Za-z]{10,}|gho_[0-9A-Za-z]{10,}|xox[bpas]-[0-9A-Za-z-]+|-----BEGIN (RSA )?PRIVATE KEY-----" \
+            --exclude-dir=node_modules --exclude-dir=.git --exclude="*.example" . \
+          || (echo "SECRET LEAK DETECTED" && exit 1)
+
+  build-and-check:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: upstream
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1.3.14"
+      - name: Install (frozen)
+        run: bun install --frozen-lockfile
+      - name: Lint
+        run: bun run lint
+      - name: Typecheck (turbo)
+        run: bun run typecheck
+        timeout-minutes: 25
+
+  smoke-test-opencode-pkg:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: upstream/packages/opencode
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1.3.14"
+      - name: Install (frozen)
+        run: bun install --frozen-lockfile
+        working-directory: upstream
+      - name: Targeted tests
+        run: bun test --timeout 30000 test/acp/permission.test.ts test/event-manifest.test.ts
+        timeout-minutes: 30
