@@ -33605,11 +33605,11 @@
   },
   "opencode-go": {
     "id": "opencode-go",
-    "env": ["APT5_API_KEY"],
+    "env": ["OPENCODE_API_KEY"],
     "npm": "@ai-sdk/openai-compatible",
-    "api": "https://github.com/Joseph-2026/DarkMatter/zen/go/v1",
+    "api": "https://opencode.ai/zen/go/v1",
     "name": "OpenCode Go",
-    "doc": "https://github.com/Joseph-2026/DarkMatter/docs/zen",
+    "doc": "https://opencode.ai/docs/zen",
     "models": {
       "deepseek-v4-flash": {
         "id": "deepseek-v4-flash",
@@ -90319,13 +90319,13 @@
       }
     }
   },
-  "darkmatter": {
-    "id": "darkmatter",
-    "env": ["APT5_API_KEY"],
+  "opencode": {
+    "id": "opencode",
+    "env": ["OPENCODE_API_KEY"],
     "npm": "@ai-sdk/openai-compatible",
-    "api": "https://github.com/Joseph-2026/DarkMatter/zen/v1",
+    "api": "https://opencode.ai/zen/v1",
     "name": "OpenCode Zen",
-    "doc": "https://github.com/Joseph-2026/DarkMatter/docs/zen",
+    "doc": "https://opencode.ai/docs/zen",
     "models": {
       "ring-2.6-1t-free": {
         "id": "ring-2.6-1t-free",
