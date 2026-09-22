@@ -161,7 +161,7 @@ const RECORDED_SCENARIOS = [
   {
     id: "opencode-proxy",
     name: "OpenCode proxy",
-    providerID: ProviderV2.ID.apt5,
+    providerID: ProviderV2.ID.opencode,
     modelID: "gpt-5.2-codex",
     cassette: "session/native-zen-tool-loop",
     protocol: "openai-responses",
@@ -169,7 +169,7 @@ const RECORDED_SCENARIOS = [
     canRecord: () => Boolean(process.env.APT5_RECORD_CONSOLE_TOKEN && process.env.APT5_RECORD_ZEN_ORG_ID),
     config: (model) =>
       providerConfig({
-        providerID: ProviderV2.ID.apt5,
+        providerID: ProviderV2.ID.opencode,
         name: "OpenCode Zen",
         env: ["APT5_CONSOLE_TOKEN"],
         npm: "@ai-sdk/openai-compatible",

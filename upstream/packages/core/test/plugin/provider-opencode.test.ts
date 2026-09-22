@@ -74,7 +74,7 @@ describe("Apt5Plugin", () => {
   it.effect("registers account and service account methods", () =>
     Effect.gen(function* () {
       yield* addPlugin()
-      expect((yield* (yield* Integration.Service).get(Integration.ID.make("darkmatter")))?.methods).toEqual([
+      expect((yield* (yield* Integration.Service).get(Integration.ID.make("opencode")))?.methods).toEqual([
         {
           id: Integration.MethodID.make("device"),
           type: "oauth",
@@ -104,7 +104,7 @@ describe("Apt5Plugin", () => {
       yield* addPlugin(http)
       const integration = yield* Integration.Service
       const attempt = yield* integration.connection.oauth({
-        integrationID: Integration.ID.make("darkmatter"),
+        integrationID: Integration.ID.make("opencode"),
         methodID: Integration.MethodID.make("device"),
         inputs: {},
       })
@@ -132,7 +132,7 @@ describe("Apt5Plugin", () => {
       const integration = yield* Integration.Service
       const error = yield* integration.connection
         .oauth({
-          integrationID: Integration.ID.make("darkmatter"),
+          integrationID: Integration.ID.make("opencode"),
           methodID: Integration.MethodID.make("device"),
           inputs: {},
         })
@@ -201,7 +201,7 @@ describe("Apt5Plugin", () => {
             draft.model.update(ProviderV2.ID.make("remote"), ModelV2.ID.make("stale"), () => {})
           })
           yield* credentials.create({
-            integrationID: Integration.ID.make("darkmatter"),
+            integrationID: Integration.ID.make("opencode"),
             value: Credential.Key.make({
               type: "key",
               key: "secret",
@@ -216,12 +216,12 @@ describe("Apt5Plugin", () => {
           const provider = required(
             yield* eventually(
               catalog.provider.get(ProviderV2.ID.make("remote")),
-              (item) => item?.integrationID === Integration.ID.make("darkmatter"),
+              (item) => item?.integrationID === Integration.ID.make("opencode"),
             ),
           )
           expect(provider).toMatchObject({
             name: "Remote",
-            integrationID: "darkmatter",
+            integrationID: "opencode",
             api: {
               type: "aisdk",
               package: "@ai-sdk/openai-compatible",
@@ -263,7 +263,7 @@ describe("Apt5Plugin", () => {
         const catalog = yield* Catalog.Service
         yield* catalog.transform((catalog) => {
           const provider = ProviderV2.Info.make({
-            ...ProviderV2.Info.empty(ProviderV2.ID.apt5),
+            ...ProviderV2.Info.empty(ProviderV2.ID.opencode),
             api: { type: "aisdk", package: "test-provider" },
           })
           const model = ModelV2.Info.make({
@@ -277,8 +277,8 @@ describe("Apt5Plugin", () => {
           })
         })
         yield* addPlugin()
-        expect(required(yield* catalog.provider.get(ProviderV2.ID.apt5)).request.body.apiKey).toBe("public")
-        expect(required(yield* catalog.model.get(ProviderV2.ID.apt5, ModelV2.ID.make("paid"))).enabled).toBe(false)
+        expect(required(yield* catalog.provider.get(ProviderV2.ID.opencode)).request.body.apiKey).toBe("public")
+        expect(required(yield* catalog.model.get(ProviderV2.ID.opencode, ModelV2.ID.make("paid"))).enabled).toBe(false)
       }),
     ),
   )
@@ -289,7 +289,7 @@ describe("Apt5Plugin", () => {
         const catalog = yield* Catalog.Service
         yield* catalog.transform((catalog) => {
           const provider = ProviderV2.Info.make({
-            ...ProviderV2.Info.empty(ProviderV2.ID.apt5),
+            ...ProviderV2.Info.empty(ProviderV2.ID.opencode),
             api: { type: "aisdk", package: "test-provider" },
           })
           const model = ModelV2.Info.make({
@@ -303,8 +303,8 @@ describe("Apt5Plugin", () => {
           })
         })
         yield* addPlugin()
-        expect(required(yield* catalog.provider.get(ProviderV2.ID.apt5)).request.body.apiKey).toBe("public")
-        expect(required(yield* catalog.model.get(ProviderV2.ID.apt5, ModelV2.ID.make("free"))).enabled).toBe(true)
+        expect(required(yield* catalog.provider.get(ProviderV2.ID.opencode)).request.body.apiKey).toBe("public")
+        expect(required(yield* catalog.model.get(ProviderV2.ID.opencode, ModelV2.ID.make("free"))).enabled).toBe(true)
       }),
     ),
   )
@@ -315,7 +315,7 @@ describe("Apt5Plugin", () => {
         const catalog = yield* Catalog.Service
         yield* catalog.transform((catalog) => {
           const provider = ProviderV2.Info.make({
-            ...ProviderV2.Info.empty(ProviderV2.ID.apt5),
+            ...ProviderV2.Info.empty(ProviderV2.ID.opencode),
             api: { type: "aisdk", package: "test-provider" },
           })
           const model = ModelV2.Info.make({
@@ -329,8 +329,8 @@ describe("Apt5Plugin", () => {
           })
         })
         yield* addPlugin()
-        expect(required(yield* catalog.provider.get(ProviderV2.ID.apt5)).request.body.apiKey).toBe("public")
-        expect(required(yield* catalog.model.get(ProviderV2.ID.apt5, ModelV2.ID.make("output-only"))).enabled).toBe(
+        expect(required(yield* catalog.provider.get(ProviderV2.ID.opencode)).request.body.apiKey).toBe("public")
+        expect(required(yield* catalog.model.get(ProviderV2.ID.opencode, ModelV2.ID.make("output-only"))).enabled).toBe(
           true,
         )
       }),
@@ -343,7 +343,7 @@ describe("Apt5Plugin", () => {
         const catalog = yield* Catalog.Service
         yield* catalog.transform((catalog) => {
           const provider = ProviderV2.Info.make({
-            ...ProviderV2.Info.empty(ProviderV2.ID.apt5),
+            ...ProviderV2.Info.empty(ProviderV2.ID.opencode),
             api: { type: "aisdk", package: "test-provider" },
           })
           const model = ModelV2.Info.make({
@@ -357,8 +357,8 @@ describe("Apt5Plugin", () => {
           })
         })
         yield* addPlugin()
-        expect(required(yield* catalog.provider.get(ProviderV2.ID.apt5)).request.body.apiKey).toBeUndefined()
-        expect(required(yield* catalog.model.get(ProviderV2.ID.apt5, ModelV2.ID.make("paid"))).enabled).toBe(true)
+        expect(required(yield* catalog.provider.get(ProviderV2.ID.opencode)).request.body.apiKey).toBeUndefined()
+        expect(required(yield* catalog.model.get(ProviderV2.ID.opencode, ModelV2.ID.make("paid"))).enabled).toBe(true)
       }),
     ),
   )
@@ -370,13 +370,13 @@ describe("Apt5Plugin", () => {
         const integrations = yield* Integration.Service
         yield* integrations.transform((editor) => {
           editor.method.update({
-            integrationID: Integration.ID.make("darkmatter"),
+            integrationID: Integration.ID.make("opencode"),
             method: { type: "env", names: ["CUSTOM_APT5_API_KEY"] },
           })
         })
         yield* catalog.transform((catalog) => {
           const provider = ProviderV2.Info.make({
-            ...ProviderV2.Info.empty(ProviderV2.ID.apt5),
+            ...ProviderV2.Info.empty(ProviderV2.ID.opencode),
             api: { type: "aisdk", package: "test-provider" },
           })
           const model = ModelV2.Info.make({
@@ -390,8 +390,8 @@ describe("Apt5Plugin", () => {
           })
         })
         yield* addPlugin()
-        expect(required(yield* catalog.provider.get(ProviderV2.ID.apt5)).request.body.apiKey).toBeUndefined()
-        expect(required(yield* catalog.model.get(ProviderV2.ID.apt5, ModelV2.ID.make("paid"))).enabled).toBe(true)
+        expect(required(yield* catalog.provider.get(ProviderV2.ID.opencode)).request.body.apiKey).toBeUndefined()
+        expect(required(yield* catalog.model.get(ProviderV2.ID.opencode, ModelV2.ID.make("paid"))).enabled).toBe(true)
       }),
     ),
   )
@@ -402,7 +402,7 @@ describe("Apt5Plugin", () => {
         const catalog = yield* Catalog.Service
         yield* catalog.transform((catalog) => {
           const provider = ProviderV2.Info.make({
-            ...ProviderV2.Info.empty(ProviderV2.ID.apt5),
+            ...ProviderV2.Info.empty(ProviderV2.ID.opencode),
             api: { type: "aisdk", package: "test-provider" },
             request: {
               headers: {},
@@ -422,8 +422,8 @@ describe("Apt5Plugin", () => {
           })
         })
         yield* addPlugin()
-        expect(required(yield* catalog.provider.get(ProviderV2.ID.apt5)).request.body.apiKey).toBe("configured")
-        expect(required(yield* catalog.model.get(ProviderV2.ID.apt5, ModelV2.ID.make("paid"))).enabled).toBe(true)
+        expect(required(yield* catalog.provider.get(ProviderV2.ID.opencode)).request.body.apiKey).toBe("configured")
+        expect(required(yield* catalog.model.get(ProviderV2.ID.opencode, ModelV2.ID.make("paid"))).enabled).toBe(true)
       }),
     ),
   )
@@ -457,7 +457,7 @@ describe("Apt5Plugin", () => {
   it.effect("prefers gpt-5-nano as the opencode small model", () =>
     Effect.gen(function* () {
       const catalog = yield* Catalog.Service
-      const providerID = ProviderV2.ID.apt5
+      const providerID = ProviderV2.ID.opencode
 
       yield* catalog.transform((catalog) => {
         catalog.provider.update(providerID, () => {})

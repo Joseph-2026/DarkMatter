@@ -36,7 +36,7 @@ const Org = Schema.Struct({ id: Schema.String, name: Schema.String })
 
 function oauth(http: HttpClient.HttpClient) {
   return {
-    integrationID: Integration.ID.make("darkmatter"),
+    integrationID: Integration.ID.make("opencode"),
     method: {
       id: methodID,
       type: "oauth",
@@ -84,7 +84,7 @@ function oauth(http: HttpClient.HttpClient) {
 }
 
 export const Apt5Plugin = define<HttpClient.HttpClient | EventV2.Service | Scope.Scope>({
-  id: "darkmatter",
+  id: "opencode",
   effect: Effect.fn(function* (ctx) {
     const events = yield* EventV2.Service
     const http = yield* HttpClient.HttpClient
@@ -171,7 +171,7 @@ export const Apt5Plugin = define<HttpClient.HttpClient | EventV2.Service | Scope
         }
       }
 
-      const item = catalog.provider.get(ProviderV2.ID.apt5)
+      const item = catalog.provider.get(ProviderV2.ID.opencode)
       if (!item) return
       const hasKey = Boolean(process.env.APT5_API_KEY || connected || item.provider.request.body.apiKey)
       catalog.provider.update(item.provider.id, (provider) => {

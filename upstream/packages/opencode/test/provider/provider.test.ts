@@ -1193,7 +1193,7 @@ it.instance("ModelNotFoundError suggests catalog models for unloaded providers",
   Effect.gen(function* () {
     yield* remove("APT5_API_KEY")
     const error = yield* Provider.use
-      .getModel(ProviderV2.ID.apt5, ModelV2.ID.make("claude-haiku-fake-model"))
+      .getModel(ProviderV2.ID.opencode, ModelV2.ID.make("claude-haiku-fake-model"))
       .pipe(Effect.flip)
     if (!Provider.ModelNotFoundError.isInstance(error)) throw error
     expect(error.suggestions ?? []).toContain("claude-haiku-4-5")
