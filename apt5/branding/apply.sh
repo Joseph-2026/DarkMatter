@@ -34,7 +34,7 @@ for r in "${RULES[@]}"; do
   total_files=$((total_files + n))
   if [[ "$MODE" == "--apply" ]]; then
     echo "## APPLY $name : $search -> $replace" >> "$LOG"
-    grep -rlF "${EXCLUDES[@]}" "$search" "$TARGET" 2>/dev/null | while read -r f; do
+    { grep -rlF "${EXCLUDES[@]}" "$search" "$TARGET" 2>/dev/null || true; } | while read -r f; do
       echo "$f" >> "$LOG"
       # perl fixed-string replace (handles slashes safely)
       SEARCH="$search" REPLACE="$replace" perl -pi -e 's/\Q$ENV{SEARCH}\E/$ENV{REPLACE}/g' "$f"
