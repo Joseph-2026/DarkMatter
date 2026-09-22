@@ -63,6 +63,11 @@ export function experimentalWebSocketsEnabled(input: { enabled: boolean; channel
   return input.enabled || ["local", "dev", "beta"].includes(input.channel ?? InstallationChannel)
 }
 
+// External auth plugins are published against upstream @opencode-ai/plugin.
+// Their runtime shape is identical to workspace @apt5/plugin (rename-only fork),
+// so this adapter bridges the module identity without changing behavior.
+const externalPlugin = (p: unknown) => p as PluginInstance
+
 // Built-in plugins that are directly imported (not installed from npm)
 function internalPlugins(flags: RuntimeFlags.Info): PluginInstance[] {
   return [
@@ -73,8 +78,8 @@ function internalPlugins(flags: RuntimeFlags.Info): PluginInstance[] {
       }),
     CopilotAuthPlugin,
     ModalPlugin,
-    GitlabAuthPlugin,
-    PoeAuthPlugin,
+    externalPlugin(GitlabAuthPlugin),
+    externalPlugin(PoeAuthPlugin),
     CloudflareWorkersAuthPlugin,
     CloudflareAIGatewayAuthPlugin,
     AzureAuthPlugin,
