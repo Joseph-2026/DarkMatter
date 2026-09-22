@@ -71,6 +71,7 @@ const names: Record<string, string> = {
   onedarkpro: "One Dark Pro",
   opencode: "OpenCode",
   orng: "Orng",
+  "darkmatter": "Dark Matter",
   "osaka-jade": "Osaka Jade",
   palenight: "Palenight",
   rosepine: "Rose Pine",
@@ -177,7 +178,7 @@ export const { use: useTheme, provider: ThemeProvider } = createSimpleContext({
     defaultTheme?: string
     onThemeApplied?: (theme: DesktopTheme, mode: "light" | "dark", scheme: ColorScheme) => void
   }) => {
-    const themeId = normalize(read(STORAGE_KEYS.THEME_ID) ?? props.defaultTheme) ?? "oc-2"
+    const themeId = normalize(read(STORAGE_KEYS.THEME_ID) ?? props.defaultTheme) ?? "darkmatter"
     const colorScheme = (read(STORAGE_KEYS.COLOR_SCHEME) as ColorScheme | null) ?? "system"
     const mode = colorScheme === "system" ? getSystemMode() : colorScheme
     const [store, setStore] = createStore({
