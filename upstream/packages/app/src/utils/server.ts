@@ -1,4 +1,4 @@
-import { createOpencodeClient } from "@apt5/sdk/v2/client"
+import { createApt5Client } from "@apt5/sdk/v2/client"
 import { OpenCode, type OpenCodeClient } from "@apt5/client/promise"
 import type { ServerConnection } from "@/context/server"
 import { decode64 } from "@/utils/base64"
@@ -21,7 +21,7 @@ export function authFromToken(token: string | null) {
 export function createSdkForServer({
   server,
   ...config
-}: Omit<NonNullable<Parameters<typeof createOpencodeClient>[0]>, "baseUrl"> & {
+}: Omit<NonNullable<Parameters<typeof createApt5Client>[0]>, "baseUrl"> & {
   server: ServerConnection.HttpBase
 }) {
   const auth = (() => {
@@ -31,7 +31,7 @@ export function createSdkForServer({
     }
   })()
 
-  return createOpencodeClient({
+  return createApt5Client({
     ...config,
     headers: {
       ...(config.headers instanceof Headers ? Object.fromEntries(config.headers.entries()) : config.headers),

@@ -7,7 +7,7 @@ import {
   wslTerminalArgs,
 } from "./policy"
 import {
-  expectOpencodeVersion,
+  expectApt5Version,
   pendingRestartAfterWslInstall,
   pollWslHealth,
   wslServerIdsToStartOnInitialize,
@@ -15,7 +15,7 @@ import {
 import { createWslServersController, type WslServerConfig } from "./servers"
 
 let persistedServers: WslServerConfig[] = []
-let releaseOpencodeResolve: (() => void) | undefined
+let releaseApt5Resolve: (() => void) | undefined
 
 test("starts every configured WSL server on initialization", () => {
   expect(
@@ -27,8 +27,8 @@ test("starts every configured WSL server on initialization", () => {
 })
 
 test("rejects an update that did not install the desktop version", () => {
-  expect(() => expectOpencodeVersion("1.16.2", "1.16.2")).not.toThrow()
-  expect(() => expectOpencodeVersion("1.14.35", "1.16.2")).toThrow(
+  expect(() => expectApt5Version("1.16.2", "1.16.2")).not.toThrow()
+  expect(() => expectApt5Version("1.14.35", "1.16.2")).toThrow(
     "OpenCode update finished but Debian still reports 1.14.35; expected 1.16.2",
   )
 })
@@ -64,7 +64,7 @@ test("clears cached distro probes when removing a WSL server", () => {
       },
       "Debian",
     ),
-  ).toEqual({ distroProbes: {}, opencodeChecks: {} })
+  ).toEqual({ distroProbes: {}, apt5Checks: {} })
 })
 
 test("opens terminals for distro names containing spaces", () => {
@@ -106,7 +106,7 @@ test("derives a required Windows restart from the post-install runtime probe", (
 
 test("ignores stale background OpenCode checks after removing a WSL server", async () => {
   persistedServers = []
-  releaseOpencodeResolve = undefined
+  releaseApt5Resolve = undefined
   const controller = createWslServersController(
     "1.16.2",
     async () => ({
@@ -122,9 +122,9 @@ test("ignores stale background OpenCode checks after removing a WSL server", asy
   )
 
   await controller.addServer("Debian")
-  await waitFor(() => !!releaseOpencodeResolve)
+  await waitFor(() => !!releaseApt5Resolve)
   await controller.removeServer("wsl:Debian")
-  releaseOpencodeResolve?.()
+  releaseApt5Resolve?.()
   await new Promise((resolve) => setTimeout(resolve, 0))
 
   expect(controller.getState().servers).toEqual([])
@@ -133,7 +133,7 @@ test("ignores stale background OpenCode checks after removing a WSL server", asy
 
 test("ignores stale startup OpenCode checks after removing a WSL server", async () => {
   persistedServers = [{ id: "wsl:Debian", distro: "Debian" }]
-  releaseOpencodeResolve = undefined
+  releaseApt5Resolve = undefined
   const controller = createWslServersController(
     "1.16.2",
     async () => new Promise<never>(() => undefined),
@@ -141,9 +141,9 @@ test("ignores stale startup OpenCode checks after removing a WSL server", async 
   )
 
   await controller.initialize()
-  await waitFor(() => !!releaseOpencodeResolve)
+  await waitFor(() => !!releaseApt5Resolve)
   await controller.removeServer("wsl:Debian")
-  releaseOpencodeResolve?.()
+  releaseApt5Resolve?.()
   await new Promise((resolve) => setTimeout(resolve, 0))
 
   expect(controller.getState().servers).toEqual([])
@@ -223,7 +223,7 @@ function testControllerOptions() {
     readCommandVersion: async () => "1.16.2",
     resolveOpencode: async () => {
       await new Promise<void>((resolve) => {
-        releaseOpencodeResolve = resolve
+        releaseApt5Resolve = resolve
       })
       return "/home/me/.apt5/bin/opencode"
     },

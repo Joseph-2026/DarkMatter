@@ -15,7 +15,7 @@ import { ServerConnection } from "@/context/server"
 import { showToast } from "@/utils/toast"
 import { DialogAddWslServer } from "./dialog-add-server"
 import { useWslServers } from "./context"
-import { wslOpencodeAction, wslRuntimeRetryable } from "./settings-model"
+import { wslApt5Action, wslRuntimeRetryable } from "./settings-model"
 
 type Controller = ReturnType<typeof useServerManagementController>
 
@@ -95,7 +95,7 @@ export function WslServerSettings(props: {
         {(item) => {
           const key = ServerConnection.Key.make(item.config.id)
           const check = () => wsl.data?.apt5Checks[item.config.distro]
-          const opencodeAction = () => wslOpencodeAction(check())
+          const apt5Action = () => wslApt5Action(check())
           const busy = () => wsl.data?.job?.kind === "install-opencode" && wsl.data.job.distro === item.config.distro
           return (
             <div class="settings-v2-servers-row">
@@ -117,7 +117,7 @@ export function WslServerSettings(props: {
                 <Show when={props.controller.canDefault() && props.controller.defaultKey() === key}>
                   <Tag>{language.t("dialog.server.status.default")}</Tag>
                 </Show>
-                <Show when={opencodeAction()}>
+                <Show when={apt5Action()}>
                   {(label) => (
                     <ButtonV2
                       size="small"

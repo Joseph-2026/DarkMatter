@@ -6,7 +6,7 @@ import {
   autoProbePlan,
   createProbeFailureGate,
   runAddableProbePlan,
-  wslOpencodeAction,
+  wslApt5Action,
   wslRuntimeRetryable,
 } from "./settings-model"
 import type { WslServersState } from "./types"
@@ -19,7 +19,7 @@ function readyState(input: Partial<WslServersState> = {}): WslServersState {
     installed: [],
     online: [],
     distroProbes: {},
-    opencodeChecks: {},
+    apt5Checks: {},
     pendingRestart: false,
     servers: [],
     job: null,
@@ -38,9 +38,9 @@ describe("WSL server settings presentation", () => {
   })
 
   test("offers install and update only when OpenCode needs attention", () => {
-    expect(wslOpencodeAction(undefined)).toBeUndefined()
+    expect(wslApt5Action(undefined)).toBeUndefined()
     expect(
-      wslOpencodeAction({
+      wslApt5Action({
         distro: "Debian",
         resolvedPath: null,
         version: null,
@@ -50,7 +50,7 @@ describe("WSL server settings presentation", () => {
       }),
     ).toBe("wsl.onboarding.installOpencode")
     expect(
-      wslOpencodeAction({
+      wslApt5Action({
         distro: "Debian",
         resolvedPath: "/usr/local/bin/opencode",
         version: "1.2.2",
@@ -60,7 +60,7 @@ describe("WSL server settings presentation", () => {
       }),
     ).toBe("wsl.onboarding.updateOpencode")
     expect(
-      wslOpencodeAction({
+      wslApt5Action({
         distro: "Debian",
         resolvedPath: "/usr/local/bin/opencode",
         version: "1.2.3",
@@ -188,7 +188,7 @@ describe("WSL server settings presentation", () => {
         distroProbes: {
           Debian: { name: "Debian", canExecute: true, hasBash: true, hasCurl: true, error: null },
         },
-        opencodeChecks: {
+        apt5Checks: {
           Debian: {
             distro: "Debian",
             resolvedPath: "/home/me/.apt5/bin/opencode",

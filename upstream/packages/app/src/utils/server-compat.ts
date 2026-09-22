@@ -1,6 +1,6 @@
 import type { ServerApi } from "./server"
 import type { ServerProtocol } from "./server-protocol"
-import type { AgentPartInput, FilePartInput, OpencodeClient, Session, TextPartInput } from "@apt5/sdk/v2/client"
+import type { AgentPartInput, FilePartInput, Apt5Client, Session, TextPartInput } from "@apt5/sdk/v2/client"
 import type {
   Project,
   ProjectCurrent,
@@ -16,7 +16,7 @@ import type {
   SessionShellOutput,
 } from "@apt5/client/promise"
 
-type LegacyClient = OpencodeClient
+type LegacyClient = Apt5Client
 type LegacyFor = (directory?: string) => LegacyClient
 type CompatibleSessionApi = Omit<
   SessionApi,

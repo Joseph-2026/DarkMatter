@@ -3,7 +3,7 @@ import type {
   WslInstalledDistro,
   WslJob,
   WslOnlineDistro,
-  WslOpencodeCheck,
+  WslApt5Check,
   WslRuntimeCheck,
   WslServerConfig,
   WslServerItem,
@@ -13,7 +13,7 @@ import type {
 } from "../../preload/types"
 import { WSL_SERVERS_KEY } from "../store-keys"
 import { getStore } from "../store"
-import { expectOpencodeVersion, pendingRestartAfterWslInstall, wslServerIdsToStartOnInitialize } from "./startup"
+import { expectApt5Version, pendingRestartAfterWslInstall, wslServerIdsToStartOnInitialize } from "./startup"
 import { clearWslDistroState, wslServerIdToRestart } from "./policy"
 import { nativeT } from "../native-translations"
 import {
@@ -122,9 +122,9 @@ export function createWslServersController(
     updateServer(id, (item) => ({ ...item, runtime }))
   }
 
-  const setOpencodeCheck = (distro: string, check: WslOpencodeCheck) => {
+  const setApt5Check = (distro: string, check: WslApt5Check) => {
     setState({
-      opencodeChecks: {
+      apt5Checks: {
         ...state.apt5Checks,
         [distro]: check,
       },
@@ -136,11 +136,11 @@ export function createWslServersController(
     const version = resolved
       ? await (options?.readCommandVersion ?? readWslCommandVersion)(resolved, distro, opts)
       : null
-    return opencodeCheck(distro, resolved, version, appVersion)
+    return apt5Check(distro, resolved, version, appVersion)
   }
 
-  const refreshOpencodeCheck = async (distro: string, opts?: { signal?: AbortSignal }) => {
-    setOpencodeCheck(distro, await checkOpencode(distro, opts))
+  const refreshApt5Check = async (distro: string, opts?: { signal?: AbortSignal }) => {
+    setApt5Check(distro, await checkOpencode(distro, opts))
   }
 
   const probeAddableDistros = async (distros: string[], opts?: { signal?: AbortSignal }) => {
@@ -154,14 +154,14 @@ export function createWslServersController(
       setState({ distroProbes: { ...state.distroProbes, ...Object.fromEntries(distroProbes) } })
     }
 
-    const opencodeChecks = await Promise.all(
+    const apt5Checks = await Promise.all(
       unique
         .filter((distro) => distroProbeReady(state.distroProbes[distro]))
         .filter((distro) => !state.apt5Checks[distro])
         .map(async (distro) => [distro, await checkOpencode(distro, opts)] as const),
     )
-    if (opencodeChecks.length) {
-      setState({ opencodeChecks: { ...state.apt5Checks, ...Object.fromEntries(opencodeChecks) } })
+    if (apt5Checks.length) {
+      setState({ apt5Checks: { ...state.apt5Checks, ...Object.fromEntries(apt5Checks) } })
     }
   }
 
@@ -169,11 +169,11 @@ export function createWslServersController(
     return state.servers.some((item) => item.config.id === id && item.config.distro === distro)
   }
 
-  const refreshOpencodeCheckBackground = (id: string, distro: string) => {
+  const refreshApt5CheckBackground = (id: string, distro: string) => {
     void checkOpencode(distro)
       .then((check) => {
         if (!hasServer(id, distro)) return
-        setOpencodeCheck(distro, check)
+        setApt5Check(distro, check)
       })
       .catch((error) => {
         const message = error instanceof Error ? error.message : String(error)
@@ -181,13 +181,13 @@ export function createWslServersController(
       })
   }
 
-  const refreshOpencodeChecks = async () => {
+  const refreshApt5Checks = async () => {
     await Promise.all(
       state.servers.map((item) =>
         checkOpencode(item.config.distro)
           .then((check) => {
             if (!hasServer(item.config.id, item.config.distro)) return
-            setOpencodeCheck(item.config.distro, check)
+            setApt5Check(item.config.distro, check)
           })
           .catch((error) => {
             const message = error instanceof Error ? error.message : String(error)
@@ -252,7 +252,7 @@ export function createWslServersController(
         setRuntime(id, { kind: "failed", message })
         logger?.error("wsl sidecar exited", { id, distro: item.config.distro, code, signal })
       })
-      refreshOpencodeCheckBackground(id, item.config.distro)
+      refreshApt5CheckBackground(id, item.config.distro)
       logger?.log("wsl sidecar ready", { id, distro: item.config.distro, url: sidecar.url })
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error)
@@ -304,7 +304,7 @@ export function createWslServersController(
 
     async initialize() {
       refreshFromStore()
-      void refreshOpencodeChecks()
+      void refreshApt5Checks()
       for (const id of wslServerIdsToStartOnInitialize(state.servers.map((item) => item.config))) void startServer(id)
     },
 
@@ -366,8 +366,8 @@ export function createWslServersController(
         if (result.code !== 0) {
           throw new Error(summarize(result.stderr || result.stdout) || nativeT("desktop.wsl.error.installOpencode"))
         }
-        await refreshOpencodeCheck(name, { signal: abort.signal })
-        expectOpencodeVersion(state.apt5Checks[name]?.version ?? null, appVersion, name)
+        await refreshApt5Check(name, { signal: abort.signal })
+        expectApt5Version(state.apt5Checks[name]?.version ?? null, appVersion, name)
         const id = wslServerIdToRestart(state.servers, name)
         if (id) await startServer(id)
       })
@@ -428,7 +428,7 @@ function initialState(): WslServersState {
     installed: [],
     online: [],
     distroProbes: {},
-    opencodeChecks: {},
+    apt5Checks: {},
     pendingRestart: false,
     servers: [],
     job: null,
@@ -464,12 +464,12 @@ function normalizePersistedServer(value: unknown): WslServerConfig[] {
   ]
 }
 
-function opencodeCheck(
+function apt5Check(
   distro: string,
   resolvedPath: string | null,
   version: string | null,
   expectedVersion: string,
-): WslOpencodeCheck {
+): WslApt5Check {
   if (!resolvedPath) {
     return {
       distro,
@@ -514,7 +514,7 @@ export type {
   WslOnlineDistro,
   WslRuntimeCheck,
   WslDistroProbe,
-  WslOpencodeCheck,
+  WslApt5Check,
   WslServerConfig,
   WslServerItem,
   WslServerRuntime,

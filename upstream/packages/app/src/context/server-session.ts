@@ -3,7 +3,7 @@ import { retry } from "@apt5/core/util/retry"
 import type { OpenCodeEvent, SessionApi, SessionMessageInfo } from "@apt5/client/promise"
 import type {
   Message,
-  OpencodeClient,
+  Apt5Client,
   Part,
   PermissionRequest,
   QuestionRequest,
@@ -186,7 +186,7 @@ function reconcileFetched<T extends { id: string }>(
 type ServerSessionOptions = { retry?: typeof retry; protocol?: Promise<"v1" | "v2"> }
 
 export function createServerSession(
-  client: OpencodeClient,
+  client: Apt5Client,
   sessionApiOrOptions?: SessionApi | ServerSessionOptions,
   messageApi?: MessageApi,
   currentOptions?: ServerSessionOptions,

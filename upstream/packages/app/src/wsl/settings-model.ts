@@ -2,7 +2,7 @@ import fuzzysort from "fuzzysort"
 import type {
   WslInstalledDistro,
   WslOnlineDistro,
-  WslOpencodeCheck,
+  WslApt5Check,
   WslServersPlatform,
   WslServerRuntime,
   WslServersState,
@@ -51,7 +51,7 @@ function isHiddenDistro(name: string) {
 export const wslRuntimeRetryable = (runtime: WslServerRuntime) =>
   runtime.kind === "failed" || runtime.kind === "stopped"
 
-export function wslOpencodeAction(check?: WslOpencodeCheck) {
+export function wslApt5Action(check?: WslApt5Check) {
   if (!check) return
   if (!check.resolvedPath) return "wsl.onboarding.installOpencode"
   if (check.matchesDesktop === false) return "wsl.onboarding.updateOpencode"
@@ -80,7 +80,7 @@ export function addServerViewModel(input: {
   const existingServerDistros = new Set((state?.servers ?? []).map((item) => item.config.distro))
   const addableInstalledDistros = visibleInstalledDistros.filter((item) => !existingServerDistros.has(item.name))
   const selectedDistro = addServerSelectedDistro(input.selectedDistro, visibleInstalledDistros, addableInstalledDistros)
-  const opencodeCheck = selectedDistro ? (state?.apt5Checks[selectedDistro] ?? null) : null
+  const apt5Check = selectedDistro ? (state?.apt5Checks[selectedDistro] ?? null) : null
   const installableDistros = addServerInstallableDistros(visibleInstalledDistros, visibleOnlineDistros)
   const filteredInstallableDistros = addServerFilteredInstallableDistros(installableDistros, input.catalogSearch)
   const catalogTarget = addServerCatalogTarget(input.catalogTarget, filteredInstallableDistros)
@@ -93,7 +93,7 @@ export function addServerViewModel(input: {
     visibleOnlineDistros,
     addableInstalledDistros,
     selectedDistro,
-    opencodeCheck,
+    apt5Check,
     wslReady: !!state?.runtime?.available && !state?.pendingRestart,
     distroStatuses: Object.fromEntries(
       addableInstalledDistros.flatMap((item) => {
@@ -105,7 +105,7 @@ export function addServerViewModel(input: {
     primaryButton: addServerPrimaryButton({
       state,
       selectedDistro,
-      opencodeCheck,
+      apt5Check,
       adding: input.adding,
       probingAddable: input.probingAddable,
     }),
@@ -185,7 +185,7 @@ function checkingStatus(): DistroStatus {
 function addServerPrimaryButton(input: {
   state: WslServersState | undefined
   selectedDistro: string | null
-  opencodeCheck: WslOpencodeCheck | null
+  apt5Check: WslApt5Check | null
   adding: boolean
   probingAddable: boolean
 }): AddServerPrimaryButton {
@@ -210,7 +210,7 @@ function addServerPrimaryButton(input: {
       width: null,
     }
   }
-  if (!addServerOpencodeReady(input.apt5Check)) {
+  if (!addServerApt5Ready(input.apt5Check)) {
     const update = !!input.apt5Check?.resolvedPath && input.apt5Check.matchesDesktop === false
     return {
       variant: "neutral",
@@ -235,7 +235,7 @@ function addServerPrimaryButton(input: {
   }
 }
 
-function addServerOpencodeReady(check: WslOpencodeCheck | null) {
+function addServerApt5Ready(check: WslApt5Check | null) {
   return !!check?.resolvedPath && check.matchesDesktop !== false && !check.error
 }
 
