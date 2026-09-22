@@ -1,11 +1,11 @@
-import { Button } from "@opencode-ai/ui/button"
-import { useDialog } from "@opencode-ai/ui/context/dialog"
-import { Dialog } from "@opencode-ai/ui/dialog"
-import { DropdownMenu } from "@opencode-ai/ui/dropdown-menu"
-import { Icon } from "@opencode-ai/ui/icon"
-import { IconButton } from "@opencode-ai/ui/icon-button"
-import { List } from "@opencode-ai/ui/list"
-import { TextField } from "@opencode-ai/ui/text-field"
+import { Button } from "@apt5/ui/button"
+import { useDialog } from "@apt5/ui/context/dialog"
+import { Dialog } from "@apt5/ui/dialog"
+import { DropdownMenu } from "@apt5/ui/dropdown-menu"
+import { Icon } from "@apt5/ui/icon"
+import { IconButton } from "@apt5/ui/icon-button"
+import { List } from "@apt5/ui/list"
+import { TextField } from "@apt5/ui/text-field"
 import { useMutation } from "@tanstack/solid-query"
 import { showToast } from "@/utils/toast"
 import { useNavigate } from "@solidjs/router"
@@ -21,7 +21,7 @@ import { type ServerHealth, useCheckServerHealth } from "@/utils/server-health"
 import { useSettings } from "@/context/settings"
 import { useTabs } from "@/context/tabs"
 
-const DEFAULT_USERNAME = "opencode"
+const DEFAULT_USERNAME = "darkmatter"
 
 interface ServerFormProps {
   value: string

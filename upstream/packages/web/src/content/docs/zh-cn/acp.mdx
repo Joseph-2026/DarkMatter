@@ -34,7 +34,7 @@ ACP 是一个开放协议，用于标准化代码编辑器与 AI 编码代理之
   "agent_servers": {
     "OpenCode": {
       "type": "custom",
-      "command": "opencode",
+      "command": "darkmatter",
       "args": ["acp"]
     }
   }
@@ -56,7 +56,7 @@ ACP 是一个开放协议，用于标准化代码编辑器与 AI 编码代理之
             "custom": {
               "name": "OpenCode",
               "command": {
-                "command": "opencode",
+                "command": "darkmatter",
                 "args": ["acp"]
               }
             }
@@ -96,8 +96,8 @@ ACP 是一个开放协议，用于标准化代码编辑器与 AI 编码代理之
 ```lua
 {
   acp_providers = {
-    ["opencode"] = {
-      command = "opencode",
+    ["darkmatter"] = {
+      command = "darkmatter",
       args = { "acp" }
     }
   }
@@ -109,11 +109,11 @@ ACP 是一个开放协议，用于标准化代码编辑器与 AI 编码代理之
 ```lua {6-8}
 {
   acp_providers = {
-    ["opencode"] = {
-      command = "opencode",
+    ["darkmatter"] = {
+      command = "darkmatter",
       args = { "acp" },
       env = {
-        OPENCODE_API_KEY = os.getenv("OPENCODE_API_KEY")
+        APT5_API_KEY = os.getenv("APT5_API_KEY")
       }
     }
   }
@@ -131,7 +131,7 @@ require("codecompanion").setup({
   interactions = {
     chat = {
       adapter = {
-        name = "opencode",
+        name = "darkmatter",
         model = "claude-sonnet-4",
       },
     },
@@ -141,7 +141,7 @@ require("codecompanion").setup({
 
 此配置将 CodeCompanion 设置为使用 OpenCode 作为聊天的 ACP 代理。
 
-如果需要传递环境变量（如 `OPENCODE_API_KEY`），请参阅 CodeCompanion.nvim 文档中的[配置适配器：环境变量](https://codecompanion.olimorris.dev/getting-started#setting-an-api-key)了解详细信息。
+如果需要传递环境变量（如 `APT5_API_KEY`），请参阅 CodeCompanion.nvim 文档中的[配置适配器：环境变量](https://codecompanion.olimorris.dev/getting-started#setting-an-api-key)了解详细信息。
 
 ## 支持
 

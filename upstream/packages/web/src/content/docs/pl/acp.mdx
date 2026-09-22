@@ -36,7 +36,7 @@ Aby zamiast tego użyć niestandardowego pliku wykonywalnego OpenCode, dodaj go 
   "agent_servers": {
     "OpenCode": {
       "type": "custom",
-      "command": "opencode",
+      "command": "darkmatter",
       "args": ["acp"]
     }
   }
@@ -58,7 +58,7 @@ Możesz także przypisać skrót klawiszowy, edytując `keymap.json`:
             "custom": {
               "name": "OpenCode",
               "command": {
-                "command": "opencode",
+                "command": "darkmatter",
                 "args": ["acp"]
               }
             }
@@ -98,8 +98,8 @@ Dodaj do konfiguracji [Avante.nvim](https://github.com/yetone/avante.nvim):
 ```lua
 {
   acp_providers = {
-    ["opencode"] = {
-      command = "opencode",
+    ["darkmatter"] = {
+      command = "darkmatter",
       args = { "acp" }
     }
   }
@@ -111,11 +111,11 @@ Jeśli potrzebujesz przekazać klucz API:
 ```lua {6-8}
 {
   acp_providers = {
-    ["opencode"] = {
-      command = "opencode",
+    ["darkmatter"] = {
+      command = "darkmatter",
       args = { "acp" },
       env = {
-        OPENCODE_API_KEY = os.getenv("OPENCODE_API_KEY")
+        APT5_API_KEY = os.getenv("APT5_API_KEY")
       }
     }
   }
@@ -133,7 +133,7 @@ require("codecompanion").setup({
   interactions = {
     chat = {
       adapter = {
-        name = "opencode",
+        name = "darkmatter",
         model = "claude-sonnet-4",
       },
     },
@@ -143,7 +143,7 @@ require("codecompanion").setup({
 
 Ta konfiguracja sprawia, że CodeCompanion używa OpenCode jako agenta ACP do czatu.
 
-Jeśli wymagany jest `OPENCODE_API_KEY`, zapoznaj się z sekcją [Konfigurowanie adapterów: Zmienne środowiskowe](https://codecompanion.olimorris.dev/getting-started#setting-an-api-key) w dokumentacji CodeCompanion.nvim, aby uzyskać szczegółowe informacje.
+Jeśli wymagany jest `APT5_API_KEY`, zapoznaj się z sekcją [Konfigurowanie adapterów: Zmienne środowiskowe](https://codecompanion.olimorris.dev/getting-started#setting-an-api-key) w dokumentacji CodeCompanion.nvim, aby uzyskać szczegółowe informacje.
 
 ## Wsparcie
 

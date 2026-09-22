@@ -2,8 +2,8 @@ import { afterEach, expect } from "bun:test"
 import { existsSync } from "node:fs"
 import path from "node:path"
 import { pathToFileURL } from "node:url"
-import { LayerNode } from "@opencode-ai/core/effect/layer-node"
-import { CrossSpawnSpawner } from "@opencode-ai/core/cross-spawn-spawner"
+import { LayerNode } from "@apt5/core/effect/layer-node"
+import { CrossSpawnSpawner } from "@apt5/core/cross-spawn-spawner"
 import { Cause, Effect, Exit, Fiber } from "effect"
 import { bootstrap as cliBootstrap } from "../../src/cli/bootstrap"
 import { InstanceBootstrap } from "../../src/project/bootstrap"
@@ -52,7 +52,7 @@ const bootstrapFixture = Effect.gen(function* () {
     Bun.write(
       path.join(dir, "opencode.json"),
       JSON.stringify({
-        $schema: "https://opencode.ai/config.json",
+        $schema: "https://github.com/Joseph-2026/DarkMatter/config.json",
         plugin: [pathToFileURL(pluginFile).href],
       }),
     ),

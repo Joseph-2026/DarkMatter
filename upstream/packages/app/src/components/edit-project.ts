@@ -1,5 +1,5 @@
-import { getFilename } from "@opencode-ai/core/util/path"
-import { useDialog } from "@opencode-ai/ui/context/dialog"
+import { getFilename } from "@apt5/core/util/path"
+import { useDialog } from "@apt5/ui/context/dialog"
 import { useMutation } from "@tanstack/solid-query"
 import { normalizeProjectInfo } from "@/context/global-sync/utils"
 import { createMemo } from "solid-js"

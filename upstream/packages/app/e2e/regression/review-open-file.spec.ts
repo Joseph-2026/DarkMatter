@@ -1,4 +1,4 @@
-import { base64Encode } from "@opencode-ai/core/util/encode"
+import { base64Encode } from "@apt5/core/util/encode"
 import { expect, test } from "@playwright/test"
 import { mockOpenCodeServer } from "../utils/mock-server"
 import { expectSessionTitle } from "../utils/waits"
@@ -26,13 +26,13 @@ test("opens and searches project files inline", async ({ page }) => {
     provider: {
       all: [
         {
-          id: "opencode",
+          id: "darkmatter",
           name: "OpenCode",
           models: { test: { id: "test", name: "Test", limit: { context: 200_000 } } },
         },
       ],
-      connected: ["opencode"],
-      default: { providerID: "opencode", modelID: "test" },
+      connected: ["darkmatter"],
+      default: { providerID: "darkmatter", modelID: "test" },
     },
     sessions: [
       {

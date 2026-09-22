@@ -304,9 +304,9 @@ export const DESKTOP_NATIVE_ENGLISH = {
   "desktop.wsl.error.installDistro": "Failed to install distro: {{distro}}",
   "desktop.wsl.error.installOpencode": "OpenCode installation failed",
   "desktop.wsl.error.alreadyAdded": "{{distro}} is already added",
-  "desktop.wsl.error.opencodeMissing": "opencode is not installed in this distro",
-  "desktop.wsl.error.opencodeCannotRun": "opencode is installed but could not run",
-  "desktop.wsl.error.opencodeNotInstalled": "OpenCode is not installed in {{distro}}",
+  "desktop.wsl.error.apt5Missing": "opencode is not installed in this distro",
+  "desktop.wsl.error.apt5CannotRun": "opencode is installed but could not run",
+  "desktop.wsl.error.apt5NotInstalled": "OpenCode is not installed in {{distro}}",
   "desktop.wsl.error.updateVersion":
     "OpenCode update finished but {{distro}} still reports {{installed}}; expected {{expected}}",
   "desktop.wsl.error.noVersion": "no version",

@@ -13,9 +13,9 @@ description: استخدام ملف إعدادات OpenCode بصيغة JSON.
 
 ```jsonc title="opencode.jsonc"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   // إعدادات السمة
-  "theme": "opencode",
+  "theme": "darkmatter",
   "model": "anthropic/claude-sonnet-4-5",
   "autoupdate": true,
 }
@@ -34,7 +34,7 @@ description: استخدام ملف إعدادات OpenCode بصيغة JSON.
 
 تُدمَج ملفات الإعدادات معًا ولا تُستبدَل. يتم جمع الإعدادات من مواقع الإعدادات التالية. تتجاوز الإعدادات اللاحقة الإعدادات السابقة فقط عند تعارض المفاتيح. أما الإعدادات غير المتعارضة فتبقى محفوظة من جميع الملفات.
 
-على سبيل المثال، إذا كان الإعداد العام يضبط `theme: "opencode"` و`autoupdate: true`، وكان إعداد المشروع يضبط `model: "anthropic/claude-sonnet-4-5"`، فستتضمن الإعدادات النهائية الخيارات الثلاثة جميعها.
+على سبيل المثال، إذا كان الإعداد العام يضبط `theme: "darkmatter"` و`autoupdate: true`، وكان إعداد المشروع يضبط `model: "anthropic/claude-sonnet-4-5"`، فستتضمن الإعدادات النهائية الخيارات الثلاثة جميعها.
 
 ---
 
@@ -44,15 +44,15 @@ description: استخدام ملف إعدادات OpenCode بصيغة JSON.
 
 1. **الإعدادات البعيدة** (من `.well-known/opencode`) - الإعدادات الافتراضية على مستوى المؤسسة
 2. **الإعدادات العامة** (`~/.config/opencode/opencode.json`) - تفضيلات المستخدم
-3. **إعدادات مخصصة** (`OPENCODE_CONFIG` env var) - تجاوزات مخصصة
+3. **إعدادات مخصصة** (`APT5_CONFIG` env var) - تجاوزات مخصصة
 4. **إعدادات المشروع** (`opencode.json` داخل المشروع) - إعدادات خاصة بالمشروع
-5. **أدلة `.opencode`** - الوكلاء، الأوامر، الإضافات
-6. **إعدادات ضمنية** (`OPENCODE_CONFIG_CONTENT` env var) - تجاوزات وقت التشغيل
+5. **أدلة `.apt5`** - الوكلاء، الأوامر، الإضافات
+6. **إعدادات ضمنية** (`APT5_CONFIG_CONTENT` env var) - تجاوزات وقت التشغيل
 
 هذا يعني أن إعدادات المشروع يمكنها تجاوز الإعدادات العامة، وأن الإعدادات العامة يمكنها تجاوز الإعدادات الافتراضية البعيدة على مستوى المؤسسة.
 
 :::note
-يستخدم الدليلان `.opencode` و`~/.config/opencode` **أسماء جمع** للأدلة الفرعية: `agents/` و`commands/` و`modes/` و`plugins/` و`skills/` و`tools/` و`themes/`. كما تُدعَم أسماء المفرد (مثل `agent/`) للتوافق مع الإصدارات السابقة.
+يستخدم الدليلان `.apt5` و`~/.config/opencode` **أسماء جمع** للأدلة الفرعية: `agents/` و`commands/` و`modes/` و`plugins/` و`skills/` و`tools/` و`themes/`. كما تُدعَم أسماء المفرد (مثل `agent/`) للتوافق مع الإصدارات السابقة.
 :::
 
 ---
@@ -117,10 +117,10 @@ description: استخدام ملف إعدادات OpenCode بصيغة JSON.
 
 ### مسار مخصص
 
-حدّد مسار ملف إعدادات مخصصًا باستخدام متغير البيئة `OPENCODE_CONFIG`.
+حدّد مسار ملف إعدادات مخصصًا باستخدام متغير البيئة `APT5_CONFIG`.
 
 ```bash
-export OPENCODE_CONFIG=/path/to/my/custom-config.json
+export APT5_CONFIG=/path/to/my/custom-config.json
 opencode run "Hello world"
 ```
 
@@ -130,22 +130,22 @@ opencode run "Hello world"
 
 ### دليل مخصص
 
-حدّد دليل إعدادات مخصصًا باستخدام متغير البيئة `OPENCODE_CONFIG_DIR`.
+حدّد دليل إعدادات مخصصًا باستخدام متغير البيئة `APT5_CONFIG_DIR`.
 سيتم البحث داخل هذا الدليل عن الوكلاء والأوامر والأوضاع والإضافات تمامًا مثل
-الدليل القياسي `.opencode`، ويجب أن يتبع نفس البنية.
+الدليل القياسي `.apt5`، ويجب أن يتبع نفس البنية.
 
 ```bash
-export OPENCODE_CONFIG_DIR=/path/to/my/config-directory
+export APT5_CONFIG_DIR=/path/to/my/config-directory
 opencode run "Hello world"
 ```
 
-يُحمَّل الدليل المخصص بعد الإعدادات العامة وأدلة `.opencode`، لذلك **يمكنه تجاوز** إعداداتها.
+يُحمَّل الدليل المخصص بعد الإعدادات العامة وأدلة `.apt5`، لذلك **يمكنه تجاوز** إعداداتها.
 
 ---
 
 ## المخطط
 
-يحتوي ملف الإعدادات على مخطط مُعرَّف في [**`opencode.ai/config.json`**](https://opencode.ai/config.json).
+يحتوي ملف الإعدادات على مخطط مُعرَّف في [**`github.com/Joseph-2026/DarkMatter/config.json`**](https://github.com/Joseph-2026/DarkMatter/config.json).
 
 يفترض أن يتمكن محررك من التحقق والإكمال التلقائي اعتمادًا على هذا المخطط.
 
@@ -157,7 +157,7 @@ opencode run "Hello world"
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "tui": {
     "scroll_speed": 3,
     "scroll_acceleration": {
@@ -184,7 +184,7 @@ opencode run "Hello world"
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "server": {
     "port": 4096,
     "hostname": "0.0.0.0",
@@ -213,7 +213,7 @@ opencode run "Hello world"
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "tools": {
     "write": false,
     "bash": false
@@ -231,7 +231,7 @@ opencode run "Hello world"
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "provider": {},
   "model": "anthropic/claude-sonnet-4-5",
   "small_model": "anthropic/claude-haiku-4-5"
@@ -244,7 +244,7 @@ opencode run "Hello world"
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "provider": {
     "anthropic": {
       "options": {
@@ -273,7 +273,7 @@ opencode run "Hello world"
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "provider": {
     "amazon-bedrock": {
       "options": {
@@ -304,7 +304,7 @@ opencode run "Hello world"
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "theme": ""
 }
 ```
@@ -319,7 +319,7 @@ opencode run "Hello world"
 
 ```jsonc title="opencode.jsonc"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "agent": {
     "code-reviewer": {
       "description": "Reviews code for best practices and potential issues",
@@ -335,7 +335,7 @@ opencode run "Hello world"
 }
 ```
 
-يمكنك أيضًا تعريف الوكلاء باستخدام ملفات markdown في `~/.config/opencode/agents/` أو `.opencode/agents/`. [تعرف على المزيد هنا](/docs/agents).
+يمكنك أيضًا تعريف الوكلاء باستخدام ملفات markdown في `~/.config/opencode/agents/` أو `.apt5/agents/`. [تعرف على المزيد هنا](/docs/agents).
 
 ---
 
@@ -345,7 +345,7 @@ opencode run "Hello world"
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "default_agent": "plan"
 }
 ```
@@ -362,7 +362,7 @@ opencode run "Hello world"
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "share": "manual"
 }
 ```
@@ -383,7 +383,7 @@ opencode run "Hello world"
 
 ```jsonc title="opencode.jsonc"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "command": {
     "test": {
       "template": "Run the full test suite with coverage report and show any failures.\nFocus on the failing tests and suggest fixes.",
@@ -399,7 +399,7 @@ opencode run "Hello world"
 }
 ```
 
-يمكنك أيضًا تعريف الأوامر باستخدام ملفات markdown في `~/.config/opencode/commands/` أو `.opencode/commands/`. [تعرف على المزيد هنا](/docs/commands).
+يمكنك أيضًا تعريف الأوامر باستخدام ملفات markdown في `~/.config/opencode/commands/` أو `.apt5/commands/`. [تعرف على المزيد هنا](/docs/commands).
 
 ---
 
@@ -409,7 +409,7 @@ opencode run "Hello world"
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "keybinds": {}
 }
 ```
@@ -424,7 +424,7 @@ opencode run "Hello world"
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "autoupdate": false
 }
 ```
@@ -440,7 +440,7 @@ opencode run "Hello world"
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "formatter": {
     "prettier": {
       "disabled": true
@@ -468,7 +468,7 @@ opencode run "Hello world"
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "permission": {
     "edit": "ask",
     "bash": "ask"
@@ -486,7 +486,7 @@ opencode run "Hello world"
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "compaction": {
     "auto": true,
     "prune": false
@@ -506,7 +506,7 @@ opencode run "Hello world"
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "watcher": {
     "ignore": ["node_modules/**", "dist/**", ".git/**"]
   }
@@ -523,7 +523,7 @@ opencode run "Hello world"
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "mcp": {}
 }
 ```
@@ -536,11 +536,11 @@ opencode run "Hello world"
 
 [الإضافات](/docs/plugins) توسّع OpenCode بأدوات وخُطافات وتكاملات مخصصة.
 
-ضع ملفات الإضافات في `.opencode/plugins/` أو `~/.config/opencode/plugins/`. يمكنك أيضًا تحميل إضافات من npm عبر الخيار `plugin`.
+ضع ملفات الإضافات في `.apt5/plugins/` أو `~/.config/opencode/plugins/`. يمكنك أيضًا تحميل إضافات من npm عبر الخيار `plugin`.
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "plugin": ["opencode-helicone-session", "@my-org/custom-plugin"]
 }
 ```
@@ -555,7 +555,7 @@ opencode run "Hello world"
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "instructions": ["CONTRIBUTING.md", "docs/guidelines.md", ".cursor/rules/*.md"]
 }
 ```
@@ -571,7 +571,7 @@ opencode run "Hello world"
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "disabled_providers": ["openai", "gemini"]
 }
 ```
@@ -594,7 +594,7 @@ opencode run "Hello world"
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "enabled_providers": ["anthropic", "openai"]
 }
 ```
@@ -615,7 +615,7 @@ opencode run "Hello world"
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "experimental": {}
 }
 ```
@@ -638,8 +638,8 @@ opencode run "Hello world"
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
-  "model": "{env:OPENCODE_MODEL}",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
+  "model": "{env:APT5_MODEL}",
   "provider": {
     "anthropic": {
       "models": {},
@@ -661,7 +661,7 @@ opencode run "Hello world"
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "instructions": ["./custom-instructions.md"],
   "provider": {
     "openai": {

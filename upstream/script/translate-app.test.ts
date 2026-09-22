@@ -78,9 +78,9 @@ describe("translate app", () => {
   })
 
   test("maps product locale codes to their glossaries", () => {
-    expect(glossaryFile("fr")).toBe(".opencode/glossary/fr.md")
-    expect(glossaryFile("zh")).toBe(".opencode/glossary/zh-cn.md")
-    expect(glossaryFile("zht")).toBe(".opencode/glossary/zh-tw.md")
+    expect(glossaryFile("fr")).toBe(".apt5/glossary/fr.md")
+    expect(glossaryFile("zh")).toBe(".apt5/glossary/zh-cn.md")
+    expect(glossaryFile("zht")).toBe(".apt5/glossary/zh-tw.md")
   })
 
   test("finds key and placeholder drift", () => {
@@ -160,7 +160,7 @@ describe("translate app", () => {
           {
             info: {
               role: "assistant",
-              providerID: "opencode",
+              providerID: "darkmatter",
               modelID: "gpt-5.5",
               variant: "xhigh",
             },

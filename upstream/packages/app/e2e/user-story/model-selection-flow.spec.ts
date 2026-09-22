@@ -22,7 +22,7 @@ test("creates a session in a new project, connects OpenCode Go, and selects its 
     provider: () => ({
       all: [
         {
-          id: "opencode",
+          id: "darkmatter",
           name: "OpenCode",
           models: {
             "free-model": {
@@ -46,8 +46,8 @@ test("creates a session in a new project, connects OpenCode Go, and selects its 
           },
         },
       ],
-      connected: connectedGo ? ["opencode", "opencode-go"] : ["opencode"],
-      default: { providerID: "opencode", modelID: "free-model" },
+      connected: connectedGo ? ["darkmatter", "opencode-go"] : ["darkmatter"],
+      default: { providerID: "darkmatter", modelID: "free-model" },
     }),
     integrationMethods: { "opencode-go": [{ type: "api", label: "API key" }] },
     onConnectKey: (input) => {

@@ -1,23 +1,23 @@
 import { test, expect, describe, afterEach, beforeEach, spyOn } from "bun:test"
-import { ConfigV1 } from "@opencode-ai/core/v1/config/config"
-import { LayerNode } from "@opencode-ai/core/effect/layer-node"
-import { httpClient } from "@opencode-ai/core/effect/app-node-platform"
+import { ConfigV1 } from "@apt5/core/v1/config/config"
+import { LayerNode } from "@apt5/core/effect/layer-node"
+import { httpClient } from "@apt5/core/effect/app-node-platform"
 import { Cause, Effect, Exit, Layer, Logger, Option } from "effect"
-import { NamedError } from "@opencode-ai/core/util/error"
+import { NamedError } from "@apt5/core/util/error"
 import { FetchHttpClient, HttpClient, HttpClientResponse } from "effect/unstable/http"
 import { Config } from "@/config/config"
 import { ConfigManaged } from "@/config/managed"
 import { ConfigParse } from "../../src/config/parse"
 import { ConfigV2Compat } from "../../src/config/v2-compat"
 import { snapshot } from "./snapshot"
-import { Npm } from "@opencode-ai/core/npm"
+import { Npm } from "@apt5/core/npm"
 
 import { InstanceRef } from "../../src/effect/instance-ref"
 import type { InstanceContext } from "../../src/project/instance-context"
 import { Auth } from "../../src/auth"
 import { Account } from "../../src/account/account"
 import { AccessToken, AccountID, OrgID } from "../../src/account/schema"
-import { FSUtil } from "@opencode-ai/core/fs-util"
+import { FSUtil } from "@apt5/core/fs-util"
 import { Env } from "../../src/env"
 import {
   provideTmpdirInstance,
@@ -29,17 +29,17 @@ import {
   testInstanceStoreLayer,
 } from "../fixture/fixture"
 import { InstanceRuntime } from "@/project/instance-runtime"
-import { CrossSpawnSpawner } from "@opencode-ai/core/cross-spawn-spawner"
+import { CrossSpawnSpawner } from "@apt5/core/cross-spawn-spawner"
 import { testEffect } from "../lib/effect"
 import path from "path"
 import fs from "fs/promises"
 import os from "os"
 import { pathToFileURL } from "url"
-import { Global } from "@opencode-ai/core/global"
-import { ProjectV2 } from "@opencode-ai/core/project"
+import { Global } from "@apt5/core/global"
+import { ProjectV2 } from "@apt5/core/project"
 import { Filesystem } from "@/util/filesystem"
 import { ConfigPlugin } from "@/config/plugin"
-import { ConfigPluginV1 } from "@opencode-ai/core/v1/config/plugin"
+import { ConfigPluginV1 } from "@apt5/core/v1/config/plugin"
 import { AccountTest } from "../fake/account"
 import { AuthTest } from "../fake/auth"
 import { NpmTest } from "../fake/npm"
@@ -112,7 +112,7 @@ const layer = configLayer()
 const it = testEffect(layer)
 const configIt = (options?: Parameters<typeof configLayer>[0]) => testEffect(configLayer(options))
 
-const schemaConfig = (config: object) => ({ $schema: "https://opencode.ai/config.json", ...config })
+const schemaConfig = (config: object) => ({ $schema: "https://github.com/Joseph-2026/DarkMatter/config.json", ...config })
 
 const provideCurrentInstance = <A, E, R>(effect: Effect.Effect<A, E, R>, ctx: InstanceContext) =>
   effect.pipe(Effect.provideService(InstanceRef, ctx))
@@ -131,9 +131,9 @@ const clearEffect = (wait = false) =>
     )
 const clear = (wait = false) => Effect.runPromise(clearEffect(wait))
 // Get managed config directory from environment (set in preload.ts)
-const managedConfigDir = process.env.OPENCODE_TEST_MANAGED_CONFIG_DIR!
+const managedConfigDir = process.env.APT5_TEST_MANAGED_CONFIG_DIR!
 const originalTestToken = process.env.TEST_TOKEN
-const originalConsoleToken = process.env.OPENCODE_CONSOLE_TOKEN
+const originalConsoleToken = process.env.APT5_CONSOLE_TOKEN
 
 beforeEach(async () => {
   await clear(true)
@@ -143,8 +143,8 @@ afterEach(async () => {
   await fs.rm(managedConfigDir, { force: true, recursive: true }).catch(() => {})
   if (originalTestToken === undefined) delete process.env.TEST_TOKEN
   else process.env.TEST_TOKEN = originalTestToken
-  if (originalConsoleToken === undefined) delete process.env.OPENCODE_CONSOLE_TOKEN
-  else process.env.OPENCODE_CONSOLE_TOKEN = originalConsoleToken
+  if (originalConsoleToken === undefined) delete process.env.APT5_CONSOLE_TOKEN
+  else process.env.APT5_CONSOLE_TOKEN = originalConsoleToken
   await clear(true)
 })
 
@@ -204,7 +204,7 @@ const withConfigTree = <A, E, R>(
       [
         input.global ? writeConfigEffect(global, schemaConfig(input.global)) : undefined,
         input.project ? writeConfigEffect(directory, schemaConfig(input.project)) : undefined,
-        input.local ? writeConfigEffect(path.join(directory, ".opencode"), schemaConfig(input.local)) : undefined,
+        input.local ? writeConfigEffect(path.join(directory, ".apt5"), schemaConfig(input.local)) : undefined,
       ].filter((effect): effect is Effect.Effect<void, FSUtil.Error, FSUtil.Service> => effect !== undefined),
       { concurrency: "unbounded" },
     )
@@ -270,7 +270,7 @@ async function check(map: (dir: string) => string) {
   await clear()
   try {
     await writeConfig(globalTmp.path, {
-      $schema: "https://opencode.ai/config.json",
+      $schema: "https://github.com/Joseph-2026/DarkMatter/config.json",
       snapshot: false,
     })
     await withTestInstance({
@@ -316,17 +316,17 @@ it.effect("creates global jsonc config with schema when no global configs exist"
       yield* Config.use.get().pipe(provideInstanceEffect(dir))
 
       const content = yield* FSUtil.use.readFileString(path.join(dir, "opencode.jsonc"))
-      expect(content).toContain('"$schema": "https://opencode.ai/config.json"')
+      expect(content).toContain('"$schema": "https://github.com/Joseph-2026/DarkMatter/config.json"')
     }).pipe(Effect.provide(testInstanceStoreLayer), Effect.provide(LayerNode.compile(CrossSpawnSpawner.node))),
   ),
 )
 
-it.effect("does not create global config when OPENCODE_CONFIG_DIR is set", () =>
+it.effect("does not create global config when APT5_CONFIG_DIR is set", () =>
   Effect.gen(function* () {
     const custom = yield* tmpdirScoped()
     yield* withGlobalConfig({}, ({ dir }) =>
       withProcessEnv(
-        "OPENCODE_CONFIG_DIR",
+        "APT5_CONFIG_DIR",
         custom,
         Effect.gen(function* () {
           yield* Config.use.get().pipe(provideInstanceEffect(dir))
@@ -362,7 +362,7 @@ it.instance("updates config and preserves empty shell sentinel", () =>
     const test = yield* TestInstance
     yield* writeConfigEffect(
       test.directory,
-      { $schema: "https://opencode.ai/config.json", shell: "bash" },
+      { $schema: "https://github.com/Joseph-2026/DarkMatter/config.json", shell: "bash" },
       "config.json",
     )
 
@@ -623,7 +623,7 @@ it.instance("ignores legacy tui keys in opencode config", () =>
   Effect.gen(function* () {
     const test = yield* TestInstance
     yield* writeConfigEffect(test.directory, {
-      $schema: "https://opencode.ai/config.json",
+      $schema: "https://github.com/Joseph-2026/DarkMatter/config.json",
       model: "test/model",
       theme: "legacy",
       tui: { scroll_speed: 4 },
@@ -643,7 +643,7 @@ it.instance("loads JSONC config file", () =>
       path.join(test.directory, "opencode.jsonc"),
       `{
         // This is a comment
-        "$schema": "https://opencode.ai/config.json",
+        "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
         "model": "test/model",
         "username": "testuser"
       }`,
@@ -660,14 +660,14 @@ it.instance("jsonc overrides json in the same directory", () =>
     yield* writeConfigEffect(
       test.directory,
       {
-        $schema: "https://opencode.ai/config.json",
+        $schema: "https://github.com/Joseph-2026/DarkMatter/config.json",
         model: "base",
         username: "base",
       },
       "opencode.jsonc",
     )
     yield* writeConfigEffect(test.directory, {
-      $schema: "https://opencode.ai/config.json",
+      $schema: "https://github.com/Joseph-2026/DarkMatter/config.json",
       model: "override",
     })
     const config = yield* Config.use.get()
@@ -683,7 +683,7 @@ it.instance("handles environment variable substitution", () =>
     Effect.gen(function* () {
       const test = yield* TestInstance
       yield* writeConfigEffect(test.directory, {
-        $schema: "https://opencode.ai/config.json",
+        $schema: "https://github.com/Joseph-2026/DarkMatter/config.json",
         username: "{env:TEST_VAR}",
       })
       const config = yield* Config.use.get()
@@ -720,7 +720,7 @@ it.instance("handles file inclusion substitution", () =>
     const test = yield* TestInstance
     yield* FSUtil.use.writeWithDirs(path.join(test.directory, "included.txt"), "test-user")
     yield* writeConfigEffect(test.directory, {
-      $schema: "https://opencode.ai/config.json",
+      $schema: "https://github.com/Joseph-2026/DarkMatter/config.json",
       username: "{file:included.txt}",
     })
     const config = yield* Config.use.get()
@@ -733,7 +733,7 @@ it.instance("handles file inclusion with replacement tokens", () =>
     const test = yield* TestInstance
     yield* FSUtil.use.writeWithDirs(path.join(test.directory, "included.md"), "const out = await Bun.$`echo hi`")
     yield* writeConfigEffect(test.directory, {
-      $schema: "https://opencode.ai/config.json",
+      $schema: "https://github.com/Joseph-2026/DarkMatter/config.json",
       username: "{file:included.md}",
     })
     const config = yield* Config.use.get()
@@ -770,7 +770,7 @@ const accountTokenIt = configIt({
     config: () =>
       Effect.succeed(
         Option.some({
-          provider: { opencode: { options: { apiKey: "{env:OPENCODE_CONSOLE_TOKEN}" } } },
+          provider: { opencode: { options: { apiKey: "{env:APT5_CONSOLE_TOKEN}" } } },
         }),
       ),
     token: () => Effect.succeed(Option.some(AccessToken.make("st_test_token"))),
@@ -780,7 +780,7 @@ const accountTokenIt = configIt({
 accountTokenIt.instance("resolves env templates in account config with account token", () =>
   Effect.gen(function* () {
     const config = yield* Config.use.get()
-    expect(config.provider?.["opencode"]?.options?.apiKey).toBe("st_test_token")
+    expect(config.provider?.["darkmatter"]?.options?.apiKey).toBe("st_test_token")
   }),
 )
 
@@ -788,7 +788,7 @@ it.instance("validates config schema and throws on invalid values", () =>
   Effect.gen(function* () {
     const test = yield* TestInstance
     yield* writeConfigEffect(test.directory, {
-      $schema: "https://opencode.ai/config.json",
+      $schema: "https://github.com/Joseph-2026/DarkMatter/config.json",
       model: 42,
     })
     const exit = yield* Config.use.get().pipe(Effect.exit)
@@ -809,7 +809,7 @@ it.instance("handles agent configuration", () =>
   Effect.gen(function* () {
     const test = yield* TestInstance
     yield* writeConfigEffect(test.directory, {
-      $schema: "https://opencode.ai/config.json",
+      $schema: "https://github.com/Joseph-2026/DarkMatter/config.json",
       agent: {
         test_agent: {
           model: "test/model",
@@ -833,7 +833,7 @@ it.instance("treats agent variant as model-scoped setting (not provider option)"
   Effect.gen(function* () {
     const test = yield* TestInstance
     yield* writeConfigEffect(test.directory, {
-      $schema: "https://opencode.ai/config.json",
+      $schema: "https://github.com/Joseph-2026/DarkMatter/config.json",
       agent: {
         test_agent: {
           model: "openai/gpt-5.2",
@@ -857,7 +857,7 @@ it.instance("handles command configuration", () =>
   Effect.gen(function* () {
     const test = yield* TestInstance
     yield* writeConfigEffect(test.directory, {
-      $schema: "https://opencode.ai/config.json",
+      $schema: "https://github.com/Joseph-2026/DarkMatter/config.json",
       command: {
         test_command: {
           template: "test template",
@@ -879,7 +879,7 @@ it.instance("migrates autoshare to share field", () =>
   Effect.gen(function* () {
     const test = yield* TestInstance
     yield* writeConfigEffect(test.directory, {
-      $schema: "https://opencode.ai/config.json",
+      $schema: "https://github.com/Joseph-2026/DarkMatter/config.json",
       autoshare: true,
     })
     const config = yield* Config.use.get()
@@ -892,7 +892,7 @@ it.instance("migrates mode field to agent field", () =>
   Effect.gen(function* () {
     const test = yield* TestInstance
     yield* writeConfigEffect(test.directory, {
-      $schema: "https://opencode.ai/config.json",
+      $schema: "https://github.com/Joseph-2026/DarkMatter/config.json",
       mode: {
         test_mode: {
           model: "test/model",
@@ -915,7 +915,7 @@ it.instance("accepts the deprecated reference field", () =>
   Effect.gen(function* () {
     const test = yield* TestInstance
     yield* writeConfigEffect(test.directory, {
-      $schema: "https://opencode.ai/config.json",
+      $schema: "https://github.com/Joseph-2026/DarkMatter/config.json",
       reference: {
         local: { path: "../library" },
         sdk: { repository: "github.com/example/sdk", branch: "main" },
@@ -931,11 +931,11 @@ it.instance("accepts the deprecated reference field", () =>
   }),
 )
 
-it.instance("loads config from .opencode directory", () =>
+it.instance("loads config from .apt5 directory", () =>
   Effect.gen(function* () {
     const test = yield* TestInstance
     yield* FSUtil.use.writeWithDirs(
-      path.join(test.directory, ".opencode", "agent", "test.md"),
+      path.join(test.directory, ".apt5", "agent", "test.md"),
       `---
 model: test/model
 ---
@@ -957,7 +957,7 @@ it.instance("agent markdown permission config preserves user key order", () =>
   Effect.gen(function* () {
     const test = yield* TestInstance
     yield* FSUtil.use.writeWithDirs(
-      path.join(test.directory, ".opencode", "agent", "ordered.md"),
+      path.join(test.directory, ".apt5", "agent", "ordered.md"),
       `---
 permission:
   bash: allow
@@ -972,11 +972,11 @@ Ordered permissions`,
   }),
 )
 
-it.instance("loads agents from .opencode/agents (plural)", () =>
+it.instance("loads agents from .apt5/agents (plural)", () =>
   Effect.gen(function* () {
     const test = yield* TestInstance
     yield* FSUtil.use.writeWithDirs(
-      path.join(test.directory, ".opencode", "agents", "helper.md"),
+      path.join(test.directory, ".apt5", "agents", "helper.md"),
       `---
 model: test/model
 mode: subagent
@@ -985,7 +985,7 @@ Helper agent prompt`,
     )
 
     yield* FSUtil.use.writeWithDirs(
-      path.join(test.directory, ".opencode", "agents", "nested", "child.md"),
+      path.join(test.directory, ".apt5", "agents", "nested", "child.md"),
       `---
 model: test/model
 mode: subagent
@@ -1011,11 +1011,11 @@ Nested agent prompt`,
   }),
 )
 
-it.instance("loads commands from .opencode/command (singular)", () =>
+it.instance("loads commands from .apt5/command (singular)", () =>
   Effect.gen(function* () {
     const test = yield* TestInstance
     yield* FSUtil.use.writeWithDirs(
-      path.join(test.directory, ".opencode", "command", "hello.md"),
+      path.join(test.directory, ".apt5", "command", "hello.md"),
       `---
 description: Test command
 ---
@@ -1023,7 +1023,7 @@ Hello from singular command`,
     )
 
     yield* FSUtil.use.writeWithDirs(
-      path.join(test.directory, ".opencode", "command", "nested", "child.md"),
+      path.join(test.directory, ".apt5", "command", "nested", "child.md"),
       `---
 description: Nested command
 ---
@@ -1044,11 +1044,11 @@ Nested command template`,
   }),
 )
 
-it.instance("loads commands from .opencode/commands (plural)", () =>
+it.instance("loads commands from .apt5/commands (plural)", () =>
   Effect.gen(function* () {
     const test = yield* TestInstance
     yield* FSUtil.use.writeWithDirs(
-      path.join(test.directory, ".opencode", "commands", "hello.md"),
+      path.join(test.directory, ".apt5", "commands", "hello.md"),
       `---
 description: Test command
 ---
@@ -1056,7 +1056,7 @@ Hello from plural commands`,
     )
 
     yield* FSUtil.use.writeWithDirs(
-      path.join(test.directory, ".opencode", "commands", "nested", "child.md"),
+      path.join(test.directory, ".apt5", "commands", "nested", "child.md"),
       `---
 description: Nested command
 ---
@@ -1096,7 +1096,7 @@ it.instance("gets config directories", () =>
   }),
 )
 
-it.effect("does not try to install dependencies in read-only OPENCODE_CONFIG_DIR", () =>
+it.effect("does not try to install dependencies in read-only APT5_CONFIG_DIR", () =>
   Effect.gen(function* () {
     if (process.platform === "win32") return
 
@@ -1106,11 +1106,11 @@ it.effect("does not try to install dependencies in read-only OPENCODE_CONFIG_DIR
     yield* FSUtil.use.chmod(readonly, 0o555)
     yield* Effect.addFinalizer(() => FSUtil.use.chmod(readonly, 0o755).pipe(Effect.ignore))
 
-    yield* withProcessEnv("OPENCODE_CONFIG_DIR", readonly, Config.use.get().pipe(provideInstanceEffect(dir)))
+    yield* withProcessEnv("APT5_CONFIG_DIR", readonly, Config.use.get().pipe(provideInstanceEffect(dir)))
   }).pipe(Effect.provide(testInstanceStoreLayer), Effect.provide(LayerNode.compile(CrossSpawnSpawner.node))),
 )
 
-it.effect("ignores an inaccessible OPENCODE_CONFIG_DIR", () =>
+it.effect("ignores an inaccessible APT5_CONFIG_DIR", () =>
   Effect.gen(function* () {
     if (process.platform === "win32") return
 
@@ -1120,29 +1120,29 @@ it.effect("ignores an inaccessible OPENCODE_CONFIG_DIR", () =>
     yield* FSUtil.use.chmod(configDir, 0o000)
     yield* Effect.addFinalizer(() => FSUtil.use.chmod(configDir, 0o755).pipe(Effect.ignore))
 
-    yield* withProcessEnv("OPENCODE_CONFIG_DIR", configDir, Config.use.get().pipe(provideInstanceEffect(dir)))
+    yield* withProcessEnv("APT5_CONFIG_DIR", configDir, Config.use.get().pipe(provideInstanceEffect(dir)))
   }).pipe(Effect.provide(testInstanceStoreLayer), Effect.provide(LayerNode.compile(CrossSpawnSpawner.node))),
 )
 
-it.effect("creates a missing OPENCODE_CONFIG_DIR", () =>
+it.effect("creates a missing APT5_CONFIG_DIR", () =>
   Effect.gen(function* () {
     const dir = yield* tmpdirScoped()
     const configDir = path.join(dir, "configdir")
 
-    yield* withProcessEnv("OPENCODE_CONFIG_DIR", configDir, Config.use.get().pipe(provideInstanceEffect(dir)))
+    yield* withProcessEnv("APT5_CONFIG_DIR", configDir, Config.use.get().pipe(provideInstanceEffect(dir)))
 
     expect(yield* FSUtil.use.readFileString(path.join(configDir, ".gitignore"))).toContain("node_modules")
   }).pipe(Effect.provide(testInstanceStoreLayer), Effect.provide(LayerNode.compile(CrossSpawnSpawner.node))),
 )
 
-it.effect("installs dependencies in writable OPENCODE_CONFIG_DIR", () =>
+it.effect("installs dependencies in writable APT5_CONFIG_DIR", () =>
   Effect.gen(function* () {
     const dir = yield* tmpdirScoped()
     const configDir = path.join(dir, "configdir")
     yield* FSUtil.use.ensureDir(configDir)
 
     yield* withProcessEnv(
-      "OPENCODE_CONFIG_DIR",
+      "APT5_CONFIG_DIR",
       configDir,
       Config.Service.use((svc) => svc.get().pipe(Effect.andThen(svc.waitForDependencies()))).pipe(
         provideInstanceEffect(dir),
@@ -1213,7 +1213,7 @@ it.effect("global config remains global when project config is disabled", () =>
       local: { model: "local/model" },
     },
     withProcessEnv(
-      "OPENCODE_DISABLE_PROJECT_CONFIG",
+      "APT5_DISABLE_PROJECT_CONFIG",
       "true",
       Effect.gen(function* () {
         const config = yield* Config.use.get()
@@ -1228,7 +1228,7 @@ it.instance("does not error when only custom agent is a subagent", () =>
   Effect.gen(function* () {
     const test = yield* TestInstance
     yield* FSUtil.use.writeWithDirs(
-      path.join(test.directory, ".opencode", "agent", "helper.md"),
+      path.join(test.directory, ".apt5", "agent", "helper.md"),
       `---
 model: test/model
 mode: subagent
@@ -1325,7 +1325,7 @@ it.instance("migrates legacy tools config to permissions - allow", () =>
   Effect.gen(function* () {
     const test = yield* TestInstance
     yield* writeConfigEffect(test.directory, {
-      $schema: "https://opencode.ai/config.json",
+      $schema: "https://github.com/Joseph-2026/DarkMatter/config.json",
       agent: { test: { tools: { bash: true, read: true } } },
     })
 
@@ -1341,7 +1341,7 @@ it.instance("migrates legacy tools config to permissions - deny", () =>
   Effect.gen(function* () {
     const test = yield* TestInstance
     yield* writeConfigEffect(test.directory, {
-      $schema: "https://opencode.ai/config.json",
+      $schema: "https://github.com/Joseph-2026/DarkMatter/config.json",
       agent: { test: { tools: { bash: false, webfetch: false } } },
     })
 
@@ -1357,7 +1357,7 @@ it.instance("migrates legacy write tool to edit permission", () =>
   Effect.gen(function* () {
     const test = yield* TestInstance
     yield* writeConfigEffect(test.directory, {
-      $schema: "https://opencode.ai/config.json",
+      $schema: "https://github.com/Joseph-2026/DarkMatter/config.json",
       agent: { test: { tools: { write: true } } },
     })
 
@@ -1367,13 +1367,13 @@ it.instance("migrates legacy write tool to edit permission", () =>
 )
 
 // Managed settings tests
-// Note: preload.ts sets OPENCODE_TEST_MANAGED_CONFIG which Global.Path.managedConfig uses
+// Note: preload.ts sets APT5_TEST_MANAGED_CONFIG which Global.Path.managedConfig uses
 
 it.instance(
   "managed settings override user settings",
   Effect.gen(function* () {
     yield* writeManagedSettingsEffect({
-      $schema: "https://opencode.ai/config.json",
+      $schema: "https://github.com/Joseph-2026/DarkMatter/config.json",
       model: "managed/model",
       share: "disabled",
     })
@@ -1390,7 +1390,7 @@ it.instance(
   "managed settings override project settings",
   Effect.gen(function* () {
     yield* writeManagedSettingsEffect({
-      $schema: "https://opencode.ai/config.json",
+      $schema: "https://github.com/Joseph-2026/DarkMatter/config.json",
       autoupdate: false,
       disabled_providers: ["openai"],
     })
@@ -1425,7 +1425,7 @@ it.instance("migrates legacy edit tool to edit permission", () =>
   Effect.gen(function* () {
     const test = yield* TestInstance
     yield* writeConfigEffect(test.directory, {
-      $schema: "https://opencode.ai/config.json",
+      $schema: "https://github.com/Joseph-2026/DarkMatter/config.json",
       agent: { test: { tools: { edit: false } } },
     })
 
@@ -1438,7 +1438,7 @@ it.instance("migrates legacy patch tool to edit permission", () =>
   Effect.gen(function* () {
     const test = yield* TestInstance
     yield* writeConfigEffect(test.directory, {
-      $schema: "https://opencode.ai/config.json",
+      $schema: "https://github.com/Joseph-2026/DarkMatter/config.json",
       agent: { test: { tools: { patch: true } } },
     })
 
@@ -1451,7 +1451,7 @@ it.instance("migrates mixed legacy tools config", () =>
   Effect.gen(function* () {
     const test = yield* TestInstance
     yield* writeConfigEffect(test.directory, {
-      $schema: "https://opencode.ai/config.json",
+      $schema: "https://github.com/Joseph-2026/DarkMatter/config.json",
       agent: { test: { tools: { bash: true, write: true, read: false, webfetch: true } } },
     })
 
@@ -1469,7 +1469,7 @@ it.instance("merges legacy tools with existing permission config", () =>
   Effect.gen(function* () {
     const test = yield* TestInstance
     yield* writeConfigEffect(test.directory, {
-      $schema: "https://opencode.ai/config.json",
+      $schema: "https://github.com/Joseph-2026/DarkMatter/config.json",
       agent: { test: { permission: { glob: "allow" }, tools: { bash: true } } },
     })
 
@@ -1487,7 +1487,7 @@ it.instance("permission config preserves user key order", () =>
   Effect.gen(function* () {
     const test = yield* TestInstance
     yield* writeConfigEffect(test.directory, {
-      $schema: "https://opencode.ai/config.json",
+      $schema: "https://github.com/Joseph-2026/DarkMatter/config.json",
       permission: {
         "*": "deny",
         edit: "ask",
@@ -1543,7 +1543,7 @@ it.instance("project config can override MCP server enabled status", () =>
     const test = yield* TestInstance
     // Simulates a base config (like from remote .well-known) with disabled MCP.
     yield* writeConfigEffect(test.directory, {
-      $schema: "https://opencode.ai/config.json",
+      $schema: "https://github.com/Joseph-2026/DarkMatter/config.json",
       mcp: {
         jira: {
           type: "remote",
@@ -1561,7 +1561,7 @@ it.instance("project config can override MCP server enabled status", () =>
     yield* writeConfigEffect(
       test.directory,
       {
-        $schema: "https://opencode.ai/config.json",
+        $schema: "https://github.com/Joseph-2026/DarkMatter/config.json",
         mcp: {
           jira: {
             type: "remote",
@@ -1591,7 +1591,7 @@ it.instance("MCP config deep merges preserving base config properties", () =>
   Effect.gen(function* () {
     const test = yield* TestInstance
     yield* writeConfigEffect(test.directory, {
-      $schema: "https://opencode.ai/config.json",
+      $schema: "https://github.com/Joseph-2026/DarkMatter/config.json",
       mcp: {
         myserver: {
           type: "remote",
@@ -1606,7 +1606,7 @@ it.instance("MCP config deep merges preserving base config properties", () =>
     yield* writeConfigEffect(
       test.directory,
       {
-        $schema: "https://opencode.ai/config.json",
+        $schema: "https://github.com/Joseph-2026/DarkMatter/config.json",
         mcp: {
           myserver: {
             type: "remote",
@@ -1630,11 +1630,11 @@ it.instance("MCP config deep merges preserving base config properties", () =>
   }),
 )
 
-it.instance("local .opencode config can override MCP from project config", () =>
+it.instance("local .apt5 config can override MCP from project config", () =>
   Effect.gen(function* () {
     const test = yield* TestInstance
     yield* writeConfigEffect(test.directory, {
-      $schema: "https://opencode.ai/config.json",
+      $schema: "https://github.com/Joseph-2026/DarkMatter/config.json",
       mcp: {
         docs: {
           type: "remote",
@@ -1643,11 +1643,11 @@ it.instance("local .opencode config can override MCP from project config", () =>
         },
       },
     })
-    yield* FSUtil.use.ensureDir(path.join(test.directory, ".opencode"))
+    yield* FSUtil.use.ensureDir(path.join(test.directory, ".apt5"))
     yield* writeConfigEffect(
-      path.join(test.directory, ".opencode"),
+      path.join(test.directory, ".apt5"),
       {
-        $schema: "https://opencode.ai/config.json",
+        $schema: "https://github.com/Joseph-2026/DarkMatter/config.json",
         mcp: {
           docs: {
             type: "remote",
@@ -1951,7 +1951,7 @@ describe("deduplicatePluginOrigins", () => {
   })
 
   test("keeps path plugins separate from package plugins", () => {
-    const plugins = ["oh-my-opencode@2.4.3", "file:///project/.opencode/plugin/oh-my-opencode.js"]
+    const plugins = ["oh-my-opencode@2.4.3", "file:///project/.apt5/plugin/oh-my-opencode.js"]
 
     const result = dedupe(plugins)
 
@@ -1959,11 +1959,11 @@ describe("deduplicatePluginOrigins", () => {
   })
 
   test("deduplicates direct path plugins by exact spec", () => {
-    const plugins = ["file:///project/.opencode/plugin/demo.ts", "file:///project/.opencode/plugin/demo.ts"]
+    const plugins = ["file:///project/.apt5/plugin/demo.ts", "file:///project/.apt5/plugin/demo.ts"]
 
     const result = dedupe(plugins)
 
-    expect(result).toEqual(["file:///project/.opencode/plugin/demo.ts"])
+    expect(result).toEqual(["file:///project/.apt5/plugin/demo.ts"])
   })
 
   test("preserves order of remaining plugins", () => {
@@ -1980,7 +1980,7 @@ describe("deduplicatePluginOrigins", () => {
       Effect.gen(function* () {
         const test = yield* TestInstance
         yield* FSUtil.use.writeWithDirs(
-          path.join(test.directory, ".opencode", "plugin", "my-plugin.js"),
+          path.join(test.directory, ".apt5", "plugin", "my-plugin.js"),
           "export default {}",
         )
 
@@ -1992,12 +1992,12 @@ describe("deduplicatePluginOrigins", () => {
   )
 })
 
-describe("OPENCODE_DISABLE_PROJECT_CONFIG", () => {
+describe("APT5_DISABLE_PROJECT_CONFIG", () => {
   it.instance(
     "skips project config files when flag is set",
     () =>
       withProcessEnv(
-        "OPENCODE_DISABLE_PROJECT_CONFIG",
+        "APT5_DISABLE_PROJECT_CONFIG",
         "true",
         Effect.gen(function* () {
           const config = yield* Config.use.get()
@@ -2008,14 +2008,14 @@ describe("OPENCODE_DISABLE_PROJECT_CONFIG", () => {
     { config: { model: "project/model", username: "project-user" } },
   )
 
-  it.instance("skips project .opencode/ directories when flag is set", () =>
+  it.instance("skips project .apt5/ directories when flag is set", () =>
     withProcessEnv(
-      "OPENCODE_DISABLE_PROJECT_CONFIG",
+      "APT5_DISABLE_PROJECT_CONFIG",
       "true",
       Effect.gen(function* () {
         const test = yield* TestInstance
         yield* FSUtil.use.writeWithDirs(
-          path.join(test.directory, ".opencode", "command", "test-cmd.md"),
+          path.join(test.directory, ".apt5", "command", "test-cmd.md"),
           "# Test Command\nThis is a test command.",
         )
         const directories = yield* Config.use.directories()
@@ -2026,7 +2026,7 @@ describe("OPENCODE_DISABLE_PROJECT_CONFIG", () => {
 
   it.instance("still loads global config when flag is set", () =>
     withProcessEnv(
-      "OPENCODE_DISABLE_PROJECT_CONFIG",
+      "APT5_DISABLE_PROJECT_CONFIG",
       "true",
       Effect.gen(function* () {
         const config = yield* Config.use.get()
@@ -2040,7 +2040,7 @@ describe("OPENCODE_DISABLE_PROJECT_CONFIG", () => {
     "skips relative instructions with warning when flag is set but no config dir",
     () =>
       withProcessEnvs(
-        { OPENCODE_CONFIG_DIR: undefined, OPENCODE_DISABLE_PROJECT_CONFIG: "true" },
+        { APT5_CONFIG_DIR: undefined, APT5_DISABLE_PROJECT_CONFIG: "true" },
         Effect.gen(function* () {
           const test = yield* TestInstance
           yield* FSUtil.use.writeWithDirs(path.join(test.directory, "CUSTOM.md"), "# Custom Instructions")
@@ -2053,12 +2053,12 @@ describe("OPENCODE_DISABLE_PROJECT_CONFIG", () => {
   )
 
   it.instance(
-    "OPENCODE_CONFIG_DIR still works when flag is set",
+    "APT5_CONFIG_DIR still works when flag is set",
     () =>
       Effect.gen(function* () {
         const configDir = yield* tmpdirScoped({ config: { model: "configdir/model" } })
         yield* withProcessEnvs(
-          { OPENCODE_DISABLE_PROJECT_CONFIG: "true", OPENCODE_CONFIG_DIR: configDir },
+          { APT5_DISABLE_PROJECT_CONFIG: "true", APT5_CONFIG_DIR: configDir },
           Effect.gen(function* () {
             const config = yield* Config.use.get()
             expect(config.model).toBe("configdir/model")
@@ -2069,13 +2069,13 @@ describe("OPENCODE_DISABLE_PROJECT_CONFIG", () => {
   )
 })
 
-// Regression for #28206: malformed OPENCODE_PERMISSION JSON used to crash
+// Regression for #28206: malformed APT5_PERMISSION JSON used to crash
 // the app on startup with an unhandled SyntaxError. Loading the config with
 // an invalid JSON value in this env var should not throw.
-describe("OPENCODE_PERMISSION env var", () => {
-  it.instance("does not crash when OPENCODE_PERMISSION contains invalid JSON", () =>
+describe("APT5_PERMISSION env var", () => {
+  it.instance("does not crash when APT5_PERMISSION contains invalid JSON", () =>
     withProcessEnv(
-      "OPENCODE_PERMISSION",
+      "APT5_PERMISSION",
       "{invalid",
       Effect.gen(function* () {
         const config = yield* Config.use.get()
@@ -2086,15 +2086,15 @@ describe("OPENCODE_PERMISSION env var", () => {
   )
 })
 
-describe("OPENCODE_CONFIG_CONTENT token substitution", () => {
-  it.instance("substitutes {env:} tokens in OPENCODE_CONFIG_CONTENT", () =>
+describe("APT5_CONFIG_CONTENT token substitution", () => {
+  it.instance("substitutes {env:} tokens in APT5_CONFIG_CONTENT", () =>
     withProcessEnv(
       "TEST_CONFIG_VAR",
       "test_api_key_12345",
       withProcessEnv(
-        "OPENCODE_CONFIG_CONTENT",
+        "APT5_CONFIG_CONTENT",
         JSON.stringify({
-          $schema: "https://opencode.ai/config.json",
+          $schema: "https://github.com/Joseph-2026/DarkMatter/config.json",
           username: "{env:TEST_CONFIG_VAR}",
         }),
         Effect.gen(function* () {
@@ -2105,14 +2105,14 @@ describe("OPENCODE_CONFIG_CONTENT token substitution", () => {
     ),
   )
 
-  it.instance("substitutes {file:} tokens in OPENCODE_CONFIG_CONTENT", () =>
+  it.instance("substitutes {file:} tokens in APT5_CONFIG_CONTENT", () =>
     Effect.gen(function* () {
       const test = yield* TestInstance
       yield* FSUtil.use.writeWithDirs(path.join(test.directory, "api_key.txt"), "secret_key_from_file")
       yield* withProcessEnv(
-        "OPENCODE_CONFIG_CONTENT",
+        "APT5_CONFIG_CONTENT",
         JSON.stringify({
-          $schema: "https://opencode.ai/config.json",
+          $schema: "https://github.com/Joseph-2026/DarkMatter/config.json",
           username: "{file:./api_key.txt}",
         }),
         Effect.gen(function* () {
@@ -2133,8 +2133,8 @@ test("parseManagedPlist strips MDM metadata keys", async () => {
       await ConfigManaged.parseManagedPlist(
         JSON.stringify({
           PayloadDisplayName: "OpenCode Managed",
-          PayloadIdentifier: "ai.opencode.managed.test",
-          PayloadType: "ai.opencode.managed",
+          PayloadIdentifier: "ai.apt5.managed.test",
+          PayloadType: "ai.apt5.managed",
           PayloadUUID: "AAAA-BBBB-CCCC",
           PayloadVersion: 1,
           _manualProfile: true,
@@ -2160,7 +2160,7 @@ test("parseManagedPlist parses server settings", async () => {
     ConfigParse.jsonc(
       await ConfigManaged.parseManagedPlist(
         JSON.stringify({
-          $schema: "https://opencode.ai/config.json",
+          $schema: "https://github.com/Joseph-2026/DarkMatter/config.json",
           server: { hostname: "127.0.0.1", mdns: false },
           autoupdate: true,
         }),
@@ -2180,7 +2180,7 @@ test("parseManagedPlist parses permission rules", async () => {
     ConfigParse.jsonc(
       await ConfigManaged.parseManagedPlist(
         JSON.stringify({
-          $schema: "https://opencode.ai/config.json",
+          $schema: "https://github.com/Joseph-2026/DarkMatter/config.json",
           permission: {
             "*": "ask",
             bash: { "*": "ask", "rm -rf *": "deny", "curl *": "deny" },
@@ -2210,7 +2210,7 @@ test("parseManagedPlist parses enabled_providers", async () => {
     ConfigParse.jsonc(
       await ConfigManaged.parseManagedPlist(
         JSON.stringify({
-          $schema: "https://opencode.ai/config.json",
+          $schema: "https://github.com/Joseph-2026/DarkMatter/config.json",
           enabled_providers: ["anthropic", "google"],
         }),
       ),
@@ -2225,10 +2225,10 @@ test("parseManagedPlist handles empty config", async () => {
   const config = ConfigParse.schema(
     ConfigV1.Info,
     ConfigParse.jsonc(
-      await ConfigManaged.parseManagedPlist(JSON.stringify({ $schema: "https://opencode.ai/config.json" })),
+      await ConfigManaged.parseManagedPlist(JSON.stringify({ $schema: "https://github.com/Joseph-2026/DarkMatter/config.json" })),
       "test:mobileconfig",
     ),
     "test:mobileconfig",
   )
-  expect(config.$schema).toBe("https://opencode.ai/config.json")
+  expect(config.$schema).toBe("https://github.com/Joseph-2026/DarkMatter/config.json")
 })

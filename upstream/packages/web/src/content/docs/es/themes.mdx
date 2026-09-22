@@ -65,7 +65,7 @@ Puede seleccionar un tema abriendo la selección de tema con el comando `/theme`
 
 ```json title="tui.json" {3}
 {
-  "$schema": "https://opencode.ai/tui.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/tui.json",
   "theme": "tokyonight"
 }
 ```
@@ -84,8 +84,8 @@ Los temas se cargan desde varios directorios en el siguiente orden, donde los di
 
 1. **Temas integrados**: están integrados en el binario
 2. **Directorio de configuración de usuario**: definido en `~/.config/opencode/themes/*.json` o `$XDG_CONFIG_HOME/opencode/themes/*.json`
-3. **Directorio raíz del proyecto**: definido en `<project-root>/.opencode/themes/*.json`
-4. **Directorio de trabajo actual** - Definido en `./.opencode/themes/*.json`
+3. **Directorio raíz del proyecto**: definido en `<project-root>/.apt5/themes/*.json`
+4. **Directorio de trabajo actual** - Definido en `./.apt5/themes/*.json`
 
 Si varios directorios contienen un tema con el mismo nombre, se utilizará el tema del directorio con mayor prioridad.
 
@@ -105,8 +105,8 @@ vim ~/.config/opencode/themes/my-theme.json
 Y para temas específicos del proyecto.
 
 ```bash no-frame
-mkdir -p .opencode/themes
-vim .opencode/themes/my-theme.json
+mkdir -p .apt5/themes
+vim .apt5/themes/my-theme.json
 ```
 
 ---
@@ -144,7 +144,7 @@ A continuación se muestra un ejemplo de un tema personalizado:
 
 ```json title="my-theme.json"
 {
-  "$schema": "https://opencode.ai/theme.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/theme.json",
   "defs": {
     "nord0": "#2E3440",
     "nord1": "#3B4252",

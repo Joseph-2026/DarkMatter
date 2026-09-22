@@ -1,19 +1,19 @@
 import type { APIEvent } from "@solidjs/start/server"
-import { and, Database, eq, isNull, lt, or, sql } from "@opencode-ai/console-core/drizzle/index.js"
-import { KeyTable } from "@opencode-ai/console-core/schema/key.sql.js"
-import { BillingTable, LiteTable, SubscriptionTable, UsageTable } from "@opencode-ai/console-core/schema/billing.sql.js"
-import { centsToMicroCents } from "@opencode-ai/console-core/util/price.js"
-import { getMonthlyBounds, getWeekBounds } from "@opencode-ai/console-core/util/date.js"
-import { Identifier } from "@opencode-ai/console-core/identifier.js"
-import { Billing } from "@opencode-ai/console-core/billing.js"
-import { Actor } from "@opencode-ai/console-core/actor.js"
-import { WorkspaceTable } from "@opencode-ai/console-core/schema/workspace.sql.js"
-import { ZenData } from "@opencode-ai/console-core/model.js"
-import { Subscription } from "@opencode-ai/console-core/subscription.js"
-import { BlackData } from "@opencode-ai/console-core/black.js"
-import { UserTable } from "@opencode-ai/console-core/schema/user.sql.js"
-import { ModelTable } from "@opencode-ai/console-core/schema/model.sql.js"
-import { ProviderTable } from "@opencode-ai/console-core/schema/provider.sql.js"
+import { and, Database, eq, isNull, lt, or, sql } from "@apt5/console-core/drizzle/index.js"
+import { KeyTable } from "@apt5/console-core/schema/key.sql.js"
+import { BillingTable, LiteTable, SubscriptionTable, UsageTable } from "@apt5/console-core/schema/billing.sql.js"
+import { centsToMicroCents } from "@apt5/console-core/util/price.js"
+import { getMonthlyBounds, getWeekBounds } from "@apt5/console-core/util/date.js"
+import { Identifier } from "@apt5/console-core/identifier.js"
+import { Billing } from "@apt5/console-core/billing.js"
+import { Actor } from "@apt5/console-core/actor.js"
+import { WorkspaceTable } from "@apt5/console-core/schema/workspace.sql.js"
+import { ZenData } from "@apt5/console-core/model.js"
+import { Subscription } from "@apt5/console-core/subscription.js"
+import { BlackData } from "@apt5/console-core/black.js"
+import { UserTable } from "@apt5/console-core/schema/user.sql.js"
+import { ModelTable } from "@apt5/console-core/schema/model.sql.js"
+import { ProviderTable } from "@apt5/console-core/schema/provider.sql.js"
 import { logger } from "./logger"
 import {
   AuthError,
@@ -38,15 +38,15 @@ import { createRateLimiter as createIpRateLimiter } from "./ipRateLimiter"
 import { createRateLimiter as createKeyRateLimiter } from "./keyRateLimiter"
 import { createTrialLimiter } from "./trialLimiter"
 import { createStickyTracker } from "./stickyProviderTracker"
-import { LiteData } from "@opencode-ai/console-core/lite.js"
-import { Resource } from "@opencode-ai/console-resource"
+import { LiteData } from "@apt5/console-core/lite.js"
+import { Resource } from "@apt5/console-resource"
 import { i18n, type Key } from "~/i18n"
 import { localeFromRequest } from "~/lib/language"
 import { createModelTpmLimiter } from "./modelTpmLimiter"
 import { createModelTpsLimiter } from "./modelTpsLimiter"
 import { createProviderBudgetTracker } from "./providerBudgetTracker"
 import { accumulateUsage, HOT_WORKSPACES } from "./usageBatcher"
-import { Workspace } from "@opencode-ai/console-core/workspace.js"
+import { Workspace } from "@apt5/console-core/workspace.js"
 import { countryFromRequest, isModelCountryRestricted } from "~/lib/request-country"
 import { isPeakPricing } from "./pricing"
 import { prepareRequestBody } from "./requestBody"
@@ -147,7 +147,7 @@ export async function handler(
     if (authInfo && opts.modelList === "lite" && requiresGoTrainingConsent(modelInfo.id) && !authInfo.allowTraining)
       throw new DataPolicyError(
         t("zen.api.error.trainingNotAllowed", {
-          consoleGoUrl: `https://opencode.ai/workspace/${authInfo.workspaceID}/go`,
+          consoleGoUrl: `https://github.com/Joseph-2026/DarkMatter/workspace/${authInfo.workspaceID}/go`,
         }),
       )
     const allowedRegions = authInfo?.region
@@ -166,7 +166,7 @@ export async function handler(
     )
       throw new RegionError(
         t("zen.api.error.regionNotAllowed", {
-          consoleGoUrl: `https://opencode.ai/workspace/${authInfo.workspaceID}/go`,
+          consoleGoUrl: `https://github.com/Joseph-2026/DarkMatter/workspace/${authInfo.workspaceID}/go`,
         }),
       )
     const stickyId = sessionId ? sessionId : (authInfo?.workspaceID ?? ip)
@@ -563,7 +563,7 @@ export async function handler(
       throw new ModelError(
         `${t("zen.api.error.trialEnded", {
           model: modelData.name,
-          link: "https://opencode.ai/go",
+          link: "https://github.com/Joseph-2026/DarkMatter/go",
         })}`,
       )
 
@@ -896,7 +896,7 @@ export async function handler(
       if (Object.values(modelInfo.cost).every((price) => price === 0)) return "lite"
 
       try {
-        const consoleGoUrl = `https://opencode.ai/workspace/${authInfo.workspaceID}/go`
+        const consoleGoUrl = `https://github.com/Joseph-2026/DarkMatter/workspace/${authInfo.workspaceID}/go`
         const sub = authInfo.lite
         const liteData = LiteData.getLimits()
 
@@ -967,8 +967,8 @@ export async function handler(
 
     // Validate pay as you go billing
     const billing = authInfo.billing
-    const billingUrl = `https://opencode.ai/workspace/${authInfo.workspaceID}/billing`
-    const membersUrl = `https://opencode.ai/workspace/${authInfo.workspaceID}/members`
+    const billingUrl = `https://github.com/Joseph-2026/DarkMatter/workspace/${authInfo.workspaceID}/billing`
+    const membersUrl = `https://github.com/Joseph-2026/DarkMatter/workspace/${authInfo.workspaceID}/members`
     if (!billing.paymentMethodID && billing.balance <= 0)
       throw new CreditsError(t("zen.api.error.noPaymentMethod", { billingUrl }))
     if (billing.balance <= 0) throw new CreditsError(t("zen.api.error.insufficientBalance", { billingUrl }))

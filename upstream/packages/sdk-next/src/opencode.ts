@@ -1,9 +1,9 @@
-import { OpenCode } from "@opencode-ai/client/effect"
-import { AppNodeBuilder } from "@opencode-ai/core/effect/app-node-builder"
-import { LayerNode } from "@opencode-ai/core/effect/layer-node"
-import { PermissionSaved } from "@opencode-ai/core/permission/saved"
-import { ApplicationTools } from "@opencode-ai/core/tool/application-tools"
-import { createEmbeddedRoutes } from "@opencode-ai/server/routes"
+import { OpenCode } from "@apt5/client/effect"
+import { AppNodeBuilder } from "@apt5/core/effect/app-node-builder"
+import { LayerNode } from "@apt5/core/effect/layer-node"
+import { PermissionSaved } from "@apt5/core/permission/saved"
+import { ApplicationTools } from "@apt5/core/tool/application-tools"
+import { createEmbeddedRoutes } from "@apt5/server/routes"
 import { Context, Effect, Layer, Scope } from "effect"
 import { FetchHttpClient, HttpRouter, HttpServer } from "effect/unstable/http"
 
@@ -44,6 +44,6 @@ export const create = Effect.fn("OpenCode.create")(function* () {
 
 export type Interface = Effect.Success<ReturnType<typeof create>>
 
-export class Service extends Context.Service<Service, Interface>()("@opencode-ai/sdk-next/OpenCode") {}
+export class Service extends Context.Service<Service, Interface>()("@apt5/sdk-next/OpenCode") {}
 
 export const layer = Layer.effect(Service, create())

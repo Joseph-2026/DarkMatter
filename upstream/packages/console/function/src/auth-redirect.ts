@@ -13,6 +13,6 @@ export const isAllowedAuthorizationRedirect = (clientID: string, redirectURI: st
   }
   return (
     redirect.protocol === "https:" &&
-    (redirect.hostname === "opencode.ai" || redirect.hostname.endsWith(".opencode.ai"))
+    (redirect.hostname === "github.com/Joseph-2026/DarkMatter" || redirect.hostname.endsWith(".apt5.ai"))
   )
 }

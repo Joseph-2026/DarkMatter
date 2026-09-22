@@ -13,7 +13,7 @@ OpenCode は、**JSON** と **JSONC** (コメント付きの JSON) 形式の両�
 
 ```jsonc title="opencode.jsonc"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "model": "anthropic/claude-sonnet-4-5",
   "autoupdate": true,
   "server": {
@@ -44,15 +44,15 @@ OpenCode は、**JSON** と **JSONC** (コメント付きの JSON) 形式の両�
 
 1. **リモート設定** (`.well-known/opencode` から) - 組織のデフォルト
 2. **グローバル設定** (`~/.config/opencode/opencode.json`) - ユーザー設定
-3. **カスタム設定** (`OPENCODE_CONFIG` 環境変数) - カスタムオーバーライド
+3. **カスタム設定** (`APT5_CONFIG` 環境変数) - カスタムオーバーライド
 4. **プロジェクト設定** (プロジェクト内の `opencode.json`) - プロジェクト固有の設定
-5. **`.opencode` ディレクトリ** - エージェント、コマンド、プラグイン
-6. **インライン設定** (`OPENCODE_CONFIG_CONTENT` 環境変数) - ランタイムオーバーライド
+5. **`.apt5` ディレクトリ** - エージェント、コマンド、プラグイン
+6. **インライン設定** (`APT5_CONFIG_CONTENT` 環境変数) - ランタイムオーバーライド
 
 つまり、プロジェクト設定はグローバルのデフォルトをオーバーライドでき、グローバル設定はリモート組織のデフォルトをオーバーライドできます。
 
 :::note
-`.opencode` および `~/.config/opencode` ディレクトリでは、サブディレクトリに **複数名** が使用されています: `agents/`、`commands/`、`modes/`、`plugins/`、`skills/`、`tools/`、および `themes/`。下位互換性のために、単数形の名前 (`agent/` など) もサポートされています。
+`.apt5` および `~/.config/opencode` ディレクトリでは、サブディレクトリに **複数名** が使用されています: `agents/`、`commands/`、`modes/`、`plugins/`、`skills/`、`tools/`、および `themes/`。下位互換性のために、単数形の名前 (`agent/` など) もサポートされています。
 :::
 
 ---
@@ -121,10 +121,10 @@ OpenCode が起動すると、現在のディレクトリで設定ファイル�
 
 ### カスタムパス
 
-`OPENCODE_CONFIG` 環境変数を使用してカスタム設定ファイルのパスを指定します。
+`APT5_CONFIG` 環境変数を使用してカスタム設定ファイルのパスを指定します。
 
 ```bash
-export OPENCODE_CONFIG=/path/to/my/custom-config.json
+export APT5_CONFIG=/path/to/my/custom-config.json
 opencode run "Hello world"
 ```
 
@@ -134,25 +134,25 @@ opencode run "Hello world"
 
 ### カスタムディレクトリ
 
-`OPENCODE_CONFIG_DIR` を使用してカスタム設定ディレクトリを指定します。
+`APT5_CONFIG_DIR` を使用してカスタム設定ディレクトリを指定します。
 環境変数。このディレクトリでは、エージェント、コマンド、
-モードとプラグインは標準の `.opencode` ディレクトリと同様であり、次のようにする必要があります。
+モードとプラグインは標準の `.apt5` ディレクトリと同様であり、次のようにする必要があります。
 同じ構造に従います。
 
 ```bash
-export OPENCODE_CONFIG_DIR=/path/to/my/config-directory
+export APT5_CONFIG_DIR=/path/to/my/config-directory
 opencode run "Hello world"
 ```
 
-カスタムディレクトリはグローバル config ディレクトリと `.opencode` ディレクトリの後にロードされるため、それらの設定を**オーバーライド**できます。
+カスタムディレクトリはグローバル config ディレクトリと `.apt5` ディレクトリの後にロードされるため、それらの設定を**オーバーライド**できます。
 
 ---
 
 ## スキーマ
 
-サーバー/ランタイム構成スキーマは [**`opencode.ai/config.json`**](https://opencode.ai/config.json) で定義されています。
+サーバー/ランタイム構成スキーマは [**`github.com/Joseph-2026/DarkMatter/config.json`**](https://github.com/Joseph-2026/DarkMatter/config.json) で定義されています。
 
-TUI 設定は [**`opencode.ai/tui.json`**](https://opencode.ai/tui.json) を使用します。
+TUI 設定は [**`github.com/Joseph-2026/DarkMatter/tui.json`**](https://github.com/Joseph-2026/DarkMatter/tui.json) を使用します。
 
 エディターはスキーマに基づいて検証し、オートコンプリートできる必要があります。
 
@@ -164,7 +164,7 @@ TUI 固有の設定には、専用の `tui.json` (または `tui.jsonc`) ファ�
 
 ```json title="tui.json"
 {
-  "$schema": "https://opencode.ai/tui.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/tui.json",
   "scroll_speed": 3,
   "scroll_acceleration": {
     "enabled": true
@@ -173,7 +173,7 @@ TUI 固有の設定には、専用の `tui.json` (または `tui.jsonc`) ファ�
 }
 ```
 
-カスタム TUI 設定ファイルを指定するには、`OPENCODE_TUI_CONFIG` を使用します。
+カスタム TUI 設定ファイルを指定するには、`APT5_TUI_CONFIG` を使用します。
 
 `opencode.json` 内の従来の `theme`、`keybinds`、および `tui` キーは非推奨となり、可能であれば自動的に移行されます。
 
@@ -187,7 +187,7 @@ TUI 固有の設定には、専用の `tui.json` (または `tui.jsonc`) ファ�
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "server": {
     "port": 4096,
     "hostname": "0.0.0.0",
@@ -216,7 +216,7 @@ LLM が使用できるツールは、`tools` オプションを通じて管理�
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "tools": {
     "write": false,
     "bash": false
@@ -234,7 +234,7 @@ LLM が使用できるツールは、`tools` オプションを通じて管理�
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "provider": {},
   "model": "anthropic/claude-sonnet-4-5",
   "small_model": "anthropic/claude-haiku-4-5"
@@ -247,7 +247,7 @@ LLM が使用できるツールは、`tools` オプションを通じて管理�
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "provider": {
     "anthropic": {
       "options": {
@@ -276,7 +276,7 @@ Amazon Bedrock は、AWS 固有の設定をサポートしています。
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "provider": {
     "amazon-bedrock": {
       "options": {
@@ -307,7 +307,7 @@ UI テーマを `tui.json` で設定します。
 
 ```json title="tui.json"
 {
-  "$schema": "https://opencode.ai/tui.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/tui.json",
   "theme": "tokyonight"
 }
 ```
@@ -322,7 +322,7 @@ UI テーマを `tui.json` で設定します。
 
 ```jsonc title="opencode.jsonc"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "agent": {
     "code-reviewer": {
       "description": "Reviews code for best practices and potential issues",
@@ -338,7 +338,7 @@ UI テーマを `tui.json` で設定します。
 }
 ```
 
-`~/.config/opencode/agents/` または `.opencode/agents/` の Markdown ファイルを使用してエージェントを定義することもできます。 [詳細はこちら](/docs/agents)。
+`~/.config/opencode/agents/` または `.apt5/agents/` の Markdown ファイルを使用してエージェントを定義することもできます。 [詳細はこちら](/docs/agents)。
 
 ---
 
@@ -348,7 +348,7 @@ UI テーマを `tui.json` で設定します。
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "default_agent": "plan"
 }
 ```
@@ -365,7 +365,7 @@ UI テーマを `tui.json` で設定します。
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "share": "manual"
 }
 ```
@@ -386,7 +386,7 @@ UI テーマを `tui.json` で設定します。
 
 ```jsonc title="opencode.jsonc"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "command": {
     "test": {
       "template": "Run the full test suite with coverage report and show any failures.\nFocus on the failing tests and suggest fixes.",
@@ -402,7 +402,7 @@ UI テーマを `tui.json` で設定します。
 }
 ```
 
-`~/.config/opencode/commands/` または `.opencode/commands/` の Markdown ファイルを使用してコマンドを定義することもできます。 [詳細はこちら](/docs/commands)。
+`~/.config/opencode/commands/` または `.apt5/commands/` の Markdown ファイルを使用してコマンドを定義することもできます。 [詳細はこちら](/docs/commands)。
 
 ---
 
@@ -412,7 +412,7 @@ UI テーマを `tui.json` で設定します。
 
 ```json title="tui.json"
 {
-  "$schema": "https://opencode.ai/tui.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/tui.json",
   "keybinds": {}
 }
 ```
@@ -427,7 +427,7 @@ OpenCode は起動時に新しいアップデートを自動的にダウンロ�
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "autoupdate": false
 }
 ```
@@ -443,7 +443,7 @@ OpenCode は起動時に新しいアップデートを自動的にダウンロ�
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "formatter": {
     "prettier": {
       "disabled": true
@@ -471,7 +471,7 @@ OpenCode は起動時に新しいアップデートを自動的にダウンロ�
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "permission": {
     "edit": "ask",
     "bash": "ask"
@@ -489,7 +489,7 @@ OpenCode は起動時に新しいアップデートを自動的にダウンロ�
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "compaction": {
     "auto": true,
     "prune": false
@@ -508,7 +508,7 @@ OpenCode は起動時に新しいアップデートを自動的にダウンロ�
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "watcher": {
     "ignore": ["node_modules/**", "dist/**", ".git/**"]
   }
@@ -525,7 +525,7 @@ OpenCode は起動時に新しいアップデートを自動的にダウンロ�
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "mcp": {}
 }
 ```
@@ -538,11 +538,11 @@ OpenCode は起動時に新しいアップデートを自動的にダウンロ�
 
 [Plugins](/docs/plugins) は、カスタムツール、フック、統合を使用して OpenCode を拡張します。
 
-プラグインファイルを `.opencode/plugins/` または `~/.config/opencode/plugins/` に配置します。 `plugin` オプションを使用して npm からプラグインをロードすることもできます。
+プラグインファイルを `.apt5/plugins/` または `~/.config/opencode/plugins/` に配置します。 `plugin` オプションを使用して npm からプラグインをロードすることもできます。
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "plugin": ["opencode-helicone-session", "@my-org/custom-plugin"]
 }
 ```
@@ -557,7 +557,7 @@ OpenCode は起動時に新しいアップデートを自動的にダウンロ�
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "instructions": ["CONTRIBUTING.md", "docs/guidelines.md", ".cursor/rules/*.md"]
 }
 ```
@@ -572,7 +572,7 @@ OpenCode は起動時に新しいアップデートを自動的にダウンロ�
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "disabled_providers": ["openai", "gemini"]
 }
 ```
@@ -594,7 +594,7 @@ OpenCode は起動時に新しいアップデートを自動的にダウンロ�
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "enabled_providers": ["anthropic", "openai"]
 }
 ```
@@ -614,7 +614,7 @@ OpenCode は起動時に新しいアップデートを自動的にダウンロ�
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "experimental": {}
 }
 ```
@@ -637,8 +637,8 @@ OpenCode は起動時に新しいアップデートを自動的にダウンロ�
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
-  "model": "{env:OPENCODE_MODEL}",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
+  "model": "{env:APT5_MODEL}",
   "provider": {
     "anthropic": {
       "models": {},
@@ -660,7 +660,7 @@ OpenCode は起動時に新しいアップデートを自動的にダウンロ�
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "instructions": ["./custom-instructions.md"],
   "provider": {
     "openai": {

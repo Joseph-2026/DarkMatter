@@ -4,22 +4,22 @@ import { $ } from "bun"
 import path from "path"
 import { tmpdirScoped } from "../fixture/fixture"
 import { GlobalBus } from "../../src/bus/global"
-import { Database } from "@opencode-ai/core/database/database"
-import { ProjectTable } from "@opencode-ai/core/project/sql"
-import { SessionTable } from "@opencode-ai/core/session/sql"
-import { WorkspaceTable } from "@opencode-ai/core/control-plane/workspace.sql"
+import { Database } from "@apt5/core/database/database"
+import { ProjectTable } from "@apt5/core/project/sql"
+import { SessionTable } from "@apt5/core/session/sql"
+import { WorkspaceTable } from "@apt5/core/control-plane/workspace.sql"
 import { eq } from "drizzle-orm"
-import { Hash } from "@opencode-ai/core/util/hash"
+import { Hash } from "@apt5/core/util/hash"
 import { SessionID } from "@/session/schema"
-import { WorkspaceV2 } from "@opencode-ai/core/workspace"
+import { WorkspaceV2 } from "@apt5/core/workspace"
 import { Cause, Effect, Exit, Layer, Stream } from "effect"
 import { ChildProcess, ChildProcessSpawner } from "effect/unstable/process"
-import { ProjectV2 } from "@opencode-ai/core/project"
-import { CrossSpawnSpawner } from "@opencode-ai/core/cross-spawn-spawner"
+import { ProjectV2 } from "@apt5/core/project"
+import { CrossSpawnSpawner } from "@apt5/core/cross-spawn-spawner"
 import { testEffect } from "../lib/effect"
 import { RuntimeFlags } from "@/effect/runtime-flags"
-import { AppNodeBuilder } from "@opencode-ai/core/effect/app-node-builder"
-import { LayerNode } from "@opencode-ai/core/effect/layer-node"
+import { AppNodeBuilder } from "@apt5/core/effect/app-node-builder"
+import { LayerNode } from "@apt5/core/effect/layer-node"
 
 const encoder = new TextEncoder()
 
@@ -120,7 +120,7 @@ describe("Project.fromDirectory", () => {
       expect(result.project.vcs).toBe("git")
       expect(result.project.worktree).toBe(tmp)
 
-      const opencodeFile = path.join(tmp, ".git", "opencode")
+      const opencodeFile = path.join(tmp, ".git", "darkmatter")
       expect(yield* Effect.promise(() => Bun.file(opencodeFile).exists())).toBe(false)
     }),
   )
@@ -335,7 +335,7 @@ describe("Project.fromDirectory with worktrees", () => {
 
       expect(next.project.id).toBe(result.project.id)
 
-      const cache = path.join(tmp, ".git", "opencode")
+      const cache = path.join(tmp, ".git", "darkmatter")
       const exists = yield* Effect.promise(() => Bun.file(cache).exists())
       expect(exists).toBe(true)
     }),
@@ -736,8 +736,8 @@ describe("Project.fromDirectory with bare repos", () => {
       expect(result.project.id).not.toBe(ProjectV2.ID.global)
       expect(result.project.worktree).toBe(worktreePath)
 
-      const correctCache = path.join(barePath, "opencode")
-      const wrongCache = path.join(parentDir, ".git", "opencode")
+      const correctCache = path.join(barePath, "darkmatter")
+      const wrongCache = path.join(parentDir, ".git", "darkmatter")
 
       expect(yield* Effect.promise(() => Bun.file(correctCache).exists())).toBe(true)
       expect(yield* Effect.promise(() => Bun.file(wrongCache).exists())).toBe(false)
@@ -771,9 +771,9 @@ describe("Project.fromDirectory with bare repos", () => {
 
       expect(result.project.id).not.toBe(next.project.id)
 
-      const cacheA = path.join(bareA, "opencode")
-      const cacheB = path.join(bareB, "opencode")
-      const wrongCache = path.join(parentDir, ".git", "opencode")
+      const cacheA = path.join(bareA, "darkmatter")
+      const cacheB = path.join(bareB, "darkmatter")
+      const wrongCache = path.join(parentDir, ".git", "darkmatter")
 
       expect(yield* Effect.promise(() => Bun.file(cacheA).exists())).toBe(true)
       expect(yield* Effect.promise(() => Bun.file(cacheB).exists())).toBe(true)
@@ -801,7 +801,7 @@ describe("Project.fromDirectory with bare repos", () => {
       expect(result.project.id).not.toBe(ProjectV2.ID.global)
       expect(result.project.worktree).toBe(worktreePath)
 
-      const correctCache = path.join(barePath, "opencode")
+      const correctCache = path.join(barePath, "darkmatter")
       expect(yield* Effect.promise(() => Bun.file(correctCache).exists())).toBe(true)
     }),
   )

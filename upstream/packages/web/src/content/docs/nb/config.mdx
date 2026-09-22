@@ -13,7 +13,7 @@ OpenCode støtter både **JSON** og **JSONC** (JSON med kommentarer) formater.
 
 ```jsonc title="opencode.jsonc"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "model": "anthropic/claude-sonnet-4-5",
   "autoupdate": true,
   "server": {
@@ -35,7 +35,7 @@ Konfigurasjonsfiler er **slått sammen**, ikke erstattet.
 
 Konfigurasjonsfiler slås sammen, ikke erstattes. Innstillinger fra følgende konfigurasjonsplasseringer kombineres. Senere konfigurasjoner overstyrer tidligere kun for motstridende nøkler. Ikke-motstridende innstillinger fra alle konfigurasjoner er bevart.
 
-For eksempel, hvis din globale konfigurasjon setter `theme: "opencode"` og `autoupdate: true`, og prosjektkonfigurasjonen setter `model: "anthropic/claude-sonnet-4-5"`, vil den endelige konfigurasjonen inkludere alle tre innstillingene.
+For eksempel, hvis din globale konfigurasjon setter `theme: "darkmatter"` og `autoupdate: true`, og prosjektkonfigurasjonen setter `model: "anthropic/claude-sonnet-4-5"`, vil den endelige konfigurasjonen inkludere alle tre innstillingene.
 
 ---
 
@@ -45,15 +45,15 @@ Konfigurasjonskilder lastes inn i denne rekkefølgen (senere kilder overstyrer t
 
 1. **Ekstern konfigurasjon** (fra `.well-known/opencode`) - organisasjonsstandarder
 2. **Global konfigurasjon** (`~/.config/opencode/opencode.json`) - brukerinnstillinger
-3. **Egendefinert konfigurasjon** (`OPENCODE_CONFIG` env var) - egendefinerte overstyringer
+3. **Egendefinert konfigurasjon** (`APT5_CONFIG` env var) - egendefinerte overstyringer
 4. **Prosjektkonfigurasjon** (`opencode.json` i prosjekt) - prosjektspesifikke innstillinger
-5. **`.opencode` kataloger** - agenter, kommandoer, plugins
-6. **Inline config** (`OPENCODE_CONFIG_CONTENT` env var) - kjøretidsoverstyringer
+5. **`.apt5` kataloger** - agenter, kommandoer, plugins
+6. **Inline config** (`APT5_CONFIG_CONTENT` env var) - kjøretidsoverstyringer
 
 Dette betyr at prosjektkonfigurasjoner kan overstyre globale standardinnstillinger, og globale konfigurasjoner kan overstyre eksterne organisasjonsstandarder.
 
 :::note
-`.opencode` og `~/.config/opencode` katalogene bruker **flertallsnavn** på underkataloger: `agents/`, `commands/`, `modes/`, `plugins/`, `skills/`, `tools/` og `themes/`. Enkeltnavn (f.eks. `agent/`) støttes også for bakoverkompatibilitet.
+`.apt5` og `~/.config/opencode` katalogene bruker **flertallsnavn** på underkataloger: `agents/`, `commands/`, `modes/`, `plugins/`, `skills/`, `tools/` og `themes/`. Enkeltnavn (f.eks. `agent/`) støttes også for bakoverkompatibilitet.
 :::
 
 ---
@@ -118,10 +118,10 @@ Det er også trygt å sjekke inn dette i Git og bruker samme skjema som det glob
 
 ### Egendefinert bane
 
-Spesifiser en tilpasset konfigurasjonsfilbane ved å bruke miljøvariabelen `OPENCODE_CONFIG`.
+Spesifiser en tilpasset konfigurasjonsfilbane ved å bruke miljøvariabelen `APT5_CONFIG`.
 
 ```bash
-export OPENCODE_CONFIG=/path/to/my/custom-config.json
+export APT5_CONFIG=/path/to/my/custom-config.json
 opencode run "Hello world"
 ```
 
@@ -131,23 +131,23 @@ Egendefinert konfigurasjon lastes inn mellom globale og prosjektkonfigurasjoner 
 
 ### Egendefinert katalog
 
-Spesifiser en tilpasset konfigurasjonskatalog ved å bruke `OPENCODE_CONFIG_DIR`
+Spesifiser en tilpasset konfigurasjonskatalog ved å bruke `APT5_CONFIG_DIR`
 miljøvariabel. Denne katalogen vil bli søkt etter agenter, kommandoer,
-moduser og plugins akkurat som standard `.opencode` katalog, og bør
+moduser og plugins akkurat som standard `.apt5` katalog, og bør
 følge samme struktur.
 
 ```bash
-export OPENCODE_CONFIG_DIR=/path/to/my/config-directory
+export APT5_CONFIG_DIR=/path/to/my/config-directory
 opencode run "Hello world"
 ```
 
-Den egendefinerte katalogen lastes inn etter den globale konfigurasjonen og `.opencode`-katalogene, slik at den **kan overstyre** innstillingene deres.
+Den egendefinerte katalogen lastes inn etter den globale konfigurasjonen og `.apt5`-katalogene, slik at den **kan overstyre** innstillingene deres.
 
 ---
 
 ## Skjema
 
-Konfigurasjonsfilen har et skjema som er definert i [**`opencode.ai/config.json`**](https://opencode.ai/config.json).
+Konfigurasjonsfilen har et skjema som er definert i [**`github.com/Joseph-2026/DarkMatter/config.json`**](https://github.com/Joseph-2026/DarkMatter/config.json).
 
 Redaktøren din skal kunne validere og autofullføre basert på skjemaet.
 
@@ -159,7 +159,7 @@ Du kan konfigurere TUI-spesifikke innstillinger gjennom alternativet `tui`.
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "tui": {
     "scroll_speed": 3,
     "scroll_acceleration": {
@@ -186,7 +186,7 @@ Du kan konfigurere serverinnstillinger for kommandoene `opencode serve` og `open
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "server": {
     "port": 4096,
     "hostname": "0.0.0.0",
@@ -215,7 +215,7 @@ Du kan administrere verktøyene en LLM kan bruke gjennom alternativet `tools`.
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "tools": {
     "write": false,
     "bash": false
@@ -233,7 +233,7 @@ Du kan konfigurere leverandørene og modellene du vil bruke i OpenCode-konfigura
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "provider": {},
   "model": "anthropic/claude-sonnet-4-5",
   "small_model": "anthropic/claude-haiku-4-5"
@@ -246,7 +246,7 @@ Leverandøralternativer kan inkludere `timeout` og `setCacheKey`:
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "provider": {
     "anthropic": {
       "options": {
@@ -275,7 +275,7 @@ Amazon Bedrock støtter AWS-spesifikk konfigurasjon:
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "provider": {
     "amazon-bedrock": {
       "options": {
@@ -306,7 +306,7 @@ Angi UI-temaet ditt i `tui.json`.
 
 ```json title="tui.json"
 {
-  "$schema": "https://opencode.ai/tui.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/tui.json",
   "theme": "tokyonight"
 }
 ```
@@ -321,7 +321,7 @@ Du kan konfigurere spesialiserte agenter for spesifikke oppgaver gjennom alterna
 
 ```jsonc title="opencode.jsonc"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "agent": {
     "code-reviewer": {
       "description": "Reviews code for best practices and potential issues",
@@ -337,7 +337,7 @@ Du kan konfigurere spesialiserte agenter for spesifikke oppgaver gjennom alterna
 }
 ```
 
-Du kan også definere agenter ved å bruke markdown-filer i `~/.config/opencode/agents/` eller `.opencode/agents/`. [Les mer her](/docs/agents).
+Du kan også definere agenter ved å bruke markdown-filer i `~/.config/opencode/agents/` eller `.apt5/agents/`. [Les mer her](/docs/agents).
 
 ---
 
@@ -347,7 +347,7 @@ Du kan angi standard agent ved å bruke alternativet `default_agent`. Dette best
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "default_agent": "plan"
 }
 ```
@@ -364,7 +364,7 @@ Du kan konfigurere [share](/docs/share)-funksjonen gjennom alternativet `share`.
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "share": "manual"
 }
 ```
@@ -385,7 +385,7 @@ Du kan konfigurere egendefinerte kommandoer for repeterende oppgaver gjennom alt
 
 ```jsonc title="opencode.jsonc"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "command": {
     "test": {
       "template": "Run the full test suite with coverage report and show any failures.\nFocus on the failing tests and suggest fixes.",
@@ -401,7 +401,7 @@ Du kan konfigurere egendefinerte kommandoer for repeterende oppgaver gjennom alt
 }
 ```
 
-Du kan også definere kommandoer ved å bruke markdown-filer i `~/.config/opencode/commands/` eller `.opencode/commands/`. [Les mer her](/docs/commands).
+Du kan også definere kommandoer ved å bruke markdown-filer i `~/.config/opencode/commands/` eller `.apt5/commands/`. [Les mer her](/docs/commands).
 
 ---
 
@@ -411,7 +411,7 @@ Tilpass tastebindinger i `tui.json`.
 
 ```json title="tui.json"
 {
-  "$schema": "https://opencode.ai/tui.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/tui.json",
   "keybinds": {}
 }
 ```
@@ -426,7 +426,7 @@ OpenCode vil automatisk laste ned eventuelle nye oppdateringer når den starter 
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "autoupdate": false
 }
 ```
@@ -442,7 +442,7 @@ Du kan konfigurere kodeformatere gjennom alternativet `formatter`.
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "formatter": {
     "prettier": {
       "disabled": true
@@ -470,7 +470,7 @@ Slik sikrer du at verktøyene `edit` og `bash` krever brukergodkjenning:
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "permission": {
     "edit": "ask",
     "bash": "ask"
@@ -488,7 +488,7 @@ Du kan styre kontekstkomprimering gjennom alternativet `compaction`.
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "compaction": {
     "auto": true,
     "prune": false,
@@ -509,7 +509,7 @@ Du kan konfigurere ignoreringsmønstre for filovervåking gjennom alternativet `
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "watcher": {
     "ignore": ["node_modules/**", "dist/**", ".git/**"]
   }
@@ -526,7 +526,7 @@ Du kan konfigurere MCP-servere du vil bruke gjennom alternativet `mcp`.
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "mcp": {}
 }
 ```
@@ -539,11 +539,11 @@ Du kan konfigurere MCP-servere du vil bruke gjennom alternativet `mcp`.
 
 [Plugins](/docs/plugins) utvider OpenCode med tilpassede verktøy, kroker og integrasjoner.
 
-Plasser plugin-filer i `.opencode/plugins/` eller `~/.config/opencode/plugins/`. Du kan også laste inn plugins fra npm gjennom alternativet `plugin`.
+Plasser plugin-filer i `.apt5/plugins/` eller `~/.config/opencode/plugins/`. Du kan også laste inn plugins fra npm gjennom alternativet `plugin`.
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "plugin": ["opencode-helicone-session", "@my-org/custom-plugin"]
 }
 ```
@@ -558,7 +558,7 @@ Du kan konfigurere instruksjoner for modellen du bruker gjennom alternativet `in
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "instructions": ["CONTRIBUTING.md", "docs/guidelines.md", ".cursor/rules/*.md"]
 }
 ```
@@ -574,7 +574,7 @@ Du kan deaktivere leverandører som lastes automatisk gjennom alternativet `disa
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "disabled_providers": ["openai", "gemini"]
 }
 ```
@@ -597,7 +597,7 @@ Du kan spesifisere en godkjenningsliste over leverandører gjennom alternativet 
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "enabled_providers": ["anthropic", "openai"]
 }
 ```
@@ -618,7 +618,7 @@ Hvis en leverandør vises i både `enabled_providers` og `disabled_providers`, h
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "experimental": {}
 }
 ```
@@ -641,8 +641,8 @@ Bruk `{env:VARIABLE_NAME}` for å erstatte miljøvariabler:
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
-  "model": "{env:OPENCODE_MODEL}",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
+  "model": "{env:APT5_MODEL}",
   "provider": {
     "anthropic": {
       "models": {},
@@ -664,7 +664,7 @@ Bruk `{file:path/to/file}` for å erstatte innholdet i en fil:
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "instructions": ["./custom-instructions.md"],
   "provider": {
     "openai": {

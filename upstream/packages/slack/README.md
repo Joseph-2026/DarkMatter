@@ -1,4 +1,4 @@
-# @opencode-ai/slack
+# @apt5/slack
 
 Slack bot integration for opencode that creates threaded conversations.
 

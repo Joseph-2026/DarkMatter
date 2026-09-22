@@ -10,7 +10,7 @@ export function clearWslDistroState(
   distro: string,
 ) {
   const nextDistroProbes = { ...distroProbes }
-  const nextOpencodeChecks = { ...opencodeChecks }
+  const nextOpencodeChecks = { ...apt5Checks }
   delete nextDistroProbes[distro]
   delete nextOpencodeChecks[distro]
   return { distroProbes: nextDistroProbes, opencodeChecks: nextOpencodeChecks }

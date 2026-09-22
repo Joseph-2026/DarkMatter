@@ -2,27 +2,27 @@ export * as TuiConfig from "./tui"
 
 import path from "path"
 import { mergeDeep, unique } from "remeda"
-import { AppNodeBuilder } from "@opencode-ai/core/effect/app-node-builder"
-import { LayerNode } from "@opencode-ai/core/effect/layer-node"
+import { AppNodeBuilder } from "@apt5/core/effect/app-node-builder"
+import { LayerNode } from "@apt5/core/effect/layer-node"
 import { Cause, Context, Effect, Fiber, Layer } from "effect"
 import { ConfigParse } from "@/config/parse"
 import * as ConfigPaths from "@/config/paths"
 import { migrateTuiConfig } from "./tui-migrate"
 import { resolveHostAttentionSoundPaths } from "./tui-host-attention"
-import { Flag } from "@opencode-ai/core/flag/flag"
-import { isRecord } from "@opencode-ai/tui/util/record"
-import { Global } from "@opencode-ai/core/global"
-import { FSUtil } from "@opencode-ai/core/fs-util"
+import { Flag } from "@apt5/core/flag/flag"
+import { isRecord } from "@apt5/tui/util/record"
+import { Global } from "@apt5/core/global"
+import { FSUtil } from "@apt5/core/fs-util"
 import { CurrentWorkingDirectory } from "./tui-cwd"
 import { ConfigPlugin } from "@/config/plugin"
-import { TuiKeybind } from "@opencode-ai/tui/config/keybind"
-import { InstallationLocal, InstallationVersion } from "@opencode-ai/core/installation/version"
-import { makeRuntime } from "@opencode-ai/core/effect/runtime"
+import { TuiKeybind } from "@apt5/tui/config/keybind"
+import { InstallationLocal, InstallationVersion } from "@apt5/core/installation/version"
+import { makeRuntime } from "@apt5/core/effect/runtime"
 import { Filesystem } from "@/util/filesystem"
 import { ConfigVariable } from "@/config/variable"
-import { Npm } from "@opencode-ai/core/npm"
+import { Npm } from "@apt5/core/npm"
 import { FormatError, FormatUnknownError } from "@/cli/error"
-import { TuiConfig } from "@opencode-ai/tui/config"
+import { TuiConfig } from "@apt5/tui/config"
 
 export const Info = TuiConfig.Info
 export type Info = TuiConfig.Info
@@ -168,12 +168,12 @@ const loadState = Effect.fn("TuiConfig.loadState")(function* (ctx: { directory: 
       acc.plugin_origins = plugins
     })
 
-  // Every config dir we may read from: global config dir, any `.opencode`
-  // folders between cwd and home, and OPENCODE_CONFIG_DIR.
+  // Every config dir we may read from: global config dir, any `.apt5`
+  // folders between cwd and home, and APT5_CONFIG_DIR.
   const directories = yield* ConfigPaths.directories(ctx.directory)
   yield* Effect.promise(() => migrateTuiConfig({ directories, cwd: ctx.directory }))
 
-  const projectFiles = Flag.OPENCODE_DISABLE_PROJECT_CONFIG ? [] : yield* ConfigPaths.files("tui", ctx.directory)
+  const projectFiles = Flag.APT5_DISABLE_PROJECT_CONFIG ? [] : yield* ConfigPaths.files("tui", ctx.directory)
 
   const acc: Acc = {
     result: {},
@@ -185,9 +185,9 @@ const loadState = Effect.fn("TuiConfig.loadState")(function* (ctx: { directory: 
     yield* mergeFile(acc, file)
   }
 
-  // 2. Explicit OPENCODE_TUI_CONFIG override, if set.
-  if (Flag.OPENCODE_TUI_CONFIG) {
-    const configFile = Flag.OPENCODE_TUI_CONFIG
+  // 2. Explicit APT5_TUI_CONFIG override, if set.
+  if (Flag.APT5_TUI_CONFIG) {
+    const configFile = Flag.APT5_TUI_CONFIG
     yield* mergeFile(acc, configFile)
     yield* Effect.logDebug("loaded custom tui config", { path: configFile })
   }
@@ -197,13 +197,13 @@ const loadState = Effect.fn("TuiConfig.loadState")(function* (ctx: { directory: 
     yield* mergeFile(acc, file)
   }
 
-  // 4. `.opencode` directories (and OPENCODE_CONFIG_DIR) discovered while
+  // 4. `.apt5` directories (and APT5_CONFIG_DIR) discovered while
   // walking up the tree. Also returned below so callers can install plugin
   // dependencies from each location.
-  const dirs = unique(directories).filter((dir) => dir.endsWith(".opencode") || dir === Flag.OPENCODE_CONFIG_DIR)
+  const dirs = unique(directories).filter((dir) => dir.endsWith(".apt5") || dir === Flag.APT5_CONFIG_DIR)
 
   for (const dir of dirs) {
-    if (!dir.endsWith(".opencode") && dir !== Flag.OPENCODE_CONFIG_DIR) continue
+    if (!dir.endsWith(".apt5") && dir !== Flag.APT5_CONFIG_DIR) continue
     for (const file of ConfigPaths.fileInDirectory(dir, "tui")) {
       yield* mergeFile(acc, file)
     }
@@ -238,7 +238,7 @@ const layer = Layer.effect(
           .install(dir, {
             add: [
               {
-                name: "@opencode-ai/plugin",
+                name: "@apt5/plugin",
                 version: InstallationLocal ? undefined : InstallationVersion,
               },
             ],

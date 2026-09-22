@@ -1,5 +1,5 @@
-import { and, Database, inArray } from "@opencode-ai/console-core/drizzle/index.js"
-import { ModelTpsRateLimitTable } from "@opencode-ai/console-core/schema/ip.sql.js"
+import { and, Database, inArray } from "@apt5/console-core/drizzle/index.js"
+import { ModelTpsRateLimitTable } from "@apt5/console-core/schema/ip.sql.js"
 
 type Result = Record<string, { interval: number; qualify: number; unqualify: number }[]>
 

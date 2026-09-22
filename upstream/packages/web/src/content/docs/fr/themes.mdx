@@ -65,7 +65,7 @@ Vous pouvez sélectionner un thème en affichant la sélection de thème avec la
 
 ```json title="tui.json" {3}
 {
-  "$schema": "https://opencode.ai/tui.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/tui.json",
   "theme": "tokyonight"
 }
 ```
@@ -84,8 +84,8 @@ Les thèmes sont chargés à partir de plusieurs répertoires dans l'ordre suiva
 
 1. **Thèmes intégrés** - Ceux-ci sont intégrés au binaire
 2. **Répertoire de configuration utilisateur** - Défini dans `~/.config/opencode/themes/*.json` ou `$XDG_CONFIG_HOME/opencode/themes/*.json`
-3. **Répertoire racine du projet** - Défini dans `<project-root>/.opencode/themes/*.json`
-4. **Répertoire de travail actuel** - Défini dans `./.opencode/themes/*.json`
+3. **Répertoire racine du projet** - Défini dans `<project-root>/.apt5/themes/*.json`
+4. **Répertoire de travail actuel** - Défini dans `./.apt5/themes/*.json`
 
 Si plusieurs répertoires contiennent un thème portant le même nom, le thème du répertoire ayant la priorité la plus élevée sera utilisé.
 
@@ -105,8 +105,8 @@ vim ~/.config/opencode/themes/my-theme.json
 Et pour des thèmes spécifiques au projet.
 
 ```bash no-frame
-mkdir -p .opencode/themes
-vim .opencode/themes/my-theme.json
+mkdir -p .apt5/themes
+vim .apt5/themes/my-theme.json
 ```
 
 ---
@@ -144,7 +144,7 @@ Voici un exemple de thème personnalisé :
 
 ```json title="my-theme.json"
 {
-  "$schema": "https://opencode.ai/theme.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/theme.json",
   "defs": {
     "nord0": "#2E3440",
     "nord1": "#3B4252",

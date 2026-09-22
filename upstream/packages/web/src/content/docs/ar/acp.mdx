@@ -34,7 +34,7 @@ ACP بروتوكول مفتوح يوحّد آلية التواصل بين محر
   "agent_servers": {
     "OpenCode": {
       "type": "custom",
-      "command": "opencode",
+      "command": "darkmatter",
       "args": ["acp"]
     }
   }
@@ -56,7 +56,7 @@ ACP بروتوكول مفتوح يوحّد آلية التواصل بين محر
             "custom": {
               "name": "OpenCode",
               "command": {
-                "command": "opencode",
+                "command": "darkmatter",
                 "args": ["acp"]
               }
             }
@@ -96,8 +96,8 @@ ACP بروتوكول مفتوح يوحّد آلية التواصل بين محر
 ```lua
 {
   acp_providers = {
-    ["opencode"] = {
-      command = "opencode",
+    ["darkmatter"] = {
+      command = "darkmatter",
       args = { "acp" }
     }
   }
@@ -109,11 +109,11 @@ ACP بروتوكول مفتوح يوحّد آلية التواصل بين محر
 ```lua {6-8}
 {
   acp_providers = {
-    ["opencode"] = {
-      command = "opencode",
+    ["darkmatter"] = {
+      command = "darkmatter",
       args = { "acp" },
       env = {
-        OPENCODE_API_KEY = os.getenv("OPENCODE_API_KEY")
+        APT5_API_KEY = os.getenv("APT5_API_KEY")
       }
     }
   }
@@ -131,7 +131,7 @@ require("codecompanion").setup({
   interactions = {
     chat = {
       adapter = {
-        name = "opencode",
+        name = "darkmatter",
         model = "claude-sonnet-4",
       },
     },
@@ -141,7 +141,7 @@ require("codecompanion").setup({
 
 يضبط هذا الإعداد CodeCompanion لاستخدام OpenCode كوكيل ACP للدردشة.
 
-إذا احتجت إلى تمرير متغيرات البيئة (مثل `OPENCODE_API_KEY`)، فارجع إلى [Configuring Adapters: Environment Variables](https://codecompanion.olimorris.dev/getting-started#setting-an-api-key) ضمن توثيق CodeCompanion.nvim للاطلاع على التفاصيل كاملة.
+إذا احتجت إلى تمرير متغيرات البيئة (مثل `APT5_API_KEY`)، فارجع إلى [Configuring Adapters: Environment Variables](https://codecompanion.olimorris.dev/getting-started#setting-an-api-key) ضمن توثيق CodeCompanion.nvim للاطلاع على التفاصيل كاملة.
 
 ## الدعم
 

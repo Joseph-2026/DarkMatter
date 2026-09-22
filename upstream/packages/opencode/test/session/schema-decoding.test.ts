@@ -8,8 +8,8 @@ import { SessionStatus } from "../../src/session/status"
 import { SessionSummary } from "../../src/session/summary"
 import { Todo } from "../../src/session/todo"
 import { SessionID, MessageID, PartID } from "../../src/session/schema"
-import { ProjectV2 } from "@opencode-ai/core/project"
-import { WorkspaceV2 } from "@opencode-ai/core/workspace"
+import { ProjectV2 } from "@apt5/core/project"
+import { WorkspaceV2 } from "@apt5/core/workspace"
 
 // Covers the session-domain Effect Schema migration. For each migrated
 // schema we assert:
@@ -236,11 +236,11 @@ describe("SessionStatus.Info", () => {
       message: "transient",
       action: {
         reason: "free_tier_limit",
-        provider: "opencode",
+        provider: "darkmatter",
         title: "Free limit reached",
         message: "Subscribe to OpenCode Go.",
         label: "subscribe",
-        link: "https://opencode.ai/go",
+        link: "https://github.com/Joseph-2026/DarkMatter/go",
       },
       next: 500,
     }

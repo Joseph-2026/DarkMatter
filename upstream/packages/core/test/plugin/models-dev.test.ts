@@ -1,18 +1,18 @@
 import path from "path"
 import { describe, expect } from "bun:test"
 import { Effect, Layer } from "effect"
-import { Catalog } from "@opencode-ai/core/catalog"
-import { Integration } from "@opencode-ai/core/integration"
-import { AppNodeBuilder } from "@opencode-ai/core/effect/app-node-builder"
-import { LayerNode } from "@opencode-ai/core/effect/layer-node"
-import { EventV2 } from "@opencode-ai/core/event"
-import { Flag } from "@opencode-ai/core/flag/flag"
-import { Location } from "@opencode-ai/core/location"
-import { ModelV2 } from "@opencode-ai/core/model"
-import { ModelsDev } from "@opencode-ai/core/models-dev"
-import { ModelsDevPlugin } from "@opencode-ai/core/plugin/models-dev"
-import { ProviderV2 } from "@opencode-ai/core/provider"
-import { AbsolutePath } from "@opencode-ai/core/schema"
+import { Catalog } from "@apt5/core/catalog"
+import { Integration } from "@apt5/core/integration"
+import { AppNodeBuilder } from "@apt5/core/effect/app-node-builder"
+import { LayerNode } from "@apt5/core/effect/layer-node"
+import { EventV2 } from "@apt5/core/event"
+import { Flag } from "@apt5/core/flag/flag"
+import { Location } from "@apt5/core/location"
+import { ModelV2 } from "@apt5/core/model"
+import { ModelsDev } from "@apt5/core/models-dev"
+import { ModelsDevPlugin } from "@apt5/core/plugin/models-dev"
+import { ProviderV2 } from "@apt5/core/provider"
+import { AbsolutePath } from "@apt5/core/schema"
 import { location } from "../fixture/location"
 import { testEffect } from "../lib/effect"
 import { catalogHost, host, integrationHost } from "./host"
@@ -128,11 +128,11 @@ describe("ModelsDevPlugin", () => {
     Effect.acquireUseRelease(
       Effect.sync(() => {
         const previous = {
-          path: Flag.OPENCODE_MODELS_PATH,
-          disabled: Flag.OPENCODE_DISABLE_MODELS_FETCH,
+          path: Flag.APT5_MODELS_PATH,
+          disabled: Flag.APT5_DISABLE_MODELS_FETCH,
         }
-        Flag.OPENCODE_MODELS_PATH = path.join(import.meta.dir, "fixtures", "models-dev.json")
-        Flag.OPENCODE_DISABLE_MODELS_FETCH = true
+        Flag.APT5_MODELS_PATH = path.join(import.meta.dir, "fixtures", "models-dev.json")
+        Flag.APT5_DISABLE_MODELS_FETCH = true
         return previous
       }),
       () =>
@@ -162,8 +162,8 @@ describe("ModelsDevPlugin", () => {
         }).pipe(Effect.provide(AppNodeBuilder.build(ModelsDev.node))),
       (previous) =>
         Effect.sync(() => {
-          Flag.OPENCODE_MODELS_PATH = previous.path
-          Flag.OPENCODE_DISABLE_MODELS_FETCH = previous.disabled
+          Flag.APT5_MODELS_PATH = previous.path
+          Flag.APT5_DISABLE_MODELS_FETCH = previous.disabled
         }),
     ),
   )

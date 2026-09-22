@@ -13,9 +13,9 @@ opencode hem **JSON** hem de **JSONC** (JSON Yorumlarla birlikte) formatlarını
 
 ```jsonc title="opencode.jsonc"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   // Theme configuration
-  "theme": "opencode",
+  "theme": "darkmatter",
   "model": "anthropic/claude-sonnet-4-5",
   "autoupdate": true,
 }
@@ -34,7 +34,7 @@ Yapılandırma dosyaları **birleştirilir**, değiştirilmez.
 
 Yapılandırma dosyaları değiştirilmez, birleştirilir. Aşağıdaki yapılandırma konumlarındaki ayarlar birleştirilir. Daha sonraki yapılandırmalar, yalnızca çakışan anahtarlar için önceki yapılandırmaları geçersiz kılar. Tüm yapılandırmalardaki çakışmayan ayarlar korunur.
 
-Örneğin, genel ayarınız `theme: "opencode"` ve `autoupdate: true`'yi ayarlıyorsa ve proje ayarlarınız `model: "anthropic/claude-sonnet-4-5"`'yi ayarlıyorsa, nihai yapılandırma üç ayarı da içerecektir.
+Örneğin, genel ayarınız `theme: "darkmatter"` ve `autoupdate: true`'yi ayarlıyorsa ve proje ayarlarınız `model: "anthropic/claude-sonnet-4-5"`'yi ayarlıyorsa, nihai yapılandırma üç ayarı da içerecektir.
 
 ---
 
@@ -44,15 +44,15 @@ Yapılandırma kaynakları bu sırayla yüklenir (sonraki kaynaklar öncekileri 
 
 1. **Uzak yapılandırma** (`.well-known/opencode`'dan) - kurumsal varsayılanlar
 2. **Genel yapılandırma** (`~/.config/opencode/opencode.json`) - kullanıcı tercihleri
-3. **Özel yapılandırma** (`OPENCODE_CONFIG` env var) - özel geçersiz kılmalar
+3. **Özel yapılandırma** (`APT5_CONFIG` env var) - özel geçersiz kılmalar
 4. **Proje yapılandırması** (projedeki `opencode.json`) - projeye özgü ayarlar
-5. **`.opencode` dizinleri** - agent'lar, komutlar, eklentiler
-6. **Satır içi yapılandırma** (`OPENCODE_CONFIG_CONTENT` env var) - çalışma zamanı geçersiz kılmaları
+5. **`.apt5` dizinleri** - agent'lar, komutlar, eklentiler
+6. **Satır içi yapılandırma** (`APT5_CONFIG_CONTENT` env var) - çalışma zamanı geçersiz kılmaları
 
 Bu, proje yapılandırmalarının genel varsayılanları geçersiz kılabileceği ve genel yapılandırmaların uzak organizasyonel varsayılanları geçersiz kılabileceği anlamına gelir.
 
 :::note
-`.opencode` ve `~/.config/opencode` dizinleri alt dizinler için **çoğul adlar** kullanır: `agents/`, `commands/`, `modes/`, `plugins/`, `skills/`, `tools/` ve `themes/`. Tekil adlar (örneğin, `agent/`) da geriye dönük uyumluluk açısından desteklenir.
+`.apt5` ve `~/.config/opencode` dizinleri alt dizinler için **çoğul adlar** kullanır: `agents/`, `commands/`, `modes/`, `plugins/`, `skills/`, `tools/` ve `themes/`. Tekil adlar (örneğin, `agent/`) da geriye dönük uyumluluk açısından desteklenir.
 :::
 
 ---
@@ -117,10 +117,10 @@ Bunun Git'te kontrol edilmesi de güvenlidir ve global olanla aynı şemayı kul
 
 ### Özel yol
 
-`OPENCODE_CONFIG` ortam değişkenini kullanarak özel bir yapılandırma dosyası yolu belirtin.
+`APT5_CONFIG` ortam değişkenini kullanarak özel bir yapılandırma dosyası yolu belirtin.
 
 ```bash
-export OPENCODE_CONFIG=/path/to/my/custom-config.json
+export APT5_CONFIG=/path/to/my/custom-config.json
 opencode run "Hello world"
 ```
 
@@ -130,23 +130,23 @@ opencode run "Hello world"
 
 ### Özel dizin
 
-`OPENCODE_CONFIG_DIR` kullanarak özel bir yapılandırma dizini belirtin
+`APT5_CONFIG_DIR` kullanarak özel bir yapılandırma dizini belirtin
 ortam değişkeni. Bu dizin agent'lar, komutlar için aranacaktır.
-modlar ve eklentiler tıpkı standart `.opencode` dizini gibi olmalıdır ve
+modlar ve eklentiler tıpkı standart `.apt5` dizini gibi olmalıdır ve
 aynı yapıyı takip edin.
 
 ```bash
-export OPENCODE_CONFIG_DIR=/path/to/my/config-directory
+export APT5_CONFIG_DIR=/path/to/my/config-directory
 opencode run "Hello world"
 ```
 
-Özel dizin, genel yapılandırma ve `.opencode` dizinlerinden sonra yüklenir, böylece bunların ayarlarını **geçersiz kılabilir**.
+Özel dizin, genel yapılandırma ve `.apt5` dizinlerinden sonra yüklenir, böylece bunların ayarlarını **geçersiz kılabilir**.
 
 ---
 
 ## Şema
 
-Yapılandırma dosyası [**`opencode.ai/config.json`**](https://opencode.ai/config.json)'da tanımlanan bir şemaya sahiptir.
+Yapılandırma dosyası [**`github.com/Joseph-2026/DarkMatter/config.json`**](https://github.com/Joseph-2026/DarkMatter/config.json)'da tanımlanan bir şemaya sahiptir.
 
 Editörünüz şemaya göre doğrulama ve otomatik tamamlama yapabilmelidir.
 
@@ -158,7 +158,7 @@ TUI'ye özgü ayarları `tui` seçeneği aracılığıyla yapılandırabilirsini
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "tui": {
     "scroll_speed": 3,
     "scroll_acceleration": {
@@ -185,7 +185,7 @@ Mevcut seçenekler:
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "server": {
     "port": 4096,
     "hostname": "0.0.0.0",
@@ -214,7 +214,7 @@ Bir LLM'nin kullanabileceği araçları `tools` seçeneği aracılığıyla yön
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "tools": {
     "write": false,
     "bash": false
@@ -232,7 +232,7 @@ opencode yapılandırmanızda kullanmak istediğiniz sağlayıcıları ve modell
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "provider": {},
   "model": "anthropic/claude-sonnet-4-5",
   "small_model": "anthropic/claude-haiku-4-5"
@@ -245,7 +245,7 @@ Sağlayıcı seçenekleri `timeout` ve `setCacheKey` içerebilir:
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "provider": {
     "anthropic": {
       "options": {
@@ -274,7 +274,7 @@ Amazon Bedrock, AWS'a özgü yapılandırmayı destekler:
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "provider": {
     "amazon-bedrock": {
       "options": {
@@ -305,7 +305,7 @@ opencode yapılandırmanızda kullanmak istediğiniz temayı `theme` seçeneği 
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "theme": ""
 }
 ```
@@ -320,7 +320,7 @@ opencode yapılandırmanızda kullanmak istediğiniz temayı `theme` seçeneği 
 
 ```jsonc title="opencode.jsonc"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "agent": {
     "code-reviewer": {
       "description": "Reviews code for best practices and potential issues",
@@ -337,7 +337,7 @@ opencode yapılandırmanızda kullanmak istediğiniz temayı `theme` seçeneği 
 }
 ```
 
-Agent'ları `~/.config/opencode/agents/` veya `.opencode/agents/` içindeki Markdown dosyalarıyla da tanımlayabilirsiniz. [Daha fazla bilgi](/docs/agents).
+Agent'ları `~/.config/opencode/agents/` veya `.apt5/agents/` içindeki Markdown dosyalarıyla da tanımlayabilirsiniz. [Daha fazla bilgi](/docs/agents).
 
 ---
 
@@ -347,7 +347,7 @@ Agent'ları `~/.config/opencode/agents/` veya `.opencode/agents/` içindeki Mark
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "default_agent": "plan"
 }
 ```
@@ -364,7 +364,7 @@ Bu ayar tüm arayüzler için geçerlidir: TUI, CLI (`opencode run`), masaüstü
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "share": "manual"
 }
 ```
@@ -385,7 +385,7 @@ Varsayılan olarak paylaşım, `/share` komutunu kullanarak konuşmaları açık
 
 ```jsonc title="opencode.jsonc"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "command": {
     "test": {
       "template": "Run the full test suite with coverage report and show any failures.\nFocus on the failing tests and suggest fixes.",
@@ -401,7 +401,7 @@ Varsayılan olarak paylaşım, `/share` komutunu kullanarak konuşmaları açık
 }
 ```
 
-Komutları `~/.config/opencode/commands/` veya `.opencode/commands/` içindeki Markdown dosyalarıyla da tanımlayabilirsiniz. [Daha fazla bilgi](/docs/commands).
+Komutları `~/.config/opencode/commands/` veya `.apt5/commands/` içindeki Markdown dosyalarıyla da tanımlayabilirsiniz. [Daha fazla bilgi](/docs/commands).
 
 ---
 
@@ -411,7 +411,7 @@ Tuş atamalarınızı `keybinds` seçeneği aracılığıyla özelleştirebilirs
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "keybinds": {}
 }
 ```
@@ -426,7 +426,7 @@ opencode başlatıldığında yeni güncellemeleri otomatik olarak indirecektir.
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "autoupdate": false
 }
 ```
@@ -442,7 +442,7 @@ Kod formatlayıcılarını `formatter` seçeneği aracılığıyla yapılandıra
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "formatter": {
     "prettier": {
       "disabled": true
@@ -470,7 +470,7 @@ Varsayılan olarak, opencode açık bir onay gerektirmeden **tüm işlemlere izi
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "permission": {
     "edit": "ask",
     "bash": "ask"
@@ -488,7 +488,7 @@ Bağlam sıkıştırma davranışını `compaction` seçeneği aracılığıyla 
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "compaction": {
     "auto": true,
     "prune": false,
@@ -509,7 +509,7 @@ Dosya izleyicinin yok sayma kalıplarını `watcher` seçeneği aracılığıyla
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "watcher": {
     "ignore": ["node_modules/**", "dist/**", ".git/**"]
   }
@@ -526,7 +526,7 @@ Kullanmak istediğiniz MCP sunucularını `mcp` seçeneği aracılığıyla yap�
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "mcp": {}
 }
 ```
@@ -539,11 +539,11 @@ Kullanmak istediğiniz MCP sunucularını `mcp` seçeneği aracılığıyla yap�
 
 [Eklentiler](/docs/plugins) opencode'u özel araçlar, kancalar ve entegrasyonlarla genişletin.
 
-Eklenti dosyalarını `.opencode/plugins/` veya `~/.config/opencode/plugins/` içine yerleştirin. Ayrıca eklentileri `plugin` seçeneği aracılığıyla npm'den de yükleyebilirsiniz.
+Eklenti dosyalarını `.apt5/plugins/` veya `~/.config/opencode/plugins/` içine yerleştirin. Ayrıca eklentileri `plugin` seçeneği aracılığıyla npm'den de yükleyebilirsiniz.
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "plugin": ["opencode-helicone-session", "@my-org/custom-plugin"]
 }
 ```
@@ -558,7 +558,7 @@ Kullandığınız modele ilişkin talimatları `instructions` seçeneği aracıl
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "instructions": ["CONTRIBUTING.md", "docs/guidelines.md", ".cursor/rules/*.md"]
 }
 ```
@@ -573,7 +573,7 @@ Bu, talimat dosyalarına giden bir dizi yolu ve glob desenini alır. [Kurallar h
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "disabled_providers": ["openai", "gemini"]
 }
 ```
@@ -596,7 +596,7 @@ Bu, talimat dosyalarına giden bir dizi yolu ve glob desenini alır. [Kurallar h
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "enabled_providers": ["anthropic", "openai"]
 }
 ```
@@ -617,7 +617,7 @@ Bir sağlayıcı hem `enabled_providers` hem de `disabled_providers`'de görün�
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "experimental": {}
 }
 ```
@@ -640,8 +640,8 @@ Ortam değişkenlerini değiştirmek için `{env:VARIABLE_NAME}` kullanın:
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
-  "model": "{env:OPENCODE_MODEL}",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
+  "model": "{env:APT5_MODEL}",
   "provider": {
     "anthropic": {
       "models": {},
@@ -663,7 +663,7 @@ Bir dosyanın biçimini değiştirmek için `{file:path/to/file}` kullanın:
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "instructions": ["./custom-instructions.md"],
   "provider": {
     "openai": {

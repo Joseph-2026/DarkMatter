@@ -5,7 +5,7 @@ import { selectWebSearchProvider, webSearchModelName, webSearchProviderLabel } f
 
 import { webSearchEnabled } from "../../src/tool/registry"
 import { it } from "../lib/effect"
-import { ProviderV2 } from "@opencode-ai/core/provider"
+import { ProviderV2 } from "@apt5/core/provider"
 
 const SESSION_ID = "ses_0196aabbccddeeff001122334455"
 
@@ -15,17 +15,17 @@ describe("websearch provider", () => {
   })
 
   test("supports an operational override", () => {
-    const original = process.env.OPENCODE_WEBSEARCH_PROVIDER
+    const original = process.env.APT5_WEBSEARCH_PROVIDER
 
     try {
-      process.env.OPENCODE_WEBSEARCH_PROVIDER = "parallel"
+      process.env.APT5_WEBSEARCH_PROVIDER = "parallel"
       expect(selectWebSearchProvider(SESSION_ID)).toBe("parallel")
 
-      process.env.OPENCODE_WEBSEARCH_PROVIDER = "exa"
+      process.env.APT5_WEBSEARCH_PROVIDER = "exa"
       expect(selectWebSearchProvider(SESSION_ID)).toBe("exa")
     } finally {
-      if (original === undefined) delete process.env.OPENCODE_WEBSEARCH_PROVIDER
-      else process.env.OPENCODE_WEBSEARCH_PROVIDER = original
+      if (original === undefined) delete process.env.APT5_WEBSEARCH_PROVIDER
+      else process.env.APT5_WEBSEARCH_PROVIDER = original
     }
   })
 
@@ -38,7 +38,7 @@ describe("websearch provider", () => {
   })
 
   test("is enabled for OpenCode providers or explicit websearch provider flags", () => {
-    expect(webSearchEnabled(ProviderV2.ID.opencode, { exa: false, parallel: false })).toBe(true)
+    expect(webSearchEnabled(ProviderV2.ID.apt5, { exa: false, parallel: false })).toBe(true)
     expect(webSearchEnabled(ProviderV2.ID.make("opencode-go"), { exa: false, parallel: false })).toBe(true)
     expect(webSearchEnabled(ProviderV2.ID.openai, { exa: false, parallel: false })).toBe(false)
     expect(webSearchEnabled(ProviderV2.ID.openai, { exa: true, parallel: false })).toBe(true)

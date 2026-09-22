@@ -1,4 +1,4 @@
-import type { ProjectV2 } from "@opencode-ai/core/project"
+import type { ProjectV2 } from "@apt5/core/project"
 import type { WorkspaceAdapter, WorkspaceAdapterEntry } from "../types"
 import { WorktreeAdapter } from "./worktree"
 

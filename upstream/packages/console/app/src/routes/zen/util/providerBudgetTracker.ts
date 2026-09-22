@@ -1,4 +1,4 @@
-import { centsToMicroCents } from "@opencode-ai/console-core/util/price.js"
+import { centsToMicroCents } from "@apt5/console-core/util/price.js"
 import { buildRateLimitKey, getRedis } from "./redis"
 import { logger } from "./logger"
 

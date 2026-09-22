@@ -55,7 +55,7 @@ test("clears cached distro probes when removing a WSL server", () => {
       {
         Debian: {
           distro: "Debian",
-          resolvedPath: "/home/luke/.opencode/bin/opencode",
+          resolvedPath: "/home/luke/.apt5/bin/opencode",
           version: "1.16.2",
           expectedVersion: "1.16.2",
           matchesDesktop: true,
@@ -115,7 +115,7 @@ test("ignores stale background OpenCode checks after removing a WSL server", asy
         onExit: () => undefined,
       },
       url: "http://127.0.0.1:4096",
-      username: "opencode",
+      username: "darkmatter",
       password: "secret",
     }),
     testControllerOptions(),
@@ -128,7 +128,7 @@ test("ignores stale background OpenCode checks after removing a WSL server", asy
   await new Promise((resolve) => setTimeout(resolve, 0))
 
   expect(controller.getState().servers).toEqual([])
-  expect(controller.getState().opencodeChecks).toEqual({})
+  expect(controller.getState().apt5Checks).toEqual({})
 })
 
 test("ignores stale startup OpenCode checks after removing a WSL server", async () => {
@@ -147,7 +147,7 @@ test("ignores stale startup OpenCode checks after removing a WSL server", async 
   await new Promise((resolve) => setTimeout(resolve, 0))
 
   expect(controller.getState().servers).toEqual([])
-  expect(controller.getState().opencodeChecks).toEqual({})
+  expect(controller.getState().apt5Checks).toEqual({})
 })
 
 test("probes addable distros in parallel before checking OpenCode", async () => {
@@ -164,7 +164,7 @@ test("probes addable distros in parallel before checking OpenCode", async () => 
     },
     resolveOpencode: async (distro) => {
       opencode.push(distro)
-      return "/home/me/.opencode/bin/opencode"
+      return "/home/me/.apt5/bin/opencode"
     },
   })
 
@@ -178,7 +178,7 @@ test("probes addable distros in parallel before checking OpenCode", async () => 
 
   expect(Object.keys(controller.getState().distroProbes)).toEqual(["Debian", "Ubuntu"])
   expect(opencode).toEqual(["Debian", "Ubuntu"])
-  expect(Object.keys(controller.getState().opencodeChecks)).toEqual(["Debian", "Ubuntu"])
+  expect(Object.keys(controller.getState().apt5Checks)).toEqual(["Debian", "Ubuntu"])
 })
 
 test("does not check OpenCode in addable distros that cannot execute commands", async () => {
@@ -195,7 +195,7 @@ test("does not check OpenCode in addable distros that cannot execute commands", 
     }),
     resolveOpencode: async (distro) => {
       opencode.push(distro)
-      return "/home/me/.opencode/bin/opencode"
+      return "/home/me/.apt5/bin/opencode"
     },
   })
 
@@ -203,7 +203,7 @@ test("does not check OpenCode in addable distros that cannot execute commands", 
 
   expect(Object.keys(controller.getState().distroProbes)).toEqual(["Debian", "Ubuntu"])
   expect(opencode).toEqual(["Debian"])
-  expect(Object.keys(controller.getState().opencodeChecks)).toEqual(["Debian"])
+  expect(Object.keys(controller.getState().apt5Checks)).toEqual(["Debian"])
 })
 
 async function waitFor(check: () => boolean) {
@@ -225,7 +225,7 @@ function testControllerOptions() {
       await new Promise<void>((resolve) => {
         releaseOpencodeResolve = resolve
       })
-      return "/home/me/.opencode/bin/opencode"
+      return "/home/me/.apt5/bin/opencode"
     },
   }
 }

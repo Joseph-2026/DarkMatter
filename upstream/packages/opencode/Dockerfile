@@ -15,4 +15,4 @@ COPY dist/opencode-linux-arm64-musl/bin/opencode /usr/local/bin/opencode
 ARG TARGETARCH
 FROM build-${TARGETARCH}
 RUN opencode --version
-ENTRYPOINT ["opencode"]
+ENTRYPOINT ["darkmatter"]

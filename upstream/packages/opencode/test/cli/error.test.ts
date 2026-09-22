@@ -13,9 +13,9 @@ describe("cli.error", () => {
       },
       {
         tag: "ConfigDirectoryTypoError",
-        data: { path: "/tmp/opencode.jsonc", dir: ".opencode", suggestion: "opencode" },
+        data: { path: "/tmp/opencode.jsonc", dir: ".apt5", suggestion: "darkmatter" },
         expected:
-          'Directory ".opencode" in /tmp/opencode.jsonc is not valid. Rename the directory to "opencode" or remove it. This is a common typo.',
+          'Directory ".apt5" in /tmp/opencode.jsonc is not valid. Rename the directory to "darkmatter" or remove it. This is a common typo.',
       },
       {
         tag: "ConfigFrontmatterError",
@@ -54,12 +54,12 @@ describe("cli.error", () => {
   test("formats account transport errors clearly", () => {
     const error = new AccountTransportError({
       method: "POST",
-      url: "https://console.opencode.ai/auth/device/code",
+      url: "https://console.apt5.ai/auth/device/code",
     })
 
     const formatted = FormatError(error)
 
-    expect(formatted).toContain("Could not reach POST https://console.opencode.ai/auth/device/code.")
+    expect(formatted).toContain("Could not reach POST https://console.apt5.ai/auth/device/code.")
     expect(formatted).toContain("This failed before the server returned an HTTP response.")
     expect(formatted).toContain("Check your network, proxy, or VPN configuration and try again.")
   })

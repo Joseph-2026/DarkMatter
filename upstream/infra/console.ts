@@ -9,7 +9,7 @@ const lake = deployAws ? await import("./lake") : undefined
 ////////////////
 
 const cluster = planetscale.getDatabaseOutput({
-  name: "opencode",
+  name: "darkmatter",
   organization: "anomalyco",
 })
 
@@ -224,7 +224,7 @@ const AUTH_API_URL = new sst.Linkable("AUTH_API_URL", {
 })
 // Preview branches have independent databases; do not send their workspaces to shared dev.
 const migrationDomain =
-  $app.stage === "production" ? "opencode.ai" : $app.stage === "dev" ? "dev.opencode.ai" : undefined
+  $app.stage === "production" ? "github.com/Joseph-2026/DarkMatter" : $app.stage === "dev" ? "dev.apt5.ai" : undefined
 const consoleMigration = new sst.Linkable("ConsoleMigration", {
   properties: {
     consoleUrl: migrationDomain ? `https://${migrationDomain}/console` : "",

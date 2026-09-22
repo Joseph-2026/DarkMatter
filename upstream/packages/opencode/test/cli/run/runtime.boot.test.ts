@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, mock, spyOn, test } from "bun:test"
-import { OpencodeClient, type Provider } from "@opencode-ai/sdk/v2"
-import type { Resolved } from "@opencode-ai/tui/config"
+import { OpencodeClient, type Provider } from "@apt5/sdk/v2"
+import type { Resolved } from "@apt5/tui/config"
 import { TuiConfig } from "@/config/tui"
 import { resolveDiffStyle, resolveModelInfo, resolveRunTuiConfig } from "@/cli/cmd/run/runtime.boot"
 import { createTuiResolvedConfig } from "../../fixture/tui-runtime"

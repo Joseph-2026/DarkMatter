@@ -125,7 +125,7 @@ export function createWslServersController(
   const setOpencodeCheck = (distro: string, check: WslOpencodeCheck) => {
     setState({
       opencodeChecks: {
-        ...state.opencodeChecks,
+        ...state.apt5Checks,
         [distro]: check,
       },
     })
@@ -157,11 +157,11 @@ export function createWslServersController(
     const opencodeChecks = await Promise.all(
       unique
         .filter((distro) => distroProbeReady(state.distroProbes[distro]))
-        .filter((distro) => !state.opencodeChecks[distro])
+        .filter((distro) => !state.apt5Checks[distro])
         .map(async (distro) => [distro, await checkOpencode(distro, opts)] as const),
     )
     if (opencodeChecks.length) {
-      setState({ opencodeChecks: { ...state.opencodeChecks, ...Object.fromEntries(opencodeChecks) } })
+      setState({ opencodeChecks: { ...state.apt5Checks, ...Object.fromEntries(opencodeChecks) } })
     }
   }
 
@@ -367,7 +367,7 @@ export function createWslServersController(
           throw new Error(summarize(result.stderr || result.stdout) || nativeT("desktop.wsl.error.installOpencode"))
         }
         await refreshOpencodeCheck(name, { signal: abort.signal })
-        expectOpencodeVersion(state.opencodeChecks[name]?.version ?? null, appVersion, name)
+        expectOpencodeVersion(state.apt5Checks[name]?.version ?? null, appVersion, name)
         const id = wslServerIdToRestart(state.servers, name)
         if (id) await startServer(id)
       })
@@ -402,7 +402,7 @@ export function createWslServersController(
       persistServers(remaining)
       setState({
         servers: state.servers.filter((item) => item.config.id !== id),
-        ...(distro ? clearWslDistroState(state.distroProbes, state.opencodeChecks, distro) : {}),
+        ...(distro ? clearWslDistroState(state.distroProbes, state.apt5Checks, distro) : {}),
       })
     },
 
@@ -477,7 +477,7 @@ function opencodeCheck(
       version: null,
       expectedVersion,
       matchesDesktop: null,
-      error: nativeT("desktop.wsl.error.opencodeMissing"),
+      error: nativeT("desktop.wsl.error.apt5Missing"),
     }
   }
   if (!version) {
@@ -487,7 +487,7 @@ function opencodeCheck(
       version: null,
       expectedVersion,
       matchesDesktop: null,
-      error: nativeT("desktop.wsl.error.opencodeCannotRun"),
+      error: nativeT("desktop.wsl.error.apt5CannotRun"),
     }
   }
   return {

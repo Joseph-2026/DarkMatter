@@ -1,9 +1,9 @@
-import { useDialog } from "@opencode-ai/ui/context/dialog"
-import { Tag } from "@opencode-ai/ui/v2/badge-v2"
-import { ButtonV2 } from "@opencode-ai/ui/v2/button-v2"
-import { Icon as IconV2 } from "@opencode-ai/ui/v2/icon"
-import { IconButtonV2 } from "@opencode-ai/ui/v2/icon-button-v2"
-import { MenuV2 } from "@opencode-ai/ui/v2/menu-v2"
+import { useDialog } from "@apt5/ui/context/dialog"
+import { Tag } from "@apt5/ui/v2/badge-v2"
+import { ButtonV2 } from "@apt5/ui/v2/button-v2"
+import { Icon as IconV2 } from "@apt5/ui/v2/icon"
+import { IconButtonV2 } from "@apt5/ui/v2/icon-button-v2"
+import { MenuV2 } from "@apt5/ui/v2/menu-v2"
 import { useMutation } from "@tanstack/solid-query"
 import fuzzysort from "fuzzysort"
 import { type Accessor, For, Show, createMemo } from "solid-js"
@@ -94,7 +94,7 @@ export function WslServerSettings(props: {
       <For each={props.servers()}>
         {(item) => {
           const key = ServerConnection.Key.make(item.config.id)
-          const check = () => wsl.data?.opencodeChecks[item.config.distro]
+          const check = () => wsl.data?.apt5Checks[item.config.distro]
           const opencodeAction = () => wslOpencodeAction(check())
           const busy = () => wsl.data?.job?.kind === "install-opencode" && wsl.data.job.distro === item.config.distro
           return (

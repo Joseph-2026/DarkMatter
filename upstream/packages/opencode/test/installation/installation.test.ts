@@ -1,13 +1,13 @@
 import { describe, expect } from "bun:test"
-import { makeGlobalNode } from "@opencode-ai/core/effect/app-node"
-import { LayerNode } from "@opencode-ai/core/effect/layer-node"
-import { httpClient } from "@opencode-ai/core/effect/app-node-platform"
+import { makeGlobalNode } from "@apt5/core/effect/app-node"
+import { LayerNode } from "@apt5/core/effect/layer-node"
+import { httpClient } from "@apt5/core/effect/app-node-platform"
 import { Effect, Layer, Stream } from "effect"
 import { HttpClient, HttpClientRequest, HttpClientResponse } from "effect/unstable/http"
 import { ChildProcess, ChildProcessSpawner } from "effect/unstable/process"
 import { Installation } from "../../src/installation"
-import { InstallationChannel } from "@opencode-ai/core/installation/version"
-import { CrossSpawnSpawner } from "@opencode-ai/core/cross-spawn-spawner"
+import { InstallationChannel } from "@apt5/core/installation/version"
+import { CrossSpawnSpawner } from "@apt5/core/cross-spawn-spawner"
 import { testEffect } from "../lib/effect"
 
 const encoder = new TextEncoder()
@@ -150,7 +150,7 @@ describe("installation", () => {
         (cmd, args) => {
           // getBrewFormula: return core formula (no tap)
           if (cmd === "brew" && args.includes("--formula") && args.includes("anomalyco/tap/opencode")) return ""
-          if (cmd === "brew" && args.includes("--formula") && args.includes("opencode")) return "opencode"
+          if (cmd === "brew" && args.includes("--formula") && args.includes("darkmatter")) return "darkmatter"
           return ""
         },
       ),
@@ -168,7 +168,7 @@ describe("installation", () => {
       testLayer(
         () => jsonResponse({}), // HTTP not used for tap formula
         (cmd, args) => {
-          if (cmd === "brew" && args.includes("anomalyco/tap/opencode") && args.includes("--formula")) return "opencode"
+          if (cmd === "brew" && args.includes("anomalyco/tap/opencode") && args.includes("--formula")) return "darkmatter"
           if (cmd === "brew" && args.includes("--json=v2")) return brewInfoJson
           return ""
         },

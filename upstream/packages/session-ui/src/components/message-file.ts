@@ -1,6 +1,6 @@
 import { bundledLanguagesInfo } from "shiki"
-import { getFilename } from "@opencode-ai/core/util/path"
-import type { FilePart } from "@opencode-ai/sdk/v2"
+import { getFilename } from "@apt5/core/util/path"
+import type { FilePart } from "@apt5/sdk/v2"
 
 export function attached(part: FilePart) {
   return part.url.startsWith("data:") && !inline(part)

@@ -13,7 +13,7 @@ OpenCode 支持 **JSON** 和 **JSONC**（带注释的 JSON）格式。
 
 ```jsonc title="opencode.jsonc"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "model": "anthropic/claude-sonnet-4-5",
   "autoupdate": true,
   "server": {
@@ -44,15 +44,15 @@ OpenCode 支持 **JSON** 和 **JSONC**（带注释的 JSON）格式。
 
 1. **远程配置**（来自 `.well-known/opencode`）- 组织默认值
 2. **全局配置**（`~/.config/opencode/opencode.json`）- 用户偏好
-3. **自定义配置**（`OPENCODE_CONFIG` 环境变量）- 自定义覆盖
+3. **自定义配置**（`APT5_CONFIG` 环境变量）- 自定义覆盖
 4. **项目配置**（项目中的 `opencode.json`）- 项目特定设置
-5. **`.opencode` 目录** - 代理、命令、插件
-6. **内联配置**（`OPENCODE_CONFIG_CONTENT` 环境变量）- 运行时覆盖
+5. **`.apt5` 目录** - 代理、命令、插件
+6. **内联配置**（`APT5_CONFIG_CONTENT` 环境变量）- 运行时覆盖
 
 这意味着项目配置可以覆盖全局默认值，全局配置可以覆盖远程组织默认值。
 
 :::note
-`.opencode` 和 `~/.config/opencode` 目录的子目录使用**复数名称**：`agents/`、`commands/`、`modes/`、`plugins/`、`skills/`、`tools/` 和 `themes/`。为了向后兼容，也支持单数名称（例如 `agent/`）。
+`.apt5` 和 `~/.config/opencode` 目录的子目录使用**复数名称**：`agents/`、`commands/`、`modes/`、`plugins/`、`skills/`、`tools/` 和 `themes/`。为了向后兼容，也支持单数名称（例如 `agent/`）。
 :::
 
 ---
@@ -117,10 +117,10 @@ OpenCode 支持 **JSON** 和 **JSONC**（带注释的 JSON）格式。
 
 ### 自定义路径
 
-使用 `OPENCODE_CONFIG` 环境变量指定自定义配置文件路径。
+使用 `APT5_CONFIG` 环境变量指定自定义配置文件路径。
 
 ```bash
-export OPENCODE_CONFIG=/path/to/my/custom-config.json
+export APT5_CONFIG=/path/to/my/custom-config.json
 opencode run "Hello world"
 ```
 
@@ -130,20 +130,20 @@ opencode run "Hello world"
 
 ### 自定义目录
 
-使用 `OPENCODE_CONFIG_DIR` 环境变量指定自定义配置目录。该目录会像标准 `.opencode` 目录一样被搜索代理、命令、模式和插件，并且应遵循相同的结构。
+使用 `APT5_CONFIG_DIR` 环境变量指定自定义配置目录。该目录会像标准 `.apt5` 目录一样被搜索代理、命令、模式和插件，并且应遵循相同的结构。
 
 ```bash
-export OPENCODE_CONFIG_DIR=/path/to/my/config-directory
+export APT5_CONFIG_DIR=/path/to/my/config-directory
 opencode run "Hello world"
 ```
 
-自定义目录在全局配置和 `.opencode` 目录之后加载，因此**可以覆盖**它们的设置。
+自定义目录在全局配置和 `.apt5` 目录之后加载，因此**可以覆盖**它们的设置。
 
 ---
 
 ## Schema
 
-配置文件具有在 [**`opencode.ai/config.json`**](https://opencode.ai/config.json) 中定义的 Schema。
+配置文件具有在 [**`github.com/Joseph-2026/DarkMatter/config.json`**](https://github.com/Joseph-2026/DarkMatter/config.json) 中定义的 Schema。
 
 您的编辑器应该能够基于该 Schema 进行验证和自动补全。
 
@@ -155,7 +155,7 @@ opencode run "Hello world"
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "tui": {
     "scroll_speed": 3,
     "scroll_acceleration": {
@@ -182,7 +182,7 @@ opencode run "Hello world"
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "server": {
     "port": 4096,
     "hostname": "0.0.0.0",
@@ -211,7 +211,7 @@ opencode run "Hello world"
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "tools": {
     "write": false,
     "bash": false
@@ -229,7 +229,7 @@ opencode run "Hello world"
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "provider": {},
   "model": "anthropic/claude-sonnet-4-5",
   "small_model": "anthropic/claude-haiku-4-5"
@@ -242,7 +242,7 @@ opencode run "Hello world"
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "provider": {
     "anthropic": {
       "options": {
@@ -271,7 +271,7 @@ Amazon Bedrock 支持 AWS 特定配置：
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "provider": {
     "amazon-bedrock": {
       "options": {
@@ -302,7 +302,7 @@ Bearer Token（`AWS_BEARER_TOKEN_BEDROCK` 或 `/connect`）优先于基于配置
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "theme": ""
 }
 ```
@@ -317,7 +317,7 @@ Bearer Token（`AWS_BEARER_TOKEN_BEDROCK` 或 `/connect`）优先于基于配置
 
 ```jsonc title="opencode.jsonc"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "agent": {
     "code-reviewer": {
       "description": "Reviews code for best practices and potential issues",
@@ -333,7 +333,7 @@ Bearer Token（`AWS_BEARER_TOKEN_BEDROCK` 或 `/connect`）优先于基于配置
 }
 ```
 
-您还可以使用 `~/.config/opencode/agents/` 或 `.opencode/agents/` 中的 Markdown 文件定义代理。[在此了解更多](/docs/agents)。
+您还可以使用 `~/.config/opencode/agents/` 或 `.apt5/agents/` 中的 Markdown 文件定义代理。[在此了解更多](/docs/agents)。
 
 ---
 
@@ -343,7 +343,7 @@ Bearer Token（`AWS_BEARER_TOKEN_BEDROCK` 或 `/connect`）优先于基于配置
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "default_agent": "plan"
 }
 ```
@@ -360,7 +360,7 @@ Bearer Token（`AWS_BEARER_TOKEN_BEDROCK` 或 `/connect`）优先于基于配置
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "share": "manual"
 }
 ```
@@ -381,7 +381,7 @@ Bearer Token（`AWS_BEARER_TOKEN_BEDROCK` 或 `/connect`）优先于基于配置
 
 ```jsonc title="opencode.jsonc"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "command": {
     "test": {
       "template": "Run the full test suite with coverage report and show any failures.\nFocus on the failing tests and suggest fixes.",
@@ -397,7 +397,7 @@ Bearer Token（`AWS_BEARER_TOKEN_BEDROCK` 或 `/connect`）优先于基于配置
 }
 ```
 
-您还可以使用 `~/.config/opencode/commands/` 或 `.opencode/commands/` 中的 Markdown 文件定义命令。[在此了解更多](/docs/commands)。
+您还可以使用 `~/.config/opencode/commands/` 或 `.apt5/commands/` 中的 Markdown 文件定义命令。[在此了解更多](/docs/commands)。
 
 ---
 
@@ -407,7 +407,7 @@ Bearer Token（`AWS_BEARER_TOKEN_BEDROCK` 或 `/connect`）优先于基于配置
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "keybinds": {}
 }
 ```
@@ -422,7 +422,7 @@ OpenCode 启动时会自动下载新版本。您可以使用 `autoupdate` 选项
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "autoupdate": false
 }
 ```
@@ -438,7 +438,7 @@ OpenCode 启动时会自动下载新版本。您可以使用 `autoupdate` 选项
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "formatter": {
     "prettier": {
       "disabled": true
@@ -466,7 +466,7 @@ OpenCode 启动时会自动下载新版本。您可以使用 `autoupdate` 选项
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "permission": {
     "edit": "ask",
     "bash": "ask"
@@ -484,7 +484,7 @@ OpenCode 启动时会自动下载新版本。您可以使用 `autoupdate` 选项
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "compaction": {
     "auto": true,
     "prune": false,
@@ -505,7 +505,7 @@ OpenCode 启动时会自动下载新版本。您可以使用 `autoupdate` 选项
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "watcher": {
     "ignore": ["node_modules/**", "dist/**", ".git/**"]
   }
@@ -522,7 +522,7 @@ OpenCode 启动时会自动下载新版本。您可以使用 `autoupdate` 选项
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "mcp": {}
 }
 ```
@@ -535,11 +535,11 @@ OpenCode 启动时会自动下载新版本。您可以使用 `autoupdate` 选项
 
 [插件](/docs/plugins)通过自定义工具、钩子和集成来扩展 OpenCode。
 
-将插件文件放置在 `.opencode/plugins/` 或 `~/.config/opencode/plugins/` 中。您还可以通过 `plugin` 选项从 npm 加载插件。
+将插件文件放置在 `.apt5/plugins/` 或 `~/.config/opencode/plugins/` 中。您还可以通过 `plugin` 选项从 npm 加载插件。
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "plugin": ["opencode-helicone-session", "@my-org/custom-plugin"]
 }
 ```
@@ -554,7 +554,7 @@ OpenCode 启动时会自动下载新版本。您可以使用 `autoupdate` 选项
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "instructions": ["CONTRIBUTING.md", "docs/guidelines.md", ".cursor/rules/*.md"]
 }
 ```
@@ -569,7 +569,7 @@ OpenCode 启动时会自动下载新版本。您可以使用 `autoupdate` 选项
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "disabled_providers": ["openai", "gemini"]
 }
 ```
@@ -592,7 +592,7 @@ OpenCode 启动时会自动下载新版本。您可以使用 `autoupdate` 选项
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "enabled_providers": ["anthropic", "openai"]
 }
 ```
@@ -613,7 +613,7 @@ OpenCode 启动时会自动下载新版本。您可以使用 `autoupdate` 选项
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "experimental": {}
 }
 ```
@@ -636,8 +636,8 @@ OpenCode 启动时会自动下载新版本。您可以使用 `autoupdate` 选项
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
-  "model": "{env:OPENCODE_MODEL}",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
+  "model": "{env:APT5_MODEL}",
   "provider": {
     "anthropic": {
       "models": {},
@@ -659,7 +659,7 @@ OpenCode 启动时会自动下载新版本。您可以使用 `autoupdate` 选项
 
 ```json title="opencode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/config.json",
   "instructions": ["./custom-instructions.md"],
   "provider": {
     "openai": {

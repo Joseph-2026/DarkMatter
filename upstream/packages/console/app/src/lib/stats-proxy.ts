@@ -1,5 +1,5 @@
 import type { APIEvent } from "@solidjs/start/server"
-import { Resource, waitUntil } from "@opencode-ai/console-resource"
+import { Resource, waitUntil } from "@apt5/console-resource"
 import { LOCALE_HEADER, cookie, localeFromRequest, route, tag } from "~/lib/language"
 
 const dataPath = "/data"
@@ -20,7 +20,7 @@ export async function statsProxy(evt: APIEvent) {
 
   const targetUrl = new URL(req.url)
   targetUrl.protocol = "https:"
-  targetUrl.hostname = Resource.App.stage === "production" ? "stats.opencode.ai" : "stats.dev.opencode.ai"
+  targetUrl.hostname = Resource.App.stage === "production" ? "stats.apt5.ai" : "stats.dev.apt5.ai"
   targetUrl.port = ""
 
   if (

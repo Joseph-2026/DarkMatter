@@ -1,6 +1,6 @@
 import { describe, expect } from "bun:test"
-import { LayerNode } from "@opencode-ai/core/effect/layer-node"
-import { FSUtil } from "@opencode-ai/core/fs-util"
+import { LayerNode } from "@apt5/core/effect/layer-node"
+import { FSUtil } from "@apt5/core/fs-util"
 import { Effect, Layer } from "effect"
 import path from "path"
 import { resetDatabase } from "../fixture/db"
@@ -106,10 +106,10 @@ function requestCallback(input: { providerID: string; method: number; headers: H
 function writeProviderAuthPlugin(dir: string) {
   return Effect.gen(function* () {
     const fs = yield* FSUtil.Service
-    yield* Effect.promise(() => markPluginDependenciesReady(path.join(dir, ".opencode")))
+    yield* Effect.promise(() => markPluginDependenciesReady(path.join(dir, ".apt5")))
 
     yield* fs.writeWithDirs(
-      path.join(dir, ".opencode", "plugin", "provider-oauth-parity.ts"),
+      path.join(dir, ".apt5", "plugin", "provider-oauth-parity.ts"),
       [
         "export default {",
         '  id: "test.provider-oauth-parity",',
@@ -141,10 +141,10 @@ function writeProviderAuthPlugin(dir: string) {
 function writeProviderAuthValidationPlugin(dir: string) {
   return Effect.gen(function* () {
     const fs = yield* FSUtil.Service
-    yield* Effect.promise(() => markPluginDependenciesReady(path.join(dir, ".opencode")))
+    yield* Effect.promise(() => markPluginDependenciesReady(path.join(dir, ".apt5")))
 
     yield* fs.writeWithDirs(
-      path.join(dir, ".opencode", "plugin", "provider-oauth-validation.ts"),
+      path.join(dir, ".apt5", "plugin", "provider-oauth-validation.ts"),
       [
         "export default {",
         '  id: "test.provider-oauth-validation",',
@@ -183,10 +183,10 @@ function writeProviderAuthValidationPlugin(dir: string) {
 function writeFunctionOptionsPlugin(dir: string) {
   return Effect.gen(function* () {
     const fs = yield* FSUtil.Service
-    yield* Effect.promise(() => markPluginDependenciesReady(path.join(dir, ".opencode")))
+    yield* Effect.promise(() => markPluginDependenciesReady(path.join(dir, ".apt5")))
 
     yield* fs.writeWithDirs(
-      path.join(dir, ".opencode", "plugin", "provider-function-options.ts"),
+      path.join(dir, ".apt5", "plugin", "provider-function-options.ts"),
       [
         "export default {",
         '  id: "test.provider-function-options",',
@@ -215,10 +215,10 @@ function writeFunctionOptionsPlugin(dir: string) {
 function writeProviderModelsMutationPlugin(dir: string) {
   return Effect.gen(function* () {
     const fs = yield* FSUtil.Service
-    yield* Effect.promise(() => markPluginDependenciesReady(path.join(dir, ".opencode")))
+    yield* Effect.promise(() => markPluginDependenciesReady(path.join(dir, ".apt5")))
 
     yield* fs.writeWithDirs(
-      path.join(dir, ".opencode", "plugin", "provider-models-mutation.ts"),
+      path.join(dir, ".apt5", "plugin", "provider-models-mutation.ts"),
       [
         "export default {",
         '  id: "test.provider-models-mutation",',
@@ -356,7 +356,7 @@ describe("provider HttpApi", () => {
     Effect.gen(function* () {
       const directory = (yield* TestInstance).directory
       yield* setEnvScoped(
-        "OPENCODE_AUTH_CONTENT",
+        "APT5_AUTH_CONTENT",
         JSON.stringify({
           google: { type: "oauth", refresh: "dummy", access: "dummy", expires: 9999999999999 },
         }),

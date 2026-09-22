@@ -5,7 +5,7 @@ Technical reference for the current TUI plugin system.
 ## Overview
 
 - TUI plugin config lives in `tui.json`.
-- Author package entrypoint is `@opencode-ai/plugin/tui`.
+- Author package entrypoint is `@apt5/plugin/tui`.
 - Internal plugins load inside the CLI app the same way external TUI plugins do.
 - Package plugins can be installed from CLI or TUI.
 - v1 plugin modules are target-exclusive: a module can export `server` or `tui`, never both.
@@ -18,7 +18,7 @@ Example:
 
 ```json
 {
-  "$schema": "https://opencode.ai/tui.json",
+  "$schema": "https://github.com/Joseph-2026/DarkMatter/tui.json",
   "theme": "smoke-theme",
   "leader_timeout": 2000,
   "keybinds": {
@@ -68,14 +68,14 @@ Example:
 
 Package entrypoint:
 
-- Import types from `@opencode-ai/plugin/tui`.
-- `@opencode-ai/plugin` exports `./tui` and declares optional peer deps on `@opentui/core` and `@opentui/solid`.
+- Import types from `@apt5/plugin/tui`.
+- `@apt5/plugin` exports `./tui` and declares optional peer deps on `@opentui/core` and `@opentui/solid`.
 
 Minimal module shape:
 
 ```tsx
 /** @jsxImportSource @opentui/solid */
-import type { TuiPlugin, TuiPluginModule } from "@opencode-ai/plugin/tui"
+import type { TuiPlugin, TuiPluginModule } from "@apt5/plugin/tui"
 
 const tui: TuiPlugin = async (api, options, meta) => {
   api.keymap.registerLayer({
@@ -167,7 +167,7 @@ Example:
     }
   },
   "engines": {
-    "opencode": "^1.0.0"
+    "darkmatter": "^1.0.0"
   }
 }
 ```
@@ -179,14 +179,14 @@ npm plugins can declare a version compatibility range in `package.json` using th
 ```json
 {
   "engines": {
-    "opencode": "^1.0.0"
+    "darkmatter": "^1.0.0"
   }
 }
 ```
 
 - The value is a semver range checked against the running OpenCode version.
 - If the range is not satisfied, the plugin is skipped with a warning and a session error.
-- If `engines.opencode` is absent, no check is performed (backward compatible).
+- If `engines.apt5` is absent, no check is performed (backward compatible).
 - File plugins are never checked; only npm package plugins are validated.
 
 - Install flow is shared by CLI and TUI in `src/plugin/install.ts`.
@@ -195,8 +195,8 @@ npm plugins can declare a version compatibility range in `package.json` using th
 - Alias: `opencode plug <module>`.
 - `-g` / `--global` writes into the global config dir.
 - Local installs resolve target dir inside `patchPluginConfig`.
-- For local scope, path is `<worktree>/.opencode` only when VCS is git and `worktree !== "/"`; otherwise `<directory>/.opencode`.
-- Root-worktree fallback (`worktree === "/"` uses `<directory>/.opencode`) is covered by regression tests.
+- For local scope, path is `<worktree>/.apt5` only when VCS is git and `worktree !== "/"`; otherwise `<directory>/.apt5`.
+- Root-worktree fallback (`worktree === "/"` uses `<directory>/.apt5`) is covered by regression tests.
 - `patchPluginConfig` applies all detected targets (`server` and/or `tui`) in one call.
 - `patchPluginConfig` returns structured result unions (`ok`, `code`, fields by error kind) instead of custom thrown errors.
 - `patchPluginConfig` serializes per-target config writes with `Flock.acquire(...)`.
@@ -213,14 +213,14 @@ npm plugins can declare a version compatibility range in `package.json` using th
 - There is no uninstall, list, or update CLI command for external plugins.
 - Local file plugins are configured directly in `tui.json`.
 
-When `plugin` entries exist in a writable `.opencode` dir or `OPENCODE_CONFIG_DIR`, OpenCode installs `@opencode-ai/plugin` into that dir and writes:
+When `plugin` entries exist in a writable `.apt5` dir or `APT5_CONFIG_DIR`, OpenCode installs `@apt5/plugin` into that dir and writes:
 
 - `package.json`
 - `bun.lock`
 - `node_modules/`
 - `.gitignore`
 
-That is what makes local config-scoped plugins able to import `@opencode-ai/plugin/tui`.
+That is what makes local config-scoped plugins able to import `@apt5/plugin/tui`.
 
 ## TUI plugin API
 
@@ -323,12 +323,12 @@ Mode pushes are automatically tracked by the plugin runtime. If a plugin is disa
 - `api.keys` exposes host-formatted shortcut display helpers for plugin UI.
 - `formatSequence(parts)` formats parsed key sequence parts using the host's display policy.
 - `formatBindings(bindings)` formats binding lists and returns `undefined` when there is nothing to show.
-- For generic config-to-bindings helpers, import `createBindingLookup` from `@opencode-ai/plugin/tui`.
+- For generic config-to-bindings helpers, import `createBindingLookup` from `@apt5/plugin/tui`.
 
 ### Attention
 
 - `api.attention.notify({ title?, message, notification?, sound? })` requests user attention while keeping terminal focus, notifications, and audio owned by the host.
-- `message` is required; `title` defaults to `"opencode"`; `notification` defaults to enabled with `when: "blurred"`; `sound` defaults to enabled with `when: "always"`.
+- `message` is required; `title` defaults to `"darkmatter"`; `notification` defaults to enabled with `when: "blurred"`; `sound` defaults to enabled with `when: "always"`.
 - `when: "always"` requests delivery regardless of terminal focus state.
 - `when: "focused"` only requests delivery after the terminal is known focused; `when: "blurred"` only requests delivery after the terminal is known blurred.
 - Example: `notification: { when: "blurred" }, sound: { name: "question", when: "always" }` plays sound while focused but only triggers system notifications when blurred.
@@ -413,7 +413,7 @@ Theme install behavior:
 - If the theme name already exists, install is skipped unless plugin metadata state is `updated`.
 - On `updated`, host skips rewrite when tracked `mtime`/`size` is unchanged.
 - When a theme already exists and state is not `updated`, host can still persist theme metadata when destination already exists.
-- Local plugins persist installed themes under the local `.opencode/themes` area near the plugin config source.
+- Local plugins persist installed themes under the local `.apt5/themes` area near the plugin config source.
 - Global plugins persist installed themes under the global `themes` dir.
 - Invalid or unreadable theme files are ignored.
 
@@ -483,7 +483,7 @@ Metadata is persisted by plugin id.
 
 - Internal TUI plugins load first.
 - External TUI plugins load from `tuiConfig.plugin`.
-- `--pure` / `OPENCODE_PURE` skips external TUI plugins only.
+- `--pure` / `APT5_PURE` skips external TUI plugins only.
 - External plugin resolution and import are parallel.
 - Packages with no `./tui` entrypoint and valid `oc-themes` are loaded as synthetic no-op TUI plugin modules.
 - Theme-only packages loaded this way appear in `api.plugins.list()` and plugin manager rows like other external plugins.
@@ -538,7 +538,7 @@ The plugin manager is exposed as a command with title `Plugins` and value `plugi
 
 ## Current in-repo examples
 
-- Local smoke plugin: `.opencode/plugins/tui-smoke.tsx`
-- Local vim plugin: `.opencode/plugins/tui-vim.tsx`
-- Local smoke config: `.opencode/tui.json`
-- Local smoke theme: `.opencode/plugins/smoke-theme.json`
+- Local smoke plugin: `.apt5/plugins/tui-smoke.tsx`
+- Local vim plugin: `.apt5/plugins/tui-vim.tsx`
+- Local smoke config: `.apt5/tui.json`
+- Local smoke theme: `.apt5/plugins/smoke-theme.json`
