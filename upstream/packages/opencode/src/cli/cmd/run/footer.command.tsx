@@ -984,7 +984,7 @@ export function RunModelSelectBody(props: {
           }),
       )
       .sort((a, b) => {
-        const provider = Number(a.providerID !== "darkmatter") - Number(b.providerID !== "darkmatter")
+        const provider = Number(a.providerID !== "opencode") - Number(b.providerID !== "opencode")
         if (provider !== 0) {
           return provider
         }

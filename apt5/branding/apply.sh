@@ -21,6 +21,8 @@ RULES=(
   "macdomain|ai.opencode.managed|dev.apt5.managed|"
   "urls|opencode.ai|github.com/Joseph-2026/DarkMatter|"
   "tuiclient|\"name\": \"opencode\"|\"name\": \"apt-5\"|"
+  "pkgdep|\"opencode\": \"workspace|\"apt-5\": \"workspace|"
+  "binpath|./bin/opencode|./bin/apt-5|"
   "theme-default|\"opencode\"|\"darkmatter\"|g:warn"
 )
 

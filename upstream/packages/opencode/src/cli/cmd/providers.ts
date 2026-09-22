@@ -463,7 +463,7 @@ export const ProvidersLoginCommand = effectCmd({
       )
     }
 
-    if (provider === "darkmatter") {
+    if (provider === "opencode") {
       yield* Prompt.log.info("Create an api key at https://github.com/Joseph-2026/DarkMatter/auth")
     }
 

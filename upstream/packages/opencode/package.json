@@ -16,7 +16,7 @@
     "dev:temporary": "bun run ./src/temporary.ts"
   },
   "bin": {
-    "darkmatter": "./bin/opencode"
+    "apt-5": "./bin/apt-5", "darkmatter": "./bin/apt-5"
   },
   "exports": {
     "./*": "./src/*.ts"

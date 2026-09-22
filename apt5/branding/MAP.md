@@ -38,4 +38,16 @@
 ## Utaratibu wa apply
 1. `apply.sh --dry-run` → orodha + hesabu (kama hapo juu, lazima ilingane)
 2. `apply.sh --apply` → inabadilisha + log kwenye `apt5/branding/APPLIED.log`
-3. CI: install + lint + typecheck + targeted tests — green ndio hatua inayofuata
+3. `fixup-v1.sh` → lazima kila mara baada ya apply (inarekebisha semantic positions + verify gates 12, exit 1 zikivunjwa)
+4. CI: install + lint + typecheck + targeted tests — green ndio hatua inayofuata
+
+## Fixup v1 (2026-09-22, VERIFIED — gates 12/12 zero)
+Blanket rule `"opencode"`→`"darkmatter"` iligusa sehemu za protocol/config — zimerudishwa:
+- Provider IDs: `providerID ===/startsWith/!==` , `provider?.[...]`, `ID.make()`, `schema.make()` → "opencode"
+  (transform.ts, provider.ts, footer.command.tsx, models.ts, providers.ts, acp/service.ts, specs doc)
+- `HttpApi.make()` → "opencode" (SDK compat)
+- Theme default (theme.tsx) → "opencode" (registry key bado `opencode`; theme ya DarkMatter inakuja TUI phase)
+- Package identity: name `apt-5`, bin `{apt-5, darkmatter} → ./bin/apt-5`, deps `"apt-5": "workspace:*"`
+- KEEP "darkmatter" (rebrand sahihi): X-Title/X-Source headers, own-binary invocation (pr.ts, run.ts $0,
+  acp command, mcp client, uninstall formulae), telemetry user_agent, default usernames.
+- V2 (prose): trademark paragraphs kwenye README 20 lugha + docs — rewrite kamili, sio blanket.
