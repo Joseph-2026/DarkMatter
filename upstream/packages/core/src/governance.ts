@@ -20,10 +20,10 @@ export const AuditID = Schema.String.pipe(
 )
 export type AuditID = typeof AuditID.Type
 
-export const RuleEffect = Schema.Union([Schema.Literal("allow"), Schema.Literal("deny"), Schema.Literal("approve")])
+export const RuleEffect = Schema.Literals(["allow", "deny", "approve"])
 export type RuleEffect = typeof RuleEffect.Type
 
-export const Decision = Schema.Union([Schema.Literal("allow"), Schema.Literal("deny"), Schema.Literal("approve")])
+export const Decision = Schema.Literals(["allow", "deny", "approve"])
 export type Decision = typeof Decision.Type
 
 export interface Rule {
