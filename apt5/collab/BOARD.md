@@ -56,6 +56,9 @@ Repo: `https://github.com/Joseph-2026/DarkMatter` · default branch: `main`.
    no `else`, bind services to named variables (`const db = yield* Db.Service`).
 6. One PR per workstream. CI (`build-and-check`, `secrets-guard`, smoke) must be green before merge.
 7. Evidence before claims. If a check contradicts you, the check wins.
+8. HttpClient in opencode server tests: GET uses bare `HttpClient.execute` in
+   the pipe, POST/PUT use `Effect.flatMap(HttpClient.execute)` (verified
+   2026-09-23 — swapped forms fail at runtime, not typecheck).
 
 ## 5. Lane ownership (avoids merge conflicts)
 

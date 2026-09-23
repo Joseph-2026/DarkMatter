@@ -24,6 +24,7 @@ import { errorMessage } from "@/util/error"
 import { isRecord } from "@/util/record"
 import { EventV2Bridge } from "@/event-v2-bridge"
 import { Database } from "@apt5/core/database/database"
+import { Ledger } from "@apt5/core/ledger"
 import { Usage, type LLMEvent } from "@apt5/llm"
 
 const DOOM_LOOP_THRESHOLD = 3
@@ -94,6 +95,7 @@ const layer = Layer.effect(
     const image = yield* Image.Service
     const events = yield* EventV2Bridge.Service
     const database = yield* Database.Service
+    const ledger = yield* Ledger.Service
 
     const create = Effect.fn("SessionProcessor.create")(function* (input: Input) {
       // Pre-capture snapshot before the LLM stream starts. The AI SDK
@@ -468,6 +470,17 @@ const layer = Layer.effect(
               cost: usage.cost,
             })
             yield* session.updateMessage(ctx.assistantMessage)
+            // Civilization ledger: best-effort usage record, never fails the turn.
+            yield* ledger
+              .record({
+                sessionID: String(ctx.sessionID),
+                providerID: String(ctx.model.providerID),
+                modelID: String(ctx.model.id),
+                inputTokens: usage.tokens.input,
+                outputTokens: usage.tokens.output,
+                cost: usage.cost,
+              })
+              .pipe(Effect.ignore, Effect.forkIn(scope))
             if (ctx.snapshot) {
               const patch = yield* snapshot.patch(ctx.snapshot)
               if (patch.files.length) {
@@ -726,6 +739,7 @@ export const node = LayerNode.make({
     Image.node,
     EventV2Bridge.node,
     Database.node,
+    Ledger.node,
   ],
 })
 
