@@ -1,6 +1,6 @@
 # Release Notes — apt-5-v1.0.0
 
-**Date:** 2026-09-23 — **main:** `2b378e836bb4719fa235a86f253b507f072c5bce` (PR #12 merge) — repo `Joseph-2026/DarkMatter`
+**Date:** 2026-09-23 — repo `Joseph-2026/DarkMatter` — covers PRs #1–#13 (merge SHAs below are immutable facts; the tag annotation records the exact release commit).
 Verified via `gh pr list`, `gh run list --branch main`, `gh pr checks` on 2026-09-23.
 
 ## Shipped (per merged PR, all CI success on main)
@@ -17,6 +17,7 @@ Verified via `gh pr list`, `gh run list --branch main`, `gh pr checks` on 2026-0
 - **PR #10 — civilization runtime** — merge `1c8f36994` (2026-09-23T12:40:03Z, head `9786de48b`). Runtime service + ledger auto-ingest + HTTP e2e (23 expects). Run `35861932003`: success. URL: https://github.com/Joseph-2026/DarkMatter/actions/runs/35861932003
 - **PR #11 — release docs + vendor deferral** — merge `5c3a49e4c` (2026-09-23T14:42:10Z, head `1ced3f1ef`). Run on main: success.
 - **PR #12 — 20-language SDK matrix + civilization indexes** — merge `2b378e836` (2026-09-23T18:09:11Z, head `d5063b68c`). Spec + normalize + generate.sh (20 langs) + manifest (20/20 present, 23,735 files, 138MB) + CI `sdk-matrix` job + 5 DB indexes. Run `35900491945`: success. URL: https://github.com/Joseph-2026/DarkMatter/actions/runs/35900491945
+- **PR #13 — release notes current** — merge `070b2f60d` (2026-09-23T18:36:25Z, head `37f1539de`). Docs only.
 
 ## Pending (open PRs)
 
@@ -30,5 +31,5 @@ None. `gh pr list --state open` is empty.
 
 ## Release (apt-5-v1.0.0)
 
-Criteria met: 12/12 PRs merged, latest main run `35900491945` success, no open PRs, artifacts present (`bin/apt-5` + `darkmatter` alias, `AGENTS.md`, `.cursor/agents/` ×7, theme, migration).
-Tag: `apt-5-v1.0.0` on `2b378e836bb4719fa235a86f253b507f072c5bce`.
+Criteria met: 13/13 PRs merged (#1–#13, SHAs above), main CI green at merge time for each, no open PRs, artifacts present (`bin/apt-5` + `darkmatter` alias, `AGENTS.md`, `.cursor/agents/` ×7, theme, migrations).
+Tag `apt-5-v1.0.0` is created on the main HEAD whose push-run is green; the tag annotation records the exact SHA (no SHA is pre-pinned here by design — pinning HEAD in a file guarantees staleness on the next merge).
