@@ -19,6 +19,8 @@ import type {
   VcsInfo,
   SnapshotFileDiff,
   ConsoleState,
+  WorkBoardListBoardsResponse,
+  LedgerSummaryResponse,
 } from "@apt5/sdk/v2"
 import { createStore, produce, reconcile } from "solid-js/store"
 import { useProject } from "./project"
@@ -111,6 +113,8 @@ export const {
       }
       formatter: FormatterStatus[]
       vcs: VcsInfo | undefined
+      workboard: WorkBoardListBoardsResponse
+      ledger_summary: LedgerSummaryResponse | undefined
     }>({
       provider_next: {
         all: [],
@@ -141,6 +145,8 @@ export const {
       mcp_resource: {},
       formatter: [],
       vcs: undefined,
+      workboard: [],
+      ledger_summary: undefined,
     })
 
     const event = useEvent()
@@ -532,6 +538,18 @@ export const {
             }),
             sdk.client.provider.auth({ workspace }).then((x) => setStore("provider_auth", reconcile(x.data ?? {}))),
             sdk.client.vcs.get({ workspace }).then((x) => setStore("vcs", reconcile(x.data))),
+            sdk.client.workBoard
+              .listBoards({ workspace })
+              .then((x) => {
+                if (x.data) setStore("workboard", reconcile(x.data))
+              })
+              .catch(() => undefined),
+            sdk.client.ledger
+              .summary({ workspace })
+              .then((x) => {
+                if (x.data) setStore("ledger_summary", reconcile(x.data))
+              })
+              .catch(() => undefined),
             project.workspace.sync(),
           ]).then(() => {
             setStore("status", "complete")
@@ -664,6 +682,20 @@ export const {
           })
           syncingSessions.set(sessionID, task)
           return task
+        },
+      },
+      workboard: {
+        async refresh() {
+          const workspace = project.workspace.current()
+          const boards = await sdk.client.workBoard.listBoards({ workspace })
+          setStore("workboard", reconcile(boards.data ?? []))
+        },
+      },
+      ledger: {
+        async refresh() {
+          const workspace = project.workspace.current()
+          const summary = await sdk.client.ledger.summary({ workspace }).catch(() => undefined)
+          if (summary?.data) setStore("ledger_summary", reconcile(summary.data))
         },
       },
       bootstrap,
