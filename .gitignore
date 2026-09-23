@@ -3,3 +3,25 @@
 .env.*
 !.env.example
 OPENROUTER_API_KEY=
+
+# Generated APT-5 client SDKs (reproduced by ./sdks/generate.sh, verified by CI sdk-matrix)
+sdks/python/
+sdks/go/
+sdks/rust/
+sdks/java/
+sdks/csharp/
+sdks/ruby/
+sdks/php/
+sdks/swift5/
+sdks/kotlin/
+sdks/javascript/
+sdks/typescript-axios/
+sdks/typescript-fetch/
+sdks/c/
+sdks/elixir/
+sdks/scala-akka/
+sdks/perl/
+sdks/r/
+sdks/lua/
+sdks/powershell/
+sdks/bash/

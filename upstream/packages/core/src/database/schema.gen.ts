@@ -310,8 +310,14 @@ export default {
           CONSTRAINT \`fk_work_task_board_id_work_board_id_fk\` FOREIGN KEY (\`board_id\`) REFERENCES \`work_board\`(\`id\`)
         );
       `)
+      yield* tx.run(`CREATE INDEX \`a2a_message_to_status_idx\` ON \`a2a_message\` (\`to_agent\`,\`status\`);`)
       yield* tx.run(`CREATE UNIQUE INDEX \`event_aggregate_seq_idx\` ON \`event\` (\`aggregate_id\`,\`seq\`);`)
       yield* tx.run(`CREATE INDEX \`event_aggregate_type_seq_idx\` ON \`event\` (\`aggregate_id\`,\`type\`,\`seq\`);`)
+      yield* tx.run(`CREATE INDEX \`governance_audit_action_idx\` ON \`governance_audit\` (\`action\`);`)
+      yield* tx.run(`CREATE INDEX \`ledger_entry_session_idx\` ON \`ledger_entry\` (\`session_id\`);`)
+      yield* tx.run(
+        `CREATE UNIQUE INDEX \`memory_entry_namespace_key_idx\` ON \`memory_entry\` (\`namespace\`,\`key\`);`,
+      )
       yield* tx.run(
         `CREATE UNIQUE INDEX \`permission_project_action_resource_idx\` ON \`permission\` (\`project_id\`,\`action\`,\`resource\`);`,
       )
@@ -343,6 +349,7 @@ export default {
       yield* tx.run(`CREATE INDEX \`session_workspace_idx\` ON \`session\` (\`workspace_id\`);`)
       yield* tx.run(`CREATE INDEX \`session_parent_idx\` ON \`session\` (\`parent_id\`);`)
       yield* tx.run(`CREATE INDEX \`todo_session_idx\` ON \`todo\` (\`session_id\`);`)
+      yield* tx.run(`CREATE INDEX \`work_task_board_idx\` ON \`work_task\` (\`board_id\`);`)
     })
   },
 } satisfies Omit<DatabaseMigration.Migration, "id">
