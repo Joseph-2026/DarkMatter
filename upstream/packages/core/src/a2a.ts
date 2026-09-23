@@ -1,21 +1,17 @@
 export * as A2A from "./a2a"
 
 import { and, asc, eq } from "drizzle-orm"
-import { Context, Effect, Layer, Schema } from "effect"
-import { ascending } from "@apt5/schema/identifier"
-import { statics } from "@apt5/schema/schema"
+import { Context, Effect, Layer } from "effect"
+import { A2A } from "@apt5/schema/a2a"
 import { Database } from "./database/database"
 import { makeGlobalNode } from "./effect/app-node"
 import { A2AMessageTable } from "./a2a/sql"
 
-export const MessageID = Schema.String.pipe(
-  Schema.brand("A2A.MessageID"),
-  statics((schema) => ({ create: () => schema.make("a2a_" + ascending()) })),
-)
-export type MessageID = typeof MessageID.Type
+export const MessageID = A2A.MessageID
+export type MessageID = A2A.MessageID
 
-export const MessageStatus = Schema.Literals(["pending", "delivered"])
-export type MessageStatus = typeof MessageStatus.Type
+export const MessageStatus = A2A.MessageStatus
+export type MessageStatus = A2A.MessageStatus
 
 export interface Message {
   readonly id: MessageID

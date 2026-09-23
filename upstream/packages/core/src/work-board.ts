@@ -1,27 +1,20 @@
 export * as WorkBoard from "./work-board"
 
 import { asc, eq } from "drizzle-orm"
-import { Context, Effect, Layer, Schema } from "effect"
-import { ascending } from "@apt5/schema/identifier"
-import { statics } from "@apt5/schema/schema"
+import { Context, Effect, Layer } from "effect"
+import { WorkBoard } from "@apt5/schema/work-board"
 import { Database } from "./database/database"
 import { makeGlobalNode } from "./effect/app-node"
 import { WorkBoardTable, WorkTaskTable } from "./work-board/sql"
 
-export const BoardID = Schema.String.pipe(
-  Schema.brand("WorkBoard.BoardID"),
-  statics((schema) => ({ create: () => schema.make("brd_" + ascending()) })),
-)
-export type BoardID = typeof BoardID.Type
+export const BoardID = WorkBoard.BoardID
+export type BoardID = WorkBoard.BoardID
 
-export const TaskID = Schema.String.pipe(
-  Schema.brand("WorkBoard.TaskID"),
-  statics((schema) => ({ create: () => schema.make("tsk_" + ascending()) })),
-)
-export type TaskID = typeof TaskID.Type
+export const TaskID = WorkBoard.TaskID
+export type TaskID = WorkBoard.TaskID
 
-export const TaskStatus = Schema.Literals(["open", "doing", "done"])
-export type TaskStatus = typeof TaskStatus.Type
+export const TaskStatus = WorkBoard.TaskStatus
+export type TaskStatus = WorkBoard.TaskStatus
 
 export interface Board {
   readonly id: BoardID

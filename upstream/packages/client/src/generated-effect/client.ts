@@ -681,6 +681,178 @@ const adaptGroup17 = (raw: RawClient["server.projectCopy"]) => ({
   refresh: Endpoint17_2(raw),
 })
 
+type Endpoint18_0Request = Parameters<RawClient["server.workboard"]["workboard.createBoard"]>[0]
+type Endpoint18_0Input = { readonly name: Endpoint18_0Request["payload"]["name"] }
+const Endpoint18_0 = (raw: RawClient["server.workboard"]) => (input: Endpoint18_0Input) =>
+  raw["workboard.createBoard"]({ payload: { name: input["name"] } }).pipe(Effect.mapError(mapClientError))
+
+const Endpoint18_1 = (raw: RawClient["server.workboard"]) => () =>
+  raw["workboard.listBoards"]({}).pipe(Effect.mapError(mapClientError))
+
+type Endpoint18_2Request = Parameters<RawClient["server.workboard"]["workboard.createTask"]>[0]
+type Endpoint18_2Input = {
+  readonly boardID: Endpoint18_2Request["params"]["boardID"]
+  readonly title: Endpoint18_2Request["payload"]["title"]
+  readonly priority?: Endpoint18_2Request["payload"]["priority"]
+}
+const Endpoint18_2 = (raw: RawClient["server.workboard"]) => (input: Endpoint18_2Input) =>
+  raw["workboard.createTask"]({
+    params: { boardID: input["boardID"] },
+    payload: { title: input["title"], priority: input["priority"] },
+  }).pipe(Effect.mapError(mapClientError))
+
+type Endpoint18_3Request = Parameters<RawClient["server.workboard"]["workboard.listTasks"]>[0]
+type Endpoint18_3Input = { readonly boardID: Endpoint18_3Request["params"]["boardID"] }
+const Endpoint18_3 = (raw: RawClient["server.workboard"]) => (input: Endpoint18_3Input) =>
+  raw["workboard.listTasks"]({ params: { boardID: input["boardID"] } }).pipe(Effect.mapError(mapClientError))
+
+type Endpoint18_4Request = Parameters<RawClient["server.workboard"]["workboard.moveTask"]>[0]
+type Endpoint18_4Input = {
+  readonly taskID: Endpoint18_4Request["params"]["taskID"]
+  readonly status: Endpoint18_4Request["payload"]["status"]
+}
+const Endpoint18_4 = (raw: RawClient["server.workboard"]) => (input: Endpoint18_4Input) =>
+  raw["workboard.moveTask"]({ params: { taskID: input["taskID"] }, payload: { status: input["status"] } }).pipe(
+    Effect.mapError(mapClientError),
+  )
+
+const adaptGroup18 = (raw: RawClient["server.workboard"]) => ({
+  createBoard: Endpoint18_0(raw),
+  listBoards: Endpoint18_1(raw),
+  createTask: Endpoint18_2(raw),
+  listTasks: Endpoint18_3(raw),
+  moveTask: Endpoint18_4(raw),
+})
+
+type Endpoint19_0Request = Parameters<RawClient["server.memory"]["memory.entries.put"]>[0]
+type Endpoint19_0Input = {
+  readonly namespace: Endpoint19_0Request["params"]["namespace"]
+  readonly key: Endpoint19_0Request["params"]["key"]
+  readonly value: Endpoint19_0Request["payload"]["value"]
+}
+const Endpoint19_0 = (raw: RawClient["server.memory"]) => (input: Endpoint19_0Input) =>
+  raw["memory.entries.put"]({
+    params: { namespace: input["namespace"], key: input["key"] },
+    payload: { value: input["value"] },
+  }).pipe(Effect.mapError(mapClientError))
+
+type Endpoint19_1Request = Parameters<RawClient["server.memory"]["memory.entries.get"]>[0]
+type Endpoint19_1Input = {
+  readonly namespace: Endpoint19_1Request["params"]["namespace"]
+  readonly key: Endpoint19_1Request["params"]["key"]
+}
+const Endpoint19_1 = (raw: RawClient["server.memory"]) => (input: Endpoint19_1Input) =>
+  raw["memory.entries.get"]({ params: { namespace: input["namespace"], key: input["key"] } }).pipe(
+    Effect.mapError(mapClientError),
+  )
+
+type Endpoint19_2Request = Parameters<RawClient["server.memory"]["memory.entries.list"]>[0]
+type Endpoint19_2Input = { readonly namespace: Endpoint19_2Request["params"]["namespace"] }
+const Endpoint19_2 = (raw: RawClient["server.memory"]) => (input: Endpoint19_2Input) =>
+  raw["memory.entries.list"]({ params: { namespace: input["namespace"] } }).pipe(Effect.mapError(mapClientError))
+
+type Endpoint19_3Request = Parameters<RawClient["server.memory"]["memory.entries.forget"]>[0]
+type Endpoint19_3Input = {
+  readonly namespace: Endpoint19_3Request["params"]["namespace"]
+  readonly key: Endpoint19_3Request["params"]["key"]
+}
+const Endpoint19_3 = (raw: RawClient["server.memory"]) => (input: Endpoint19_3Input) =>
+  raw["memory.entries.forget"]({ params: { namespace: input["namespace"], key: input["key"] } }).pipe(
+    Effect.mapError(mapClientError),
+  )
+
+const adaptGroup19 = (raw: RawClient["server.memory"]) => ({
+  put: Endpoint19_0(raw),
+  get: Endpoint19_1(raw),
+  list: Endpoint19_2(raw),
+  forget: Endpoint19_3(raw),
+})
+
+type Endpoint20_0Request = Parameters<RawClient["server.ledger"]["ledger.entries.record"]>[0]
+type Endpoint20_0Input = {
+  readonly sessionID: Endpoint20_0Request["payload"]["sessionID"]
+  readonly providerID: Endpoint20_0Request["payload"]["providerID"]
+  readonly modelID: Endpoint20_0Request["payload"]["modelID"]
+  readonly inputTokens: Endpoint20_0Request["payload"]["inputTokens"]
+  readonly outputTokens: Endpoint20_0Request["payload"]["outputTokens"]
+  readonly cost: Endpoint20_0Request["payload"]["cost"]
+}
+const Endpoint20_0 = (raw: RawClient["server.ledger"]) => (input: Endpoint20_0Input) =>
+  raw["ledger.entries.record"]({
+    payload: {
+      sessionID: input["sessionID"],
+      providerID: input["providerID"],
+      modelID: input["modelID"],
+      inputTokens: input["inputTokens"],
+      outputTokens: input["outputTokens"],
+      cost: input["cost"],
+    },
+  }).pipe(Effect.mapError(mapClientError))
+
+const Endpoint20_1 = (raw: RawClient["server.ledger"]) => () =>
+  raw["ledger.entries.list"]({}).pipe(Effect.mapError(mapClientError))
+
+const Endpoint20_2 = (raw: RawClient["server.ledger"]) => () =>
+  raw["ledger.summary.get"]({}).pipe(Effect.mapError(mapClientError))
+
+const adaptGroup20 = (raw: RawClient["server.ledger"]) => ({
+  record: Endpoint20_0(raw),
+  list: Endpoint20_1(raw),
+  get: Endpoint20_2(raw),
+})
+
+type Endpoint21_0Request = Parameters<RawClient["server.a2a"]["a2a.messages.send"]>[0]
+type Endpoint21_0Input = {
+  readonly from: Endpoint21_0Request["payload"]["from"]
+  readonly to: Endpoint21_0Request["payload"]["to"]
+  readonly type: Endpoint21_0Request["payload"]["type"]
+  readonly payload: Endpoint21_0Request["payload"]["payload"]
+}
+const Endpoint21_0 = (raw: RawClient["server.a2a"]) => (input: Endpoint21_0Input) =>
+  raw["a2a.messages.send"]({
+    payload: { from: input["from"], to: input["to"], type: input["type"], payload: input["payload"] },
+  }).pipe(Effect.mapError(mapClientError))
+
+type Endpoint21_1Request = Parameters<RawClient["server.a2a"]["a2a.inbox.list"]>[0]
+type Endpoint21_1Input = { readonly agent: Endpoint21_1Request["params"]["agent"] }
+const Endpoint21_1 = (raw: RawClient["server.a2a"]) => (input: Endpoint21_1Input) =>
+  raw["a2a.inbox.list"]({ params: { agent: input["agent"] } }).pipe(Effect.mapError(mapClientError))
+
+type Endpoint21_2Request = Parameters<RawClient["server.a2a"]["a2a.messages.ack"]>[0]
+type Endpoint21_2Input = { readonly id: Endpoint21_2Request["params"]["id"] }
+const Endpoint21_2 = (raw: RawClient["server.a2a"]) => (input: Endpoint21_2Input) =>
+  raw["a2a.messages.ack"]({ params: { id: input["id"] } }).pipe(Effect.mapError(mapClientError))
+
+const adaptGroup21 = (raw: RawClient["server.a2a"]) => ({
+  send: Endpoint21_0(raw),
+  list: Endpoint21_1(raw),
+  ack: Endpoint21_2(raw),
+})
+
+type Endpoint22_0Request = Parameters<RawClient["server.governance"]["governance.rules.add"]>[0]
+type Endpoint22_0Input = {
+  readonly pattern: Endpoint22_0Request["payload"]["pattern"]
+  readonly effect: Endpoint22_0Request["payload"]["effect"]
+}
+const Endpoint22_0 = (raw: RawClient["server.governance"]) => (input: Endpoint22_0Input) =>
+  raw["governance.rules.add"]({ payload: { pattern: input["pattern"], effect: input["effect"] } }).pipe(
+    Effect.mapError(mapClientError),
+  )
+
+const Endpoint22_1 = (raw: RawClient["server.governance"]) => () =>
+  raw["governance.rules.list"]({}).pipe(Effect.mapError(mapClientError))
+
+type Endpoint22_2Request = Parameters<RawClient["server.governance"]["governance.evaluate"]>[0]
+type Endpoint22_2Input = { readonly action: Endpoint22_2Request["payload"]["action"] }
+const Endpoint22_2 = (raw: RawClient["server.governance"]) => (input: Endpoint22_2Input) =>
+  raw["governance.evaluate"]({ payload: { action: input["action"] } }).pipe(Effect.mapError(mapClientError))
+
+const adaptGroup22 = (raw: RawClient["server.governance"]) => ({
+  add: Endpoint22_0(raw),
+  list: Endpoint22_1(raw),
+  evaluate: Endpoint22_2(raw),
+})
+
 const adaptClient = (raw: RawClient) => ({
   health: adaptGroup0(raw["server.health"]),
   location: adaptGroup1(raw["server.location"]),
@@ -700,6 +872,11 @@ const adaptClient = (raw: RawClient) => ({
   questions: adaptGroup15(raw["server.question"]),
   references: adaptGroup16(raw["server.reference"]),
   projectCopies: adaptGroup17(raw["server.projectCopy"]),
+  workboards: adaptGroup18(raw["server.workboard"]),
+  memories: adaptGroup19(raw["server.memory"]),
+  ledgers: adaptGroup20(raw["server.ledger"]),
+  a2a: adaptGroup21(raw["server.a2a"]),
+  governance: adaptGroup22(raw["server.governance"]),
 })
 
 export const make = (options?: { readonly baseUrl?: URL | string }) =>

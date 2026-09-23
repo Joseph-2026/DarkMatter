@@ -17,15 +17,17 @@ production paths, every claim backed by evidence or CI.
 
 Repo: `https://github.com/Joseph-2026/DarkMatter` · default branch: `main`.
 
-## 2. Current state (2026-09-23)
+## 2. Current state (2026-09-23 — post PR #5 merge `3c27b96`)
 
 | Item | State |
 |---|---|
 | Rebrand v1 (PR #1, merged) | Binary, config, TUI identity, provider IDs back to `opencode` (wire compat) |
 | Civilization round 1 (PR #2, merged) | `work-board`, `memory-os`, `ledger`, `a2a`, `governance` in `packages/core` + generated migration `20260923035633_civilization` |
 | Free router (PR #3, merged) | `FreeRouter.Chain` + `Catalog.model.free`, wire-ID guard test |
+| Civilization round 2 (PR #5, merged `3c27b96`) | `InstanceHttpApi` 5 groups + 5 handlers + 3 errors + app wiring (work-board, memory-os, ledger, a2a, governance) — CI green (build-and-check 3m06s) |
 | TUI `darkmatter` theme | `packages/ui/src/theme/themes/darkmatter.json`, default flipped |
-| CI | `build-and-check`, `secrets-guard`, smoke — must stay green |
+| Protocol `server.*` groups | `server.workboard` etc in `packages/protocol/src/groups/` (untracked, next: api.ts wiring + client regen) |
+| CI | `build-and-check`, `secrets-guard`, smoke — all green on `main` |
 
 ## 3. Architecture map (read before touching)
 
@@ -77,11 +79,12 @@ User (Joseph) has the final word on lanes. Claim a lane by editing this table in
 
 - [x] Civilization round 1 (core domains + migration + tests)
 - [x] Free router core (`FreeRouter.Chain`, `Catalog.model.free`, guard test)
-- [ ] Civilization round 2: HttpApi groups + client regen for the 5 domains (Spark, in progress — branch `civilization-api`)
-- [ ] TUI surfaces for WorkBoard / Memory / Ledger (Claude Code lane — blocked until round 2 merges)
-- [ ] Docs: provider + free-router + governance policy format (`packages/web`)
+- [x] Civilization round 2: InstanceHttpApi groups + handlers + app wiring (PR #5 `civilization-api` → `main` `3c27b96`, CI green)
+- [ ] TUI surfaces for WorkBoard / Memory / Ledger (Claude Code lane — **unblocked**, API live at `/work-board`, `/memory`, `/ledger`, `/a2a`, `/governance` + `API-FOR-TUI.md`)
+- [ ] Docs: provider + free-router + governance policy format (`packages/web`) — can start in parallel (no core conflict)
+- [ ] Protocol `server.*` groups + client regen (`packages/protocol` + `packages/client` generated) — Spark, next (files untracked `workboard.ts` etc at `03:55`)
 - [ ] Vendor tarball decision: app still uses pinned `apt5-client-1.17.13-apt5.0.tgz`; rebuilding it from the new surface is a separate round (needs app verification)
-- [ ] Release `apt-5-v1.0.0` (after rounds above are green)
+- [ ] Release `apt-5-v1.0.0` (after TUI + docs + protocol regen are green)
 
 ## 8. Claude Code — start here
 

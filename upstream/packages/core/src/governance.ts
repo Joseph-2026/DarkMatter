@@ -1,30 +1,23 @@
 export * as Governance from "./governance"
 
 import { asc, eq } from "drizzle-orm"
-import { Context, Effect, Layer, Schema } from "effect"
-import { ascending } from "@apt5/schema/identifier"
-import { statics } from "@apt5/schema/schema"
+import { Context, Effect, Layer } from "effect"
+import { Governance } from "@apt5/schema/governance"
 import { Database } from "./database/database"
 import { makeGlobalNode } from "./effect/app-node"
 import { GovernanceAuditTable, GovernanceRuleTable } from "./governance/sql"
 
-export const RuleID = Schema.String.pipe(
-  Schema.brand("Governance.RuleID"),
-  statics((schema) => ({ create: () => schema.make("gov_" + ascending()) })),
-)
-export type RuleID = typeof RuleID.Type
+export const RuleID = Governance.RuleID
+export type RuleID = Governance.RuleID
 
-export const AuditID = Schema.String.pipe(
-  Schema.brand("Governance.AuditID"),
-  statics((schema) => ({ create: () => schema.make("aud_" + ascending()) })),
-)
-export type AuditID = typeof AuditID.Type
+export const AuditID = Governance.AuditID
+export type AuditID = Governance.AuditID
 
-export const RuleEffect = Schema.Literals(["allow", "deny", "approve"])
-export type RuleEffect = typeof RuleEffect.Type
+export const RuleEffect = Governance.RuleEffect
+export type RuleEffect = Governance.RuleEffect
 
-export const Decision = Schema.Literals(["allow", "deny", "approve"])
-export type Decision = typeof Decision.Type
+export const Decision = Governance.Decision
+export type Decision = Governance.Decision
 
 export interface Rule {
   readonly id: RuleID

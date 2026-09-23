@@ -1,18 +1,14 @@
 export * as Ledger from "./ledger"
 
 import { asc, eq } from "drizzle-orm"
-import { Context, Effect, Layer, Schema } from "effect"
-import { ascending } from "@apt5/schema/identifier"
-import { statics } from "@apt5/schema/schema"
+import { Context, Effect, Layer } from "effect"
+import { Ledger } from "@apt5/schema/ledger"
 import { Database } from "./database/database"
 import { makeGlobalNode } from "./effect/app-node"
 import { LedgerEntryTable } from "./ledger/sql"
 
-export const EntryID = Schema.String.pipe(
-  Schema.brand("Ledger.EntryID"),
-  statics((schema) => ({ create: () => schema.make("ldg_" + ascending()) })),
-)
-export type EntryID = typeof EntryID.Type
+export const EntryID = Ledger.EntryID
+export type EntryID = Ledger.EntryID
 
 export interface RecordInput {
   readonly sessionID: string

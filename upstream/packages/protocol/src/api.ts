@@ -12,10 +12,15 @@ import { SkillGroup } from "./groups/skill"
 import { EventGroup, makeEventGroup } from "./groups/event"
 import type { Definition } from "@apt5/schema/event"
 import { AgentGroup } from "./groups/agent"
+import { A2AGroup } from "./groups/a2a"
+import { GovernanceGroup } from "./groups/governance"
 import { HealthGroup } from "./groups/health"
+import { LedgerGroup } from "./groups/ledger"
+import { MemoryGroup } from "./groups/memory"
 import { PtyGroup } from "./groups/pty"
 import { makeQuestionGroup } from "./groups/question"
 import { ReferenceGroup } from "./groups/reference"
+import { WorkBoardGroup } from "./groups/workboard"
 import { Authorization } from "./middleware/authorization"
 import { LocationGroup } from "./groups/location"
 import { IntegrationGroup } from "./groups/integration"
@@ -53,6 +58,11 @@ const makeApiFromGroup = <
     .add(makeQuestionGroup(locationMiddleware, sessionLocationMiddleware))
     .add(ReferenceGroup.middleware(locationMiddleware))
     .add(ProjectCopyGroup.middleware(locationMiddleware))
+    .add(WorkBoardGroup)
+    .add(MemoryGroup)
+    .add(LedgerGroup)
+    .add(A2AGroup)
+    .add(GovernanceGroup)
     .annotateMerge(
       OpenApi.annotations({
         title: "opencode HttpApi",

@@ -1,18 +1,14 @@
 export * as MemoryOS from "./memory-os"
 
 import { and, asc, eq } from "drizzle-orm"
-import { Context, Effect, Layer, Schema } from "effect"
-import { ascending } from "@apt5/schema/identifier"
-import { statics } from "@apt5/schema/schema"
+import { Context, Effect, Layer } from "effect"
+import { MemoryOS } from "@apt5/schema/memory-os"
 import { Database } from "./database/database"
 import { makeGlobalNode } from "./effect/app-node"
 import { MemoryEntryTable } from "./memory-os/sql"
 
-export const EntryID = Schema.String.pipe(
-  Schema.brand("MemoryOS.EntryID"),
-  statics((schema) => ({ create: () => schema.make("mem_" + ascending()) })),
-)
-export type EntryID = typeof EntryID.Type
+export const EntryID = MemoryOS.EntryID
+export type EntryID = MemoryOS.EntryID
 
 export interface Entry {
   readonly id: EntryID

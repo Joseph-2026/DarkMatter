@@ -95,8 +95,35 @@ export class QuestionNotFoundError extends Schema.TaggedErrorClass<QuestionNotFo
   { httpApiStatus: 404 },
 ) {}
 
-export class ForbiddenError extends Schema.TaggedErrorClass<ForbiddenError>()(
-  "ForbiddenError",
+export class WorkTaskNotFoundError extends Schema.TaggedErrorClass<WorkTaskNotFoundError>()(
+  "WorkTaskNotFoundError",
+  {
+    taskID: Schema.String,
+    message: Schema.String,
+  },
+  { httpApiStatus: 404 },
+) {}
+
+export class MemoryEntryNotFoundError extends Schema.TaggedErrorClass<MemoryEntryNotFoundError>()(
+  "MemoryEntryNotFoundError",
+  {
+    namespace: Schema.String,
+    key: Schema.String,
+    message: Schema.String,
+  },
+  { httpApiStatus: 404 },
+) {}
+
+export class A2AMessageNotFoundError extends Schema.TaggedErrorClass<A2AMessageNotFoundError>()(
+  "A2AMessageNotFoundError",
+  {
+    messageID: Schema.String,
+    message: Schema.String,
+  },
+  { httpApiStatus: 404 },
+) {}
+
+export class ForbiddenError extends Schema.TaggedErrorClass<ForbiddenError>()(  "ForbiddenError",
   { message: Schema.String },
   { httpApiStatus: 403 },
 ) {}

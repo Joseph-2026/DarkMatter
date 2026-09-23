@@ -101,6 +101,31 @@ export type ProjectCopyError = {
 export const isProjectCopyError = (value: unknown): value is ProjectCopyError =>
   typeof value === "object" && value !== null && "name" in value && value["name"] === "ProjectCopyError"
 
+export type WorkTaskNotFoundError = {
+  readonly _tag: "WorkTaskNotFoundError"
+  readonly taskID: string
+  readonly message: string
+}
+export const isWorkTaskNotFoundError = (value: unknown): value is WorkTaskNotFoundError =>
+  typeof value === "object" && value !== null && "_tag" in value && value["_tag"] === "WorkTaskNotFoundError"
+
+export type MemoryEntryNotFoundError = {
+  readonly _tag: "MemoryEntryNotFoundError"
+  readonly namespace: string
+  readonly key: string
+  readonly message: string
+}
+export const isMemoryEntryNotFoundError = (value: unknown): value is MemoryEntryNotFoundError =>
+  typeof value === "object" && value !== null && "_tag" in value && value["_tag"] === "MemoryEntryNotFoundError"
+
+export type A2AMessageNotFoundError = {
+  readonly _tag: "A2AMessageNotFoundError"
+  readonly messageID: string
+  readonly message: string
+}
+export const isA2AMessageNotFoundError = (value: unknown): value is A2AMessageNotFoundError =>
+  typeof value === "object" && value !== null && "_tag" in value && value["_tag"] === "A2AMessageNotFoundError"
+
 export type HealthGetOutput = { readonly healthy: true }
 
 export type LocationGetInput = {
@@ -2805,3 +2830,243 @@ export type ProjectCopiesRefreshInput = {
 }
 
 export type ProjectCopiesRefreshOutput = void
+
+export type WorkboardsCreateBoardInput = { readonly name: { readonly name: string }["name"] }
+
+export type WorkboardsCreateBoardOutput = { readonly id: string; readonly name: string }
+
+export type WorkboardsListBoardsOutput = ReadonlyArray<{ readonly id: string; readonly name: string }>
+
+export type WorkboardsCreateTaskInput = {
+  readonly boardID: { readonly boardID: string }["boardID"]
+  readonly title: { readonly title: string; readonly priority?: number | undefined }["title"]
+  readonly priority?: { readonly title: string; readonly priority?: number | undefined }["priority"]
+}
+
+export type WorkboardsCreateTaskOutput = {
+  readonly id: string
+  readonly boardID: string
+  readonly title: string
+  readonly status: "open" | "doing" | "done"
+  readonly priority: number
+}
+
+export type WorkboardsListTasksInput = { readonly boardID: { readonly boardID: string }["boardID"] }
+
+export type WorkboardsListTasksOutput = ReadonlyArray<{
+  readonly id: string
+  readonly boardID: string
+  readonly title: string
+  readonly status: "open" | "doing" | "done"
+  readonly priority: number
+}>
+
+export type WorkboardsMoveTaskInput = {
+  readonly taskID: { readonly taskID: string }["taskID"]
+  readonly status: { readonly status: "open" | "doing" | "done" }["status"]
+}
+
+export type WorkboardsMoveTaskOutput = {
+  readonly id: string
+  readonly boardID: string
+  readonly title: string
+  readonly status: "open" | "doing" | "done"
+  readonly priority: number
+}
+
+export type MemoriesPutInput = {
+  readonly namespace: { readonly namespace: string; readonly key: string }["namespace"]
+  readonly key: { readonly namespace: string; readonly key: string }["key"]
+  readonly value: { readonly value: unknown }["value"]
+}
+
+export type MemoriesPutOutput = {
+  readonly id: string
+  readonly namespace: string
+  readonly key: string
+  readonly value: unknown
+}
+
+export type MemoriesGetInput = {
+  readonly namespace: { readonly namespace: string; readonly key: string }["namespace"]
+  readonly key: { readonly namespace: string; readonly key: string }["key"]
+}
+
+export type MemoriesGetOutput = {
+  readonly id: string
+  readonly namespace: string
+  readonly key: string
+  readonly value: unknown
+}
+
+export type MemoriesListInput = { readonly namespace: { readonly namespace: string }["namespace"] }
+
+export type MemoriesListOutput = ReadonlyArray<{
+  readonly id: string
+  readonly namespace: string
+  readonly key: string
+  readonly value: unknown
+}>
+
+export type MemoriesForgetInput = {
+  readonly namespace: { readonly namespace: string; readonly key: string }["namespace"]
+  readonly key: { readonly namespace: string; readonly key: string }["key"]
+}
+
+export type MemoriesForgetOutput = boolean
+
+export type LedgersRecordInput = {
+  readonly sessionID: {
+    readonly sessionID: string
+    readonly providerID: string
+    readonly modelID: string
+    readonly inputTokens: number
+    readonly outputTokens: number
+    readonly cost: number
+  }["sessionID"]
+  readonly providerID: {
+    readonly sessionID: string
+    readonly providerID: string
+    readonly modelID: string
+    readonly inputTokens: number
+    readonly outputTokens: number
+    readonly cost: number
+  }["providerID"]
+  readonly modelID: {
+    readonly sessionID: string
+    readonly providerID: string
+    readonly modelID: string
+    readonly inputTokens: number
+    readonly outputTokens: number
+    readonly cost: number
+  }["modelID"]
+  readonly inputTokens: {
+    readonly sessionID: string
+    readonly providerID: string
+    readonly modelID: string
+    readonly inputTokens: number
+    readonly outputTokens: number
+    readonly cost: number
+  }["inputTokens"]
+  readonly outputTokens: {
+    readonly sessionID: string
+    readonly providerID: string
+    readonly modelID: string
+    readonly inputTokens: number
+    readonly outputTokens: number
+    readonly cost: number
+  }["outputTokens"]
+  readonly cost: {
+    readonly sessionID: string
+    readonly providerID: string
+    readonly modelID: string
+    readonly inputTokens: number
+    readonly outputTokens: number
+    readonly cost: number
+  }["cost"]
+}
+
+export type LedgersRecordOutput = {
+  readonly id: string
+  readonly sessionID: string
+  readonly providerID: string
+  readonly modelID: string
+  readonly inputTokens: number
+  readonly outputTokens: number
+  readonly cost: number
+}
+
+export type LedgersListOutput = ReadonlyArray<{
+  readonly id: string
+  readonly sessionID: string
+  readonly providerID: string
+  readonly modelID: string
+  readonly inputTokens: number
+  readonly outputTokens: number
+  readonly cost: number
+}>
+
+export type LedgersGetOutput = {
+  readonly entries: number
+  readonly inputTokens: number
+  readonly outputTokens: number
+  readonly cost: number
+}
+
+export type A2aSendInput = {
+  readonly from: {
+    readonly from: string
+    readonly to: string
+    readonly type: string
+    readonly payload: unknown
+  }["from"]
+  readonly to: { readonly from: string; readonly to: string; readonly type: string; readonly payload: unknown }["to"]
+  readonly type: {
+    readonly from: string
+    readonly to: string
+    readonly type: string
+    readonly payload: unknown
+  }["type"]
+  readonly payload: {
+    readonly from: string
+    readonly to: string
+    readonly type: string
+    readonly payload: unknown
+  }["payload"]
+}
+
+export type A2aSendOutput = {
+  readonly id: string
+  readonly from: string
+  readonly to: string
+  readonly type: string
+  readonly payload: unknown
+  readonly status: "pending" | "delivered"
+}
+
+export type A2aListInput = { readonly agent: { readonly agent: string }["agent"] }
+
+export type A2aListOutput = ReadonlyArray<{
+  readonly id: string
+  readonly from: string
+  readonly to: string
+  readonly type: string
+  readonly payload: unknown
+  readonly status: "pending" | "delivered"
+}>
+
+export type A2aAckInput = { readonly id: { readonly id: string }["id"] }
+
+export type A2aAckOutput = {
+  readonly id: string
+  readonly from: string
+  readonly to: string
+  readonly type: string
+  readonly payload: unknown
+  readonly status: "pending" | "delivered"
+}
+
+export type GovernanceAddInput = {
+  readonly pattern: { readonly pattern: string; readonly effect: "allow" | "deny" | "approve" }["pattern"]
+  readonly effect: { readonly pattern: string; readonly effect: "allow" | "deny" | "approve" }["effect"]
+}
+
+export type GovernanceAddOutput = {
+  readonly id: string
+  readonly pattern: string
+  readonly effect: "allow" | "deny" | "approve"
+}
+
+export type GovernanceListOutput = ReadonlyArray<{
+  readonly id: string
+  readonly pattern: string
+  readonly effect: "allow" | "deny" | "approve"
+}>
+
+export type GovernanceEvaluateInput = { readonly action: { readonly action: string }["action"] }
+
+export type GovernanceEvaluateOutput = {
+  readonly action: string
+  readonly decision: "allow" | "deny" | "approve"
+  readonly ruleID?: string | undefined
+}

@@ -112,6 +112,38 @@ import type {
   ProjectCopiesRemoveOutput,
   ProjectCopiesRefreshInput,
   ProjectCopiesRefreshOutput,
+  WorkboardsCreateBoardInput,
+  WorkboardsCreateBoardOutput,
+  WorkboardsListBoardsOutput,
+  WorkboardsCreateTaskInput,
+  WorkboardsCreateTaskOutput,
+  WorkboardsListTasksInput,
+  WorkboardsListTasksOutput,
+  WorkboardsMoveTaskInput,
+  WorkboardsMoveTaskOutput,
+  MemoriesPutInput,
+  MemoriesPutOutput,
+  MemoriesGetInput,
+  MemoriesGetOutput,
+  MemoriesListInput,
+  MemoriesListOutput,
+  MemoriesForgetInput,
+  MemoriesForgetOutput,
+  LedgersRecordInput,
+  LedgersRecordOutput,
+  LedgersListOutput,
+  LedgersGetOutput,
+  A2aSendInput,
+  A2aSendOutput,
+  A2aListInput,
+  A2aListOutput,
+  A2aAckInput,
+  A2aAckOutput,
+  GovernanceAddInput,
+  GovernanceAddOutput,
+  GovernanceListOutput,
+  GovernanceEvaluateInput,
+  GovernanceEvaluateOutput,
 } from "./types"
 import { ClientError } from "./client-error"
 
@@ -983,6 +1015,229 @@ export function make(options: ClientOptions) {
             successStatus: 204,
             declaredStatuses: [400, 401],
             empty: true,
+          },
+          requestOptions,
+        ),
+    },
+    workboards: {
+      createBoard: (input: WorkboardsCreateBoardInput, requestOptions?: RequestOptions) =>
+        request<WorkboardsCreateBoardOutput>(
+          {
+            method: "POST",
+            path: `/api/workboard/boards`,
+            body: { name: input["name"] },
+            successStatus: 200,
+            declaredStatuses: [401, 400],
+            empty: false,
+          },
+          requestOptions,
+        ),
+      listBoards: (requestOptions?: RequestOptions) =>
+        request<WorkboardsListBoardsOutput>(
+          {
+            method: "GET",
+            path: `/api/workboard/boards`,
+            successStatus: 200,
+            declaredStatuses: [401, 400],
+            empty: false,
+          },
+          requestOptions,
+        ),
+      createTask: (input: WorkboardsCreateTaskInput, requestOptions?: RequestOptions) =>
+        request<WorkboardsCreateTaskOutput>(
+          {
+            method: "POST",
+            path: `/api/workboard/boards/${encodeURIComponent(input.boardID)}/tasks`,
+            body: { title: input["title"], priority: input["priority"] },
+            successStatus: 200,
+            declaredStatuses: [401, 400],
+            empty: false,
+          },
+          requestOptions,
+        ),
+      listTasks: (input: WorkboardsListTasksInput, requestOptions?: RequestOptions) =>
+        request<WorkboardsListTasksOutput>(
+          {
+            method: "GET",
+            path: `/api/workboard/boards/${encodeURIComponent(input.boardID)}/tasks`,
+            successStatus: 200,
+            declaredStatuses: [401, 400],
+            empty: false,
+          },
+          requestOptions,
+        ),
+      moveTask: (input: WorkboardsMoveTaskInput, requestOptions?: RequestOptions) =>
+        request<WorkboardsMoveTaskOutput>(
+          {
+            method: "POST",
+            path: `/api/workboard/tasks/${encodeURIComponent(input.taskID)}/move`,
+            body: { status: input["status"] },
+            successStatus: 200,
+            declaredStatuses: [404, 401, 400],
+            empty: false,
+          },
+          requestOptions,
+        ),
+    },
+    memories: {
+      put: (input: MemoriesPutInput, requestOptions?: RequestOptions) =>
+        request<MemoriesPutOutput>(
+          {
+            method: "PUT",
+            path: `/api/memory/${encodeURIComponent(input.namespace)}/${encodeURIComponent(input.key)}`,
+            body: { value: input["value"] },
+            successStatus: 200,
+            declaredStatuses: [401, 400],
+            empty: false,
+          },
+          requestOptions,
+        ),
+      get: (input: MemoriesGetInput, requestOptions?: RequestOptions) =>
+        request<MemoriesGetOutput>(
+          {
+            method: "GET",
+            path: `/api/memory/${encodeURIComponent(input.namespace)}/${encodeURIComponent(input.key)}`,
+            successStatus: 200,
+            declaredStatuses: [404, 401, 400],
+            empty: false,
+          },
+          requestOptions,
+        ),
+      list: (input: MemoriesListInput, requestOptions?: RequestOptions) =>
+        request<MemoriesListOutput>(
+          {
+            method: "GET",
+            path: `/api/memory/${encodeURIComponent(input.namespace)}`,
+            successStatus: 200,
+            declaredStatuses: [401, 400],
+            empty: false,
+          },
+          requestOptions,
+        ),
+      forget: (input: MemoriesForgetInput, requestOptions?: RequestOptions) =>
+        request<MemoriesForgetOutput>(
+          {
+            method: "DELETE",
+            path: `/api/memory/${encodeURIComponent(input.namespace)}/${encodeURIComponent(input.key)}`,
+            successStatus: 200,
+            declaredStatuses: [401, 400],
+            empty: false,
+          },
+          requestOptions,
+        ),
+    },
+    ledgers: {
+      record: (input: LedgersRecordInput, requestOptions?: RequestOptions) =>
+        request<LedgersRecordOutput>(
+          {
+            method: "POST",
+            path: `/api/ledger/entries`,
+            body: {
+              sessionID: input["sessionID"],
+              providerID: input["providerID"],
+              modelID: input["modelID"],
+              inputTokens: input["inputTokens"],
+              outputTokens: input["outputTokens"],
+              cost: input["cost"],
+            },
+            successStatus: 200,
+            declaredStatuses: [401, 400],
+            empty: false,
+          },
+          requestOptions,
+        ),
+      list: (requestOptions?: RequestOptions) =>
+        request<LedgersListOutput>(
+          {
+            method: "GET",
+            path: `/api/ledger/entries`,
+            successStatus: 200,
+            declaredStatuses: [401, 400],
+            empty: false,
+          },
+          requestOptions,
+        ),
+      get: (requestOptions?: RequestOptions) =>
+        request<LedgersGetOutput>(
+          {
+            method: "GET",
+            path: `/api/ledger/summary`,
+            successStatus: 200,
+            declaredStatuses: [401, 400],
+            empty: false,
+          },
+          requestOptions,
+        ),
+    },
+    a2a: {
+      send: (input: A2aSendInput, requestOptions?: RequestOptions) =>
+        request<A2aSendOutput>(
+          {
+            method: "POST",
+            path: `/api/a2a/messages`,
+            body: { from: input["from"], to: input["to"], type: input["type"], payload: input["payload"] },
+            successStatus: 200,
+            declaredStatuses: [401, 400],
+            empty: false,
+          },
+          requestOptions,
+        ),
+      list: (input: A2aListInput, requestOptions?: RequestOptions) =>
+        request<A2aListOutput>(
+          {
+            method: "GET",
+            path: `/api/a2a/inbox/${encodeURIComponent(input.agent)}`,
+            successStatus: 200,
+            declaredStatuses: [401, 400],
+            empty: false,
+          },
+          requestOptions,
+        ),
+      ack: (input: A2aAckInput, requestOptions?: RequestOptions) =>
+        request<A2aAckOutput>(
+          {
+            method: "POST",
+            path: `/api/a2a/messages/${encodeURIComponent(input.id)}/ack`,
+            successStatus: 200,
+            declaredStatuses: [404, 401, 400],
+            empty: false,
+          },
+          requestOptions,
+        ),
+    },
+    governance: {
+      add: (input: GovernanceAddInput, requestOptions?: RequestOptions) =>
+        request<GovernanceAddOutput>(
+          {
+            method: "POST",
+            path: `/api/governance/rules`,
+            body: { pattern: input["pattern"], effect: input["effect"] },
+            successStatus: 200,
+            declaredStatuses: [401, 400],
+            empty: false,
+          },
+          requestOptions,
+        ),
+      list: (requestOptions?: RequestOptions) =>
+        request<GovernanceListOutput>(
+          {
+            method: "GET",
+            path: `/api/governance/rules`,
+            successStatus: 200,
+            declaredStatuses: [401, 400],
+            empty: false,
+          },
+          requestOptions,
+        ),
+      evaluate: (input: GovernanceEvaluateInput, requestOptions?: RequestOptions) =>
+        request<GovernanceEvaluateOutput>(
+          {
+            method: "POST",
+            path: `/api/governance/evaluate`,
+            body: { action: input["action"] },
+            successStatus: 200,
+            declaredStatuses: [401, 400],
+            empty: false,
           },
           requestOptions,
         ),
