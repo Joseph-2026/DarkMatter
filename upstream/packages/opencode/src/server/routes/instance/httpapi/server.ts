@@ -81,6 +81,7 @@ import {
 } from "./middleware/authorization"
 import { EventApi } from "./groups/event"
 import { PtyConnectApi } from "./groups/pty"
+import { a2aHandlers } from "./handlers/a2a"
 import { eventHandlers } from "./handlers/event"
 import { configHandlers } from "./handlers/config"
 import { controlHandlers } from "./handlers/control"
@@ -88,8 +89,11 @@ import { controlPlaneHandlers } from "./handlers/control-plane"
 import { experimentalHandlers } from "./handlers/experimental"
 import { fileHandlers } from "./handlers/file"
 import { globalHandlers } from "./handlers/global"
+import { governanceHandlers } from "./handlers/governance"
 import { instanceHandlers } from "./handlers/instance"
+import { ledgerHandlers } from "./handlers/ledger"
 import { mcpHandlers } from "./handlers/mcp"
+import { memoryOSHandlers } from "./handlers/memory-os"
 import { permissionHandlers } from "./handlers/permission"
 import { projectHandlers } from "./handlers/project"
 import { projectCopyHandlers } from "./handlers/project-copy"
@@ -99,6 +103,7 @@ import { questionHandlers } from "./handlers/question"
 import { sessionHandlers } from "./handlers/session"
 import { syncHandlers } from "./handlers/sync"
 import { tuiHandlers } from "./handlers/tui"
+import { workBoardHandlers } from "./handlers/work-board"
 import { handlers } from "@apt5/server/handlers"
 import { buildLocationServiceMap, LocationServiceMap } from "@apt5/core/location-services"
 import { layer as locationLayer } from "@apt5/server/location"
@@ -167,6 +172,11 @@ const instanceApiRoutes = HttpApiBuilder.layer(InstanceHttpApi).pipe(
     sessionHandlers,
     syncHandlers,
     tuiHandlers,
+    workBoardHandlers,
+    memoryOSHandlers,
+    ledgerHandlers,
+    a2aHandlers,
+    governanceHandlers,
     workspaceHandlers,
   ]),
 )

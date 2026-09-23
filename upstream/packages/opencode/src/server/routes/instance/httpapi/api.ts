@@ -7,14 +7,18 @@ import { Integration } from "@apt5/core/integration"
 import { SkillV2 } from "@apt5/core/skill"
 import { InstanceDisposed } from "@/server/event"
 import { Question } from "@/question"
+import { A2AApi } from "./groups/a2a"
 import { ConfigApi } from "./groups/config"
 import { ControlApi } from "./groups/control"
 import { ControlPlaneApi } from "./groups/control-plane"
 import { EventApi } from "./groups/event"
 import { ExperimentalApi } from "./groups/experimental"
 import { FileApi } from "./groups/file"
+import { GovernanceApi } from "./groups/governance"
 import { InstanceApi } from "./groups/instance"
+import { LedgerApi } from "./groups/ledger"
 import { McpApi } from "./groups/mcp"
+import { MemoryOSApi } from "./groups/memory-os"
 import { PermissionApi } from "./groups/permission"
 import { ProjectApi } from "./groups/project"
 import { ProjectCopyApi } from "./groups/project-copy"
@@ -24,6 +28,7 @@ import { QuestionApi } from "./groups/question"
 import { SessionApi } from "./groups/session"
 import { SyncApi } from "./groups/sync"
 import { TuiApi } from "./groups/tui"
+import { WorkBoardApi } from "./groups/work-board"
 import { WorkspaceApi } from "./groups/workspace"
 import { makeApi } from "@apt5/protocol/api"
 import { LocationMiddleware } from "@apt5/server/location"
@@ -73,6 +78,11 @@ export const InstanceHttpApi = HttpApi.make("opencode-instance")
   .addHttpApi(SessionApi)
   .addHttpApi(SyncApi)
   .addHttpApi(TuiApi)
+  .addHttpApi(WorkBoardApi)
+  .addHttpApi(MemoryOSApi)
+  .addHttpApi(LedgerApi)
+  .addHttpApi(A2AApi)
+  .addHttpApi(GovernanceApi)
   .addHttpApi(WorkspaceApi)
   .middleware(SchemaErrorMiddleware)
 
