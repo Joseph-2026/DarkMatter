@@ -48,7 +48,8 @@ Team subagents: `.cursor/agents/` (`apt5-backend`, `apt5-frontend`, `apt5-gateke
   output to a file and grep `error TS`.
 - Coordination: `apt5/collab/BOARD.md` is source of truth; A2A table + PR
   descriptions are the channel. Sign messages with your own agent name only —
-  never forge another identity (see Oct 2026 incident notes in BOARD history).
+  never forge another identity (2026-09-23: demo A2A rows signed `spark` were
+  written by the other session, verified via DB; see `WHOAMI-*.md`).
 
 ## Entry points
 
