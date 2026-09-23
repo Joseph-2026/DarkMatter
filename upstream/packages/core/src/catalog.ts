@@ -3,6 +3,7 @@ export * as Catalog from "./catalog"
 import { makeLocationNode } from "./effect/app-node"
 import { Array, Context, Effect, Layer, Option, Order, pipe, Schema } from "effect"
 import { Catalog } from "@apt5/schema/catalog"
+import { FreeRouter } from "./free-router"
 import { ModelV2 } from "./model"
 import { ProviderV2 } from "./provider"
 import { EventV2 } from "./event"
@@ -55,6 +56,7 @@ export interface Interface extends State.Transformable<Draft> {
     readonly all: () => Effect.Effect<ModelV2.Info[]>
     readonly available: () => Effect.Effect<ModelV2.Info[]>
     readonly default: () => Effect.Effect<ModelV2.Info | undefined>
+    readonly free: () => Effect.Effect<ModelV2.Info | undefined>
     readonly small: (providerID: ProviderV2.ID) => Effect.Effect<ModelV2.Info | undefined>
   }
 }
@@ -229,6 +231,15 @@ const layer = Layer.effect(
               Array.head,
             ),
           )
+        }),
+
+        free: Effect.fn("CatalogV2.model.free")(function* () {
+          const hit = FreeRouter.resolve(
+            FreeRouter.Chain,
+            (yield* result.model.available()).map((model) => ({ providerID: model.providerID, modelID: model.id })),
+          )
+          if (!hit) return undefined
+          return yield* result.model.get(hit.providerID, hit.modelID)
         }),
 
         small: Effect.fn("CatalogV2.model.small")(function* (providerID) {

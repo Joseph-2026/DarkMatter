@@ -14,7 +14,7 @@ export const MessageID = Schema.String.pipe(
 )
 export type MessageID = typeof MessageID.Type
 
-export const MessageStatus = Schema.Union([Schema.Literal("pending"), Schema.Literal("delivered")])
+export const MessageStatus = Schema.Literals(["pending", "delivered"])
 export type MessageStatus = typeof MessageStatus.Type
 
 export interface Message {

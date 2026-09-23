@@ -1,6 +1,7 @@
 import { describe, expect } from "bun:test"
 import { Effect, Fiber, Layer, Stream } from "effect"
 import { Catalog } from "@apt5/core/catalog"
+import { FreeRouter } from "@apt5/core/free-router"
 import { Integration } from "@apt5/core/integration"
 import { Credential } from "@apt5/core/credential"
 import { AppNodeBuilder } from "@apt5/core/effect/app-node-builder"
@@ -348,6 +349,32 @@ describe("CatalogV2", () => {
       expect(yield* catalog.provider.all()).toEqual([])
       expect(yield* catalog.model.all()).toEqual([])
       expect(yield* catalog.provider.get(providerID)).toBeUndefined()
+    }),
+  )
+
+  it.effect("resolves the free chain with fallback when the primary is disabled", () =>
+    Effect.gen(function* () {
+      const catalog = yield* Catalog.Service
+      const credentials = yield* Credential.Service
+      const providerID = ProviderV2.ID.openrouter
+      yield* catalog.transform((editor) => {
+        editor.provider.update(providerID, () => {})
+        for (const ref of FreeRouter.Chain) editor.model.update(ref.providerID, ref.modelID, () => {})
+      })
+      yield* credentials.create({
+        integrationID: Integration.ID.make("openrouter"),
+        label: "Free",
+        value: Credential.Key.make({ type: "key", key: "free", metadata: { tenant: "free" } }),
+      })
+
+      expect(String(required(yield* catalog.model.free())?.id)).toBe("nex-agi/nex-n2.5-mini:free")
+
+      yield* catalog.transform((editor) => {
+        editor.model.update(providerID, ModelV2.ID.make("nex-agi/nex-n2.5-mini:free"), (model) => {
+          model.enabled = false
+        })
+      })
+      expect(String(required(yield* catalog.model.free())?.id)).toBe("nvidia/nemotron-3-ultra")
     }),
   )
 })

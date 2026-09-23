@@ -112,14 +112,14 @@ export const Apt5Plugin = define<HttpClient.HttpClient | EventV2.Service | Scope
         integration.name = "OpenCode"
       })
       draft.method.update(oauth(http))
-      draft.method.update({ integrationID: "darkmatter", method: { type: "key", label: "API key (service account)" } })
+      draft.method.update({ integrationID: "opencode", method: { type: "key", label: "API key (service account)" } })
     })
 
     connected = (yield* ctx.integration.connection.active("darkmatter")) !== undefined
     yield* ctx.catalog.transform((catalog) => {
       for (const [providerID, item] of Object.entries(providers ?? {})) {
         catalog.provider.update(providerID, (provider) => {
-          provider.integrationID = Integration.ID.make("darkmatter")
+          provider.integrationID = Integration.ID.make("opencode")
           if (item.name !== undefined) provider.name = item.name
           provider.api = item.npm
             ? { type: "aisdk", package: item.npm, url: item.api }
@@ -188,7 +188,7 @@ export const Apt5Plugin = define<HttpClient.HttpClient | EventV2.Service | Scope
 
     const refresh = () => loading.withPermit(load().pipe(Effect.andThen(ctx.catalog.reload())))
     yield* events.subscribe(Integration.Event.ConnectionUpdated).pipe(
-      Stream.filter((event) => event.data.integrationID === Integration.ID.make("darkmatter")),
+      Stream.filter((event) => event.data.integrationID === Integration.ID.make("opencode")),
       Stream.runForEach(refresh),
       Effect.forkScoped({ startImmediately: true }),
     )

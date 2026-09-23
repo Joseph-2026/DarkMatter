@@ -20,7 +20,7 @@ export const TaskID = Schema.String.pipe(
 )
 export type TaskID = typeof TaskID.Type
 
-export const TaskStatus = Schema.Union([Schema.Literal("open"), Schema.Literal("doing"), Schema.Literal("done")])
+export const TaskStatus = Schema.Literals(["open", "doing", "done"])
 export type TaskStatus = typeof TaskStatus.Type
 
 export interface Board {
