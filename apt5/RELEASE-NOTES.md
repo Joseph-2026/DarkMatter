@@ -1,41 +1,31 @@
-# Release Notes — apt-5-v1.0.0 (draft, collaboration ongoing)
+# Release Notes — apt-5-v1.0.0 (draft)
 
-**Date:** 2026-09-23 — **Branch:** `main` @ `3c27b96` (PR #5 merged) + `board-update` PR #6 (protocol regen pending CI)
-**Team:** Spark (core) ↔ Claude (TUI) via `A2A` + `BOARD.md` + PRs — lanes respected, CI green
+**Date:** 2026-09-23 — **main:** `ca2e7562520033e2a6bd70349b8c0c2420a02043` (PR #6 merge) — repo `Joseph-2026/DarkMatter`
+Verified via `git log --oneline -15`, `gh pr list`, `gh pr view`, `gh run list`, `gh pr checks` on 2026-09-23.
 
-## What shipped
+## Shipped (per merged PR)
 
-- **Rebrand v1 (PR #1):** `apt-5` binary + `darkmatter` alias, `.apt5` config, `APT5_*` env, `@apt5/*` scopes — wire compat `opencode` IDs via `CREDITS.md`
-- **Civilization Round 1 (PR #2):** 5 core domains + migration `20260923035633_civilization` — `work_board`, `memory_entry`, `ledger_entry`, `a2a_message`, `governance_rule/audit` + `testEffect` harness, no mocks
-- **Free Router (PR #3):** `FreeRouter.Chain` (nex-agi → nvidia → liquid → cohere) + `Catalog.model.free` + guard test
-- **Civilization Round 2 — InstanceHttpApi (PR #5 `3c27b96`, CI green 3m06s):**
-  - 5 groups `work-board` (5 endpoints), `memory-os` (4), `ledger` (3), `a2a` (3), `governance` (3) — `InstanceHttpApi` + handlers + `WorkTaskNotFound` etc
-  - `server.ts` app wiring (`WorkBoard.node` etc) — fix `ad8ef1e`
-  - Docs `API-FOR-TUI.md` + `DESIGN.md` Round 2 + `INBOX` A2A transcript (8 messages, all delivered)
-- **Protocol + Client Regen (PR #6 `board-update`, in_progress):**
-  - `protocol/src/groups/*` 5 groups + `protocol/src/api.ts` + `errors.ts` + `server/src/handlers/*` 5 + `client/src/contract.ts` endpointNames fix (`workboards.create` collision) + `generated/*` 756 lines
+- **PR #1 — Rebrand v1** — merge `c5537e15b3cf14f3701767de1bb0d0e89280a1f1` (merged 2026-09-22T16:45:06Z, head `b5023fe96a97bfaeea69a1fdb9002df2faef8e74`). CI main push run `35756184618`: success, 2m57s. URL: https://github.com/Joseph-2026/DarkMatter/actions/runs/35756184618
+- **PR #2 — civilization layers round 1** — merge `4e1ff5c5e0dee1870adb692781fd21de89a9b168` (merged 2026-09-23T04:12:17Z, head `f49bdc71bee7f38231b02f582069cb7850c1fcb5`). CI main push run `35817381808`: success, 3m15s. URL: https://github.com/Joseph-2026/DarkMatter/actions/runs/35817381808
+- **PR #3 — free router** — merge `2ece9304658466288a5ee4fb34366b3b02b5821f` (merged 2026-09-23T04:50:31Z, head `211717acee7d460f51e91343be99aa264b61f679`). CI main push run `35819970733`: success, 2m19s. URL: https://github.com/Joseph-2026/DarkMatter/actions/runs/35819970733
+- **PR #4 — agent onboarding docs** — merge `c89e5d26b5bdb2f1fdebef300446160828e140ce` (merged 2026-09-23T06:51:19Z, head `dac69c83d9e0dedae6156a2a1eba92984f40615f`). CI main push run `35828725759`: success, 2m57s. URL: https://github.com/Joseph-2026/DarkMatter/actions/runs/35828725759
+- **PR #5 — instance httpapi, civilization domains** — merge `3c27b9654c23efde3b2f800d860c4c8e26d0778f` (merged 2026-09-23T07:26:30Z, head `84cb7536adb935005234cd5357c2e163350f5eaf`). CI main push run `35831724056`: success, 3m12s. URL: https://github.com/Joseph-2026/DarkMatter/actions/runs/35831724056
+- **PR #6 — protocol groups + server handlers + client regen** — merge `ca2e7562520033e2a6bd70349b8c0c2420a02043` (merged 2026-09-23T11:22:52Z, head `474bbfd901714274ddace40a20fd2d95dae9eb82`). Branch checks run `35853373939`: build-and-check pass (3m17s), secrets-guard pass (7s), smoke pass (49s). Main push run `35854198174`: success, 3m1s. URL: https://github.com/Joseph-2026/DarkMatter/actions/runs/35854198174
 
-## Collaboration evidence
+## Pending (open PRs)
 
-- **A2A:** `spark→claude` handshake → update → fix → api-spec → ci-success → merged → pr6 → protocol (7) + `claude→spark` reply → progress → tui-ready (3) — all via `A2A.Service` (`a2a_0cd*`), DB `/home/blackhat/.local/share/darkmatter/opencode-local.db`
-- **BOARD:** `apt5/collab/BOARD.md:2` post-merge + `§7` queue (Round 2 [x], TUI unblocked)
-- **CI:** `build-and-check` heavy runner, `secrets-guard`, `smoke` — all green on `main` (PR #5 3m11s, PR #6 pending)
+- **PR #7 — `feat(collab): phase010203 agent team + root agents guide`** — branch `agent-team` → `main`, head `d3f72c1a77d0f8b7979c8e5e64e1ac110ecad1fb`, opened 2026-09-23T11:24:12Z. URL: https://github.com/Joseph-2026/DarkMatter/pull/7
+  - CI run `35854780284`: **pending** (`in_progress`, pull_request, 2026-09-23T11:29:00Z). `gh pr checks 7`: secrets-guard pass, build-and-check pending, smoke pending. URL: https://github.com/Joseph-2026/DarkMatter/actions/runs/35854780284
+  - Prior run on same branch `35854330590`: success, 3m20s (superseded by new push).
 
-## Still in progress (TUI lane — Claude, unblocked)
+## Blocked
 
-- **TUI surfaces:** `packages/tui, ui, web, app, desktop` — WorkBoard kanban + Memory list + Ledger summary — consumes `API-FOR-TUI.md`
-- **Docs:** `packages/web` provider + free-router + governance policy format
-- **Vendor:** `apt5-client-1.17.13-apt5.0.tgz` still pinned — rebuild needs app verification (separate round)
-- **Release:** `apt-5-v1.0.0` tag after TUI/docs/protocol all green
+- **Vendor round:** `upstream/packages/app/vendor/apt5-client-1.17.13-apt5.0.tgz` still pinned (verified via `ls upstream/packages/app/vendor/`). New protocol endpoints (PR #6) are not in the tarball; rebuild + app verification is a separate round — no PR open for it.
+- **TUI surfaces:** WorkBoard kanban / Memory list / Ledger summary in `upstream/packages/{tui,ui,web,app,desktop}` — no open PR (only open PR is #7, collab docs). Consumes `API-FOR-TUI.md` + PR #5/#6 contracts.
 
-## Gates
+## Next (release apt-5-v1.0.0 criteria)
 
-`bun run typecheck` (pkg dir) → `bun test --timeout 30000` (core 5 pass) → commit (conventional) → push → CI green → merge → release
-
-## Next (Spark + Claude)
-
-- Spark: finish `PR #6` CI → merge → help TUI via `BOARD §7` requests (no lane violation)
-- Claude: TUI PR + docs PR (zero conflict)
-- Joseph: final lane/merge decisions
-
-— *Draft — collaboration haijasimama, tunaendelea!*
+1. Merge PR #7 only after run `35854780284` (or successor) concludes success.
+2. Open + land vendor-round PR (rebuild tarball, app verification) — CI success required.
+3. Open + land TUI/docs PR(s) against PR #5/#6 contracts — CI success required.
+4. Tag `apt-5-v1.0.0` on a green `main` (push-run success).
