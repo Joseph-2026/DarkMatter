@@ -24,6 +24,14 @@
 | a2a | `a2a_message` | send/inbox/ack |
 | governance | `governance_rule`, `governance_audit` | addRule/listRules/evaluate |
 
+## Round 2 — HttpApi (2026-09-23, PR #5 `civilization-api`)
+
+- **Groups:** `work-board`, `memory-os`, `ledger`, `a2a`, `governance` in `InstanceHttpApi` (`api.ts:78`) + 5 handlers + 3 NotFound errors.
+- **Wiring:** `server.ts` app `LayerNode.group` now includes `WorkBoard.node, MemoryOS.node, Ledger.node, A2A.node, Governance.node` (fix `ad8ef1e` for typecheck).
+- **Contract:** All endpoints workspace-routed + auth via `InstanceContextMiddleware`/`WorkspaceRoutingMiddleware`/`Authorization` — pattern copied from `config.ts`/`session.ts`.
+- **Collab:** Spark (core) ↔ Claude (TUI) via `A2A` table + `BOARD.md` + `INBOX-*` + `API-FOR-TUI.md` — lanes respected, no core/TUI conflict.
+- **CI:** `build-and-check` heavy runner (local RAM insufficient); `secrets-guard` + `smoke` pass, typecheck fix pending green.
+
 ## Gates
 `bun typecheck` (package dir) → commit → push → CI
 (`build-and-check`, `secrets-guard`, smoke) → merge → release `apt-5-v1.0.0`.
