@@ -61,11 +61,25 @@ Repo: `https://github.com/Joseph-2026/DarkMatter` · default branch: `main`.
 
 | Lane | Owner | Scope |
 |---|---|---|
-| Core civilization + catalog + providers | Muse Spark | `packages/core/src`, `packages/schema/src`, migrations |
-| Desktop/TUI surfaces + web docs + i18n | **Claude Code (suggested)** | `packages/app`, `packages/tui`, `packages/ui`, `packages/web`, `packages/desktop` |
+| Core civilization + catalog + providers + release | PHASE010203 (lead) | `packages/core/src`, `packages/schema/src`, migrations |
+| Backend / SDK / models / QA (delegates) | `apt5-backend`, `apt5-sdk`, `apt5-models`, `apt5-gatekeeper`, `apt5-qa` (.cursor/agents) | Respective lanes, coordinated by PHASE010203 |
+| Surfaces + docs (delegates) | `apt5-frontend`, `apt5-docs` (.cursor/agents) | `app`, `tui`, `ui`, `web`, `desktop`, i18n |
+| Desktop/TUI lane (external) | PHASE040506 — STUCK (no reply since handshake) | `packages/app`, `tui`, `ui`, `web`, `desktop` |
 | E2E / smoke scripts | unclaimed | `.github/workflows`, `apt5/gates` |
 
 User (Joseph) has the final word on lanes. Claim a lane by editing this table in your PR.
+
+## 5b. Team doctrine (zero-defect — mission-critical)
+
+This system ships to large companies. Every agent on this board operates under:
+1. **Evidence or it didn't happen** — no green claim without the command output.
+2. **Gates are blocking** — typecheck 0, tests 0-fail, migration check, secrets,
+   CI green. A skipped gate is mission failure.
+3. **No mocks in production paths; no silent fallbacks; every decision audited.**
+4. **Own lane only.** Need another lane? File it in §7, don't trespass.
+5. **Sign your own name only.** Forging another identity is an instant KILL
+   finding (see `apt5-qa`).
+6. **If evidence contradicts any claim — even the lead's — evidence wins, loudly.**
 
 ## 6. Coordination protocol
 
@@ -82,7 +96,12 @@ User (Joseph) has the final word on lanes. Claim a lane by editing this table in
 - [x] Civilization round 2: InstanceHttpApi groups + handlers + app wiring (PR #5 `civilization-api` → `main` `3c27b96`, CI green)
 - [ ] TUI surfaces for WorkBoard / Memory / Ledger (Claude Code lane — **unblocked**, API live at `/work-board`, `/memory`, `/ledger`, `/a2a`, `/governance` + `API-FOR-TUI.md`)
 - [ ] Docs: provider + free-router + governance policy format (`packages/web`) — can start in parallel (no core conflict)
-- [ ] Protocol `server.*` groups + client regen (`packages/protocol` + `packages/client` generated) — Spark, next (files untracked `workboard.ts` etc at `03:55`)
+- [x] Protocol `server.*` groups + client regen (PR #6 `board-update` → `main`, CI green)
+- [ ] **Vendor round (CRITICAL PATH)** — rebuild app vendor tarball from new surface + app verification (unblocks all TUI surfaces; assignee: `apt5-sdk`)
+- [ ] TUI surfaces for WorkBoard / Memory / Ledger (assignee: `apt5-frontend`, per `API-FOR-TUI.md`; blocked until vendor round lands — direct-`fetch` escape hatch only if Joseph approves)
+- [ ] Docs: provider + free-router + governance policy format (`packages/web`; assignee: `apt5-docs`)
+- [ ] RELEASE-NOTES refresh to current main (assignee: `apt5-docs`)
+- [ ] Release `apt-5-v1.0.0` (assignee: `apt5-gatekeeper` verdict + lead; only when everything above is green)
 - [ ] Vendor tarball decision: app still uses pinned `apt5-client-1.17.13-apt5.0.tgz`; rebuilding it from the new surface is a separate round (needs app verification)
 - [ ] Release `apt-5-v1.0.0` (after TUI + docs + protocol regen are green)
 
