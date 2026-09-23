@@ -17,9 +17,9 @@ SDKS = os.path.join(ROOT, "sdks")
 GENERATOR = "openapi-generator-cli 7.14.0"
 
 LANGS = [
-    "python", "go", "rust", "java", "csharp", "ruby", "php", "swift", "kotlin",
-    "javascript", "typescript-axios", "typescript-fetch", "dart", "elixir",
-    "scala", "perl", "r", "lua", "powershell", "bash",
+    "python", "go", "rust", "java", "csharp", "ruby", "php", "swift5", "kotlin",
+    "javascript", "typescript-axios", "typescript-fetch", "c", "elixir",
+    "scala-akka", "perl", "r", "lua", "powershell", "bash",
 ]
 
 CIV_MARKERS = ["workboard", "work-board", "ledger", "governance"]

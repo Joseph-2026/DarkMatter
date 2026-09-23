@@ -12,14 +12,14 @@ sdks/java/
 sdks/csharp/
 sdks/ruby/
 sdks/php/
-sdks/swift/
+sdks/swift5/
 sdks/kotlin/
 sdks/javascript/
 sdks/typescript-axios/
 sdks/typescript-fetch/
-sdks/dart/
+sdks/c/
 sdks/elixir/
-sdks/scala/
+sdks/scala-akka/
 sdks/perl/
 sdks/r/
 sdks/lua/

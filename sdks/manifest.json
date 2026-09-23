@@ -1,0 +1,201 @@
+{
+  "generator": "openapi-generator-cli 7.14.0",
+  "spec": "sdks/openapi.sdk.json",
+  "languages": {
+    "python": {
+      "status": "OK",
+      "files": 4279,
+      "bytes": 19214119,
+      "markers": [
+        "workboard",
+        "ledger",
+        "governance",
+        "work-board"
+      ],
+      "verify": "COMPILE_OK",
+      "detail": ""
+    },
+    "go": {
+      "status": "COMPILE_FAIL",
+      "files": 1076,
+      "bytes": 8495072,
+      "markers": [
+        "workboard",
+        "ledger",
+        "governance",
+        "work-board"
+      ],
+      "verify": "COMPILE_FAIL",
+      "detail": "ion_status_data.go:23:6: SessionStatusData refers to SessionStatus\n./model_session_status_data.go:23:6: invalid recursive type SessionStatusData\n\t./model_session_status_data.go:23:6: SessionStatusData refers to SessionStatus\n\t./model_session_status.go:22:6: SessionStatus refers to SessionStatusData\n"
+    },
+    "rust": {
+      "status": "GEN_ONLY",
+      "files": 1081,
+      "bytes": 1963848,
+      "markers": [],
+      "verify": "GEN_ONLY",
+      "detail": "no local toolchain"
+    },
+    "java": {
+      "status": "GEN_ONLY",
+      "files": 1099,
+      "bytes": 16411188,
+      "markers": [
+        "workboard",
+        "ledger",
+        "governance",
+        "work-board"
+      ],
+      "verify": "GEN_ONLY",
+      "detail": "no local toolchain"
+    },
+    "csharp": {
+      "status": "GEN_ONLY",
+      "files": 1097,
+      "bytes": 17459667,
+      "markers": [],
+      "verify": "GEN_ONLY",
+      "detail": "no local toolchain"
+    },
+    "ruby": {
+      "status": "GEN_ONLY",
+      "files": 1081,
+      "bytes": 9887783,
+      "markers": [
+        "workboard",
+        "ledger",
+        "governance",
+        "work-board"
+      ],
+      "verify": "GEN_ONLY",
+      "detail": "ruby: No such file or directory -- lib/apt5_client/version.rb (LoadError)\n"
+    },
+    "php": {
+      "status": "OK",
+      "files": 1078,
+      "bytes": 16249800,
+      "markers": [
+        "governance",
+        "workboard",
+        "ledger",
+        "work-board"
+      ],
+      "verify": "COMPILE_OK",
+      "detail": ""
+    },
+    "swift5": {
+      "status": "GEN_ONLY",
+      "files": 1085,
+      "bytes": 2824323,
+      "markers": [],
+      "verify": "GEN_ONLY",
+      "detail": "no local toolchain"
+    },
+    "kotlin": {
+      "status": "GEN_ONLY",
+      "files": 1096,
+      "bytes": 2334296,
+      "markers": [],
+      "verify": "GEN_ONLY",
+      "detail": "no local toolchain"
+    },
+    "javascript": {
+      "status": "GEN_ONLY",
+      "files": 1074,
+      "bytes": 5442711,
+      "markers": [
+        "workboard",
+        "ledger",
+        "governance",
+        "work-board"
+      ],
+      "verify": "GEN_ONLY",
+      "detail": "no local toolchain"
+    },
+    "typescript-axios": {
+      "status": "GEN_ONLY",
+      "files": 11,
+      "bytes": 1765910,
+      "markers": [],
+      "verify": "GEN_ONLY",
+      "detail": "no local toolchain"
+    },
+    "typescript-fetch": {
+      "status": "GEN_ONLY",
+      "files": 1069,
+      "bytes": 3618451,
+      "markers": [
+        "ledger",
+        "governance",
+        "workboard",
+        "work-board"
+      ],
+      "verify": "GEN_ONLY",
+      "detail": "no local toolchain"
+    },
+    "c": {
+      "status": "GEN_ONLY",
+      "files": 2147,
+      "bytes": 9399368,
+      "markers": [],
+      "verify": "GEN_ONLY",
+      "detail": "no local toolchain"
+    },
+    "elixir": {
+      "status": "GEN_ONLY",
+      "files": 1075,
+      "bytes": 979526,
+      "markers": [],
+      "verify": "GEN_ONLY",
+      "detail": "no local toolchain"
+    },
+    "scala-akka": {
+      "status": "GEN_ONLY",
+      "files": 1083,
+      "bytes": 1140724,
+      "markers": [],
+      "verify": "GEN_ONLY",
+      "detail": "no local toolchain"
+    },
+    "perl": {
+      "status": "GEN_ONLY",
+      "files": 1076,
+      "bytes": 8886376,
+      "markers": [],
+      "verify": "GEN_ONLY",
+      "detail": "no local toolchain"
+    },
+    "r": {
+      "status": "GEN_ONLY",
+      "files": 1076,
+      "bytes": 11231147,
+      "markers": [],
+      "verify": "GEN_ONLY",
+      "detail": "no local toolchain"
+    },
+    "lua": {
+      "status": "GEN_ONLY",
+      "files": 1068,
+      "bytes": 1339433,
+      "markers": [],
+      "verify": "GEN_ONLY",
+      "detail": "no local toolchain"
+    },
+    "powershell": {
+      "status": "GEN_ONLY",
+      "files": 1076,
+      "bytes": 5279878,
+      "markers": [],
+      "verify": "GEN_ONLY",
+      "detail": "no local toolchain"
+    },
+    "bash": {
+      "status": "GEN_ONLY",
+      "files": 8,
+      "bytes": 1161805,
+      "markers": [],
+      "verify": "GEN_ONLY",
+      "detail": "no local toolchain"
+    }
+  }
+}

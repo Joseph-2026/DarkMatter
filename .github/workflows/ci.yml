@@ -84,7 +84,7 @@ jobs:
       - name: Verify matrix (non-empty + civilization endpoints + python compiles)
         run: |
           fail=0
-          for lang in python go rust java csharp ruby php swift kotlin javascript typescript-axios typescript-fetch dart elixir scala perl r lua powershell bash; do
+          for lang in python go rust java csharp ruby php swift5 kotlin javascript typescript-axios typescript-fetch c elixir scala-akka perl r lua powershell bash; do
             d="sdks/$lang"
             [ -d "$d" ] || { echo "MISSING: $lang"; fail=1; continue; }
             count=$(find "$d" -type f | wc -l)
