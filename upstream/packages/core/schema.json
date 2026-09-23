@@ -1,9 +1,9 @@
 {
   "version": "7",
   "dialect": "sqlite",
-  "id": "7d123e3c-fb89-45c6-8fdb-6755e23f98e6",
+  "id": "fb65e2b8-50d2-47a7-8c12-792dbc8291be",
   "prevIds": [
-    "f14a9b18-8207-487e-a3d3-227e629ba9ad"
+    "7d123e3c-fb89-45c6-8fdb-6755e23f98e6"
   ],
   "ddl": [
     {
@@ -2410,6 +2410,24 @@
     {
       "columns": [
         {
+          "value": "to_agent",
+          "isExpression": false
+        },
+        {
+          "value": "status",
+          "isExpression": false
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "origin": "manual",
+      "name": "a2a_message_to_status_idx",
+      "entityType": "indexes",
+      "table": "a2a_message"
+    },
+    {
+      "columns": [
+        {
           "value": "aggregate_id",
           "isExpression": false
         },
@@ -2446,6 +2464,52 @@
       "name": "event_aggregate_type_seq_idx",
       "entityType": "indexes",
       "table": "event"
+    },
+    {
+      "columns": [
+        {
+          "value": "action",
+          "isExpression": false
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "origin": "manual",
+      "name": "governance_audit_action_idx",
+      "entityType": "indexes",
+      "table": "governance_audit"
+    },
+    {
+      "columns": [
+        {
+          "value": "session_id",
+          "isExpression": false
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "origin": "manual",
+      "name": "ledger_entry_session_idx",
+      "entityType": "indexes",
+      "table": "ledger_entry"
+    },
+    {
+      "columns": [
+        {
+          "value": "namespace",
+          "isExpression": false
+        },
+        {
+          "value": "key",
+          "isExpression": false
+        }
+      ],
+      "isUnique": true,
+      "where": null,
+      "origin": "manual",
+      "name": "memory_entry_namespace_key_idx",
+      "entityType": "indexes",
+      "table": "memory_entry"
     },
     {
       "columns": [
@@ -2716,6 +2780,20 @@
       "name": "todo_session_idx",
       "entityType": "indexes",
       "table": "todo"
+    },
+    {
+      "columns": [
+        {
+          "value": "board_id",
+          "isExpression": false
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "origin": "manual",
+      "name": "work_task_board_idx",
+      "entityType": "indexes",
+      "table": "work_task"
     }
   ],
   "renames": []

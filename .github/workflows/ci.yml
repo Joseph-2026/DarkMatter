@@ -54,3 +54,44 @@ jobs:
       - name: Targeted tests
         run: bun test --timeout 30000 test/acp/permission.test.ts test/event-manifest.test.ts
         timeout-minutes: 30
+
+  sdk-matrix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1.4.0"
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+      - name: Install (frozen)
+        run: bun install --frozen-lockfile
+        working-directory: upstream
+      - name: Produce served spec
+        run: bun dev generate > ../../../sdks/openapi.json
+        working-directory: upstream/packages/opencode
+        timeout-minutes: 10
+      - name: Normalize spec for strict generators
+        run: python3 sdks/normalize.py
+      - name: Download pinned generator
+        run: curl -sSL --max-time 300 -o /tmp/openapi-generator-cli.jar https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/7.14.0/openapi-generator-cli-7.14.0.jar
+        timeout-minutes: 10
+      - name: Generate all 20 SDKs
+        run: GENERATOR_JAR=/tmp/openapi-generator-cli.jar ./sdks/generate.sh
+        timeout-minutes: 180
+      - name: Verify matrix (non-empty + civilization endpoints + python compiles)
+        run: |
+          fail=0
+          for lang in python go rust java csharp ruby php swift kotlin javascript typescript-axios typescript-fetch dart elixir scala perl r lua powershell bash; do
+            d="sdks/$lang"
+            [ -d "$d" ] || { echo "MISSING: $lang"; fail=1; continue; }
+            count=$(find "$d" -type f | wc -l)
+            [ "$count" -gt 10 ] || { echo "EMPTY: $lang"; fail=1; }
+            grep -rli "workboard\|work-board\|ledger\|governance" "$d" > /dev/null || { echo "NO-CIV: $lang"; fail=1; }
+            echo "$lang: $count files"
+          done
+          python3 -m compileall -q sdks/python/apt5_client || fail=1
+          [ "$fail" = "0" ] && echo "MATRIX GREEN" || exit 1
+        timeout-minutes: 10

@@ -1,4 +1,4 @@
-import { sqliteTable, text } from "drizzle-orm/sqlite-core"
+import { index, sqliteTable, text } from "drizzle-orm/sqlite-core"
 import { Timestamps } from "../database/schema.sql"
 import type { Governance } from "../governance"
 
@@ -9,10 +9,14 @@ export const GovernanceRuleTable = sqliteTable("governance_rule", {
   ...Timestamps,
 })
 
-export const GovernanceAuditTable = sqliteTable("governance_audit", {
-  id: text().$type<Governance.AuditID>().primaryKey(),
-  action: text().notNull(),
-  decision: text().$type<Governance.Decision>().notNull(),
-  rule_id: text().$type<Governance.RuleID>(),
-  ...Timestamps,
-})
+export const GovernanceAuditTable = sqliteTable(
+  "governance_audit",
+  {
+    id: text().$type<Governance.AuditID>().primaryKey(),
+    action: text().notNull(),
+    decision: text().$type<Governance.Decision>().notNull(),
+    rule_id: text().$type<Governance.RuleID>(),
+    ...Timestamps,
+  },
+  (table) => [index("governance_audit_action_idx").on(table.action)],
+)
