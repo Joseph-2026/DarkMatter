@@ -1,8 +1,9 @@
+import { Ledger } from "@apt5/schema/ledger"
 import { Schema } from "effect"
 import { HttpApiEndpoint, HttpApiGroup, OpenApi } from "effect/unstable/httpapi"
 
 const Entry = Schema.Struct({
-  id: Schema.String,
+  id: Ledger.EntryID,
   sessionID: Schema.String,
   providerID: Schema.String,
   modelID: Schema.String,

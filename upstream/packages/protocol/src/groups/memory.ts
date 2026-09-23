@@ -1,9 +1,10 @@
+import { MemoryOS } from "@apt5/schema/memory-os"
 import { Schema } from "effect"
 import { HttpApiEndpoint, HttpApiGroup, OpenApi } from "effect/unstable/httpapi"
 import { MemoryEntryNotFoundError } from "../errors"
 
 const Entry = Schema.Struct({
-  id: Schema.String,
+  id: MemoryOS.EntryID,
   namespace: Schema.String,
   key: Schema.String,
   value: Schema.Unknown,

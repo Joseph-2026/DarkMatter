@@ -1,17 +1,18 @@
+import { WorkBoard } from "@apt5/schema/work-board"
 import { Schema } from "effect"
 import { HttpApiEndpoint, HttpApiGroup, OpenApi } from "effect/unstable/httpapi"
 import { WorkTaskNotFoundError } from "../errors"
 
 const Board = Schema.Struct({
-  id: Schema.String,
+  id: WorkBoard.BoardID,
   name: Schema.String,
 })
 
 const Task = Schema.Struct({
-  id: Schema.String,
-  boardID: Schema.String,
+  id: WorkBoard.TaskID,
+  boardID: WorkBoard.BoardID,
   title: Schema.String,
-  status: Schema.Literals(["open", "doing", "done"]),
+  status: WorkBoard.TaskStatus,
   priority: Schema.Number,
 })
 
@@ -37,7 +38,7 @@ export const WorkBoardGroup = HttpApiGroup.make("server.workboard")
       }),
     ),
     HttpApiEndpoint.post("workboard.createTask", "/api/workboard/boards/:boardID/tasks", {
-      params: Schema.Struct({ boardID: Schema.String }),
+      params: Schema.Struct({ boardID: WorkBoard.BoardID }),
       payload: Schema.Struct({ title: Schema.String, priority: Schema.optional(Schema.Number) }),
       success: Task,
     }).annotateMerge(
@@ -48,7 +49,7 @@ export const WorkBoardGroup = HttpApiGroup.make("server.workboard")
       }),
     ),
     HttpApiEndpoint.get("workboard.listTasks", "/api/workboard/boards/:boardID/tasks", {
-      params: Schema.Struct({ boardID: Schema.String }),
+      params: Schema.Struct({ boardID: WorkBoard.BoardID }),
       success: Schema.Array(Task),
     }).annotateMerge(
       OpenApi.annotations({
@@ -58,7 +59,7 @@ export const WorkBoardGroup = HttpApiGroup.make("server.workboard")
       }),
     ),
     HttpApiEndpoint.post("workboard.moveTask", "/api/workboard/tasks/:taskID/move", {
-      params: Schema.Struct({ taskID: Schema.String }),
+      params: Schema.Struct({ taskID: WorkBoard.TaskID }),
       payload: Schema.Struct({ status: Schema.Literals(["open", "doing", "done"]) }),
       success: Task,
       error: WorkTaskNotFoundError,

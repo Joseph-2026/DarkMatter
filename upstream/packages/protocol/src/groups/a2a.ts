@@ -1,14 +1,15 @@
+import { A2A } from "@apt5/schema/a2a"
 import { Schema } from "effect"
 import { HttpApiEndpoint, HttpApiGroup, OpenApi } from "effect/unstable/httpapi"
 import { A2AMessageNotFoundError } from "../errors"
 
 const Message = Schema.Struct({
-  id: Schema.String,
+  id: A2A.MessageID,
   from: Schema.String,
   to: Schema.String,
   type: Schema.String,
   payload: Schema.Unknown,
-  status: Schema.Literals(["pending", "delivered"]),
+  status: A2A.MessageStatus,
 })
 
 export const A2AGroup = HttpApiGroup.make("server.a2a")
@@ -39,7 +40,7 @@ export const A2AGroup = HttpApiGroup.make("server.a2a")
       }),
     ),
     HttpApiEndpoint.post("a2a.messages.ack", "/api/a2a/messages/:id/ack", {
-      params: Schema.Struct({ id: Schema.String }),
+      params: Schema.Struct({ id: A2A.MessageID }),
       success: Message,
       error: A2AMessageNotFoundError,
     }).annotateMerge(

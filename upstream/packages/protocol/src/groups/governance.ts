@@ -1,16 +1,17 @@
+import { Governance } from "@apt5/schema/governance"
 import { Schema } from "effect"
 import { HttpApiEndpoint, HttpApiGroup, OpenApi } from "effect/unstable/httpapi"
 
 const Rule = Schema.Struct({
-  id: Schema.String,
+  id: Governance.RuleID,
   pattern: Schema.String,
-  effect: Schema.Literals(["allow", "deny", "approve"]),
+  effect: Governance.RuleEffect,
 })
 
 const Evaluation = Schema.Struct({
   action: Schema.String,
-  decision: Schema.Literals(["allow", "deny", "approve"]),
-  ruleID: Schema.optional(Schema.String),
+  decision: Governance.Decision,
+  ruleID: Schema.optional(Governance.RuleID),
 })
 
 export const GovernanceGroup = HttpApiGroup.make("server.governance")
