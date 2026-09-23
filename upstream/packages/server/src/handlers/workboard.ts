@@ -10,19 +10,19 @@ export const WorkBoardHandler = HttpApiBuilder.group(Api, "server.workboard", (h
 
     return handlers
       .handle(
-        "workboard.boards.create",
+        "workboard.createBoard",
         Effect.fn(function* (ctx: { payload: { name: string } }) {
           return yield* svc.createBoard(ctx.payload.name)
         }),
       )
       .handle(
-        "workboard.boards.list",
+        "workboard.listBoards",
         Effect.fn(function* () {
           return yield* svc.listBoards()
         }),
       )
       .handle(
-        "workboard.tasks.create",
+        "workboard.createTask",
         Effect.fn(function* (ctx: {
           params: { boardID: WorkBoard.BoardID }
           payload: { title: string; priority?: number }
@@ -31,13 +31,13 @@ export const WorkBoardHandler = HttpApiBuilder.group(Api, "server.workboard", (h
         }),
       )
       .handle(
-        "workboard.tasks.list",
+        "workboard.listTasks",
         Effect.fn(function* (ctx: { params: { boardID: WorkBoard.BoardID } }) {
           return yield* svc.listTasks(ctx.params.boardID)
         }),
       )
       .handle(
-        "workboard.tasks.move",
+        "workboard.moveTask",
         Effect.fn(function* (ctx: {
           params: { taskID: WorkBoard.TaskID }
           payload: { status: WorkBoard.TaskStatus }

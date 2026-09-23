@@ -11,6 +11,11 @@ import { SessionExecution } from "@apt5/core/session/execution"
 import { LocationServiceMap } from "@apt5/core/location-service-map"
 import { SessionExecutionLocal } from "@apt5/core/session/execution/local"
 import { ToolOutputStore } from "@apt5/core/tool-output-store"
+import { WorkBoard } from "@apt5/core/work-board"
+import { MemoryOS } from "@apt5/core/memory-os"
+import { Ledger } from "@apt5/core/ledger"
+import { A2A } from "@apt5/core/a2a"
+import { Governance } from "@apt5/core/governance"
 import { HttpRouter, HttpServer } from "effect/unstable/http"
 import { HttpApiBuilder } from "effect/unstable/httpapi"
 import { Layer, Option } from "effect"
@@ -34,6 +39,11 @@ const applicationServices = LayerNode.group([
   Credential.node,
   PtyEnvironment.node,
   LocationServiceMap.node,
+  WorkBoard.node,
+  MemoryOS.node,
+  Ledger.node,
+  A2A.node,
+  Governance.node,
 ])
 
 export function createRoutes(password?: string) {
