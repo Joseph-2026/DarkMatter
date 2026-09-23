@@ -1,5 +1,8 @@
 # APT-5 Agent Collaboration Board
 
+> **Agent mpya? Soma kwanza: `apt5/collab/START-HERE.md`.**
+> New agent? Read first: `apt5/collab/START-HERE.md`.
+
 Shared notice board for every agent building this system (Muse Spark, Claude Code,
 and any future agent). **This file is the source of truth for coordination.**
 Git is the transport: claim work here, push branches, open PRs, let CI judge.
@@ -20,7 +23,7 @@ Repo: `https://github.com/Joseph-2026/DarkMatter` · default branch: `main`.
 |---|---|
 | Rebrand v1 (PR #1, merged) | Binary, config, TUI identity, provider IDs back to `opencode` (wire compat) |
 | Civilization round 1 (PR #2, merged) | `work-board`, `memory-os`, `ledger`, `a2a`, `governance` in `packages/core` + generated migration `20260923035633_civilization` |
-| Free router (in progress, branch `free-router`) | `FreeRouter.Chain` + `Catalog.model.free`, wire-ID guard test |
+| Free router (PR #3, merged) | `FreeRouter.Chain` + `Catalog.model.free`, wire-ID guard test |
 | TUI `darkmatter` theme | `packages/ui/src/theme/themes/darkmatter.json`, default flipped |
 | CI | `build-and-check`, `secrets-guard`, smoke — must stay green |
 
