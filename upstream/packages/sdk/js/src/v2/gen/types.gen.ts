@@ -2655,6 +2655,25 @@ export type EventTuiSessionSelect = {
   }
 }
 
+export type WorkTaskNotFoundError = {
+  _tag: "WorkTaskNotFoundError"
+  taskID: string
+  message: string
+}
+
+export type MemoryEntryNotFoundError = {
+  _tag: "MemoryEntryNotFoundError"
+  namespace: string
+  key: string
+  message: string
+}
+
+export type A2aMessageNotFoundError = {
+  _tag: "A2AMessageNotFoundError"
+  messageID: string
+  message: string
+}
+
 export type Workspace = {
   id: string
   type: string
@@ -11003,6 +11022,662 @@ export type TuiControlResponseResponses = {
 
 export type TuiControlResponseResponse = TuiControlResponseResponses[keyof TuiControlResponseResponses]
 
+export type WorkBoardListBoardsData = {
+  body?: never
+  path?: never
+  query?: {
+    directory?: string
+    workspace?: string
+  }
+  url: "/work-board"
+}
+
+export type WorkBoardListBoardsErrors = {
+  /**
+   * Bad request
+   */
+  400: BadRequestError
+}
+
+export type WorkBoardListBoardsError = WorkBoardListBoardsErrors[keyof WorkBoardListBoardsErrors]
+
+export type WorkBoardListBoardsResponses = {
+  /**
+   * List of boards
+   */
+  200: Array<{
+    id: string
+    name: string
+  }>
+}
+
+export type WorkBoardListBoardsResponse = WorkBoardListBoardsResponses[keyof WorkBoardListBoardsResponses]
+
+export type WorkBoardCreateBoardData = {
+  body?: {
+    name: string
+  }
+  path?: never
+  query?: {
+    directory?: string
+    workspace?: string
+  }
+  url: "/work-board"
+}
+
+export type WorkBoardCreateBoardErrors = {
+  /**
+   * Bad request
+   */
+  400: BadRequestError
+}
+
+export type WorkBoardCreateBoardError = WorkBoardCreateBoardErrors[keyof WorkBoardCreateBoardErrors]
+
+export type WorkBoardCreateBoardResponses = {
+  /**
+   * Created board
+   */
+  200: {
+    id: string
+    name: string
+  }
+}
+
+export type WorkBoardCreateBoardResponse = WorkBoardCreateBoardResponses[keyof WorkBoardCreateBoardResponses]
+
+export type WorkBoardListTasksData = {
+  body?: never
+  path: {
+    boardID: string
+  }
+  query?: {
+    directory?: string
+    workspace?: string
+  }
+  url: "/work-board/{boardID}/tasks"
+}
+
+export type WorkBoardListTasksErrors = {
+  /**
+   * Bad request
+   */
+  400: BadRequestError
+}
+
+export type WorkBoardListTasksError = WorkBoardListTasksErrors[keyof WorkBoardListTasksErrors]
+
+export type WorkBoardListTasksResponses = {
+  /**
+   * List of tasks
+   */
+  200: Array<{
+    id: string
+    boardID: string
+    title: string
+    status: "open" | "doing" | "done"
+    priority: number | "NaN" | "Infinity" | "-Infinity" | "Infinity" | "-Infinity" | "NaN"
+  }>
+}
+
+export type WorkBoardListTasksResponse = WorkBoardListTasksResponses[keyof WorkBoardListTasksResponses]
+
+export type WorkBoardCreateTaskData = {
+  body?: {
+    title: string
+    priority?: number | "NaN" | "Infinity" | "-Infinity" | "Infinity" | "-Infinity" | "NaN"
+  }
+  path: {
+    boardID: string
+  }
+  query?: {
+    directory?: string
+    workspace?: string
+  }
+  url: "/work-board/{boardID}/tasks"
+}
+
+export type WorkBoardCreateTaskErrors = {
+  /**
+   * Bad request
+   */
+  400: BadRequestError
+}
+
+export type WorkBoardCreateTaskError = WorkBoardCreateTaskErrors[keyof WorkBoardCreateTaskErrors]
+
+export type WorkBoardCreateTaskResponses = {
+  /**
+   * Created task
+   */
+  200: {
+    id: string
+    boardID: string
+    title: string
+    status: "open" | "doing" | "done"
+    priority: number | "NaN" | "Infinity" | "-Infinity" | "Infinity" | "-Infinity" | "NaN"
+  }
+}
+
+export type WorkBoardCreateTaskResponse = WorkBoardCreateTaskResponses[keyof WorkBoardCreateTaskResponses]
+
+export type WorkBoardMoveTaskData = {
+  body?: {
+    status: "open" | "doing" | "done"
+  }
+  path: {
+    taskID: string
+  }
+  query?: {
+    directory?: string
+    workspace?: string
+  }
+  url: "/work-board/tasks/{taskID}/move"
+}
+
+export type WorkBoardMoveTaskErrors = {
+  /**
+   * BadRequest | InvalidRequestError
+   */
+  400: EffectHttpApiErrorBadRequest | InvalidRequestError
+  /**
+   * WorkTaskNotFoundError
+   */
+  404: WorkTaskNotFoundError
+}
+
+export type WorkBoardMoveTaskError = WorkBoardMoveTaskErrors[keyof WorkBoardMoveTaskErrors]
+
+export type WorkBoardMoveTaskResponses = {
+  /**
+   * Moved task
+   */
+  200: {
+    id: string
+    boardID: string
+    title: string
+    status: "open" | "doing" | "done"
+    priority: number | "NaN" | "Infinity" | "-Infinity" | "Infinity" | "-Infinity" | "NaN"
+  }
+}
+
+export type WorkBoardMoveTaskResponse = WorkBoardMoveTaskResponses[keyof WorkBoardMoveTaskResponses]
+
+export type MemoryOsForgetData = {
+  body?: never
+  path: {
+    namespace: string
+    key: string
+  }
+  query?: {
+    directory?: string
+    workspace?: string
+  }
+  url: "/memory/{namespace}/{key}"
+}
+
+export type MemoryOsForgetErrors = {
+  /**
+   * Bad request
+   */
+  400: BadRequestError
+}
+
+export type MemoryOsForgetError = MemoryOsForgetErrors[keyof MemoryOsForgetErrors]
+
+export type MemoryOsForgetResponses = {
+  /**
+   * Entry forgotten
+   */
+  200: boolean
+}
+
+export type MemoryOsForgetResponse = MemoryOsForgetResponses[keyof MemoryOsForgetResponses]
+
+export type MemoryOsGetData = {
+  body?: never
+  path: {
+    namespace: string
+    key: string
+  }
+  query?: {
+    directory?: string
+    workspace?: string
+  }
+  url: "/memory/{namespace}/{key}"
+}
+
+export type MemoryOsGetErrors = {
+  /**
+   * BadRequest | InvalidRequestError
+   */
+  400: EffectHttpApiErrorBadRequest | InvalidRequestError
+  /**
+   * MemoryEntryNotFoundError
+   */
+  404: MemoryEntryNotFoundError
+}
+
+export type MemoryOsGetError = MemoryOsGetErrors[keyof MemoryOsGetErrors]
+
+export type MemoryOsGetResponses = {
+  /**
+   * Memory entry
+   */
+  200: {
+    id: string
+    namespace: string
+    key: string
+    value: unknown
+  }
+}
+
+export type MemoryOsGetResponse = MemoryOsGetResponses[keyof MemoryOsGetResponses]
+
+export type MemoryOsPutData = {
+  body?: {
+    value: unknown
+  }
+  path: {
+    namespace: string
+    key: string
+  }
+  query?: {
+    directory?: string
+    workspace?: string
+  }
+  url: "/memory/{namespace}/{key}"
+}
+
+export type MemoryOsPutErrors = {
+  /**
+   * Bad request
+   */
+  400: BadRequestError
+}
+
+export type MemoryOsPutError = MemoryOsPutErrors[keyof MemoryOsPutErrors]
+
+export type MemoryOsPutResponses = {
+  /**
+   * Stored entry
+   */
+  200: {
+    id: string
+    namespace: string
+    key: string
+    value: unknown
+  }
+}
+
+export type MemoryOsPutResponse = MemoryOsPutResponses[keyof MemoryOsPutResponses]
+
+export type MemoryOsListData = {
+  body?: never
+  path: {
+    namespace: string
+  }
+  query?: {
+    directory?: string
+    workspace?: string
+  }
+  url: "/memory/{namespace}"
+}
+
+export type MemoryOsListErrors = {
+  /**
+   * Bad request
+   */
+  400: BadRequestError
+}
+
+export type MemoryOsListError = MemoryOsListErrors[keyof MemoryOsListErrors]
+
+export type MemoryOsListResponses = {
+  /**
+   * List of entries
+   */
+  200: Array<{
+    id: string
+    namespace: string
+    key: string
+    value: unknown
+  }>
+}
+
+export type MemoryOsListResponse = MemoryOsListResponses[keyof MemoryOsListResponses]
+
+export type LedgerListData = {
+  body?: never
+  path?: never
+  query?: {
+    directory?: string
+    workspace?: string
+  }
+  url: "/ledger"
+}
+
+export type LedgerListErrors = {
+  /**
+   * Bad request
+   */
+  400: BadRequestError
+}
+
+export type LedgerListError = LedgerListErrors[keyof LedgerListErrors]
+
+export type LedgerListResponses = {
+  /**
+   * List of entries
+   */
+  200: Array<{
+    id: string
+    sessionID: string
+    providerID: string
+    modelID: string
+    inputTokens: number | "NaN" | "Infinity" | "-Infinity" | "Infinity" | "-Infinity" | "NaN"
+    outputTokens: number | "NaN" | "Infinity" | "-Infinity" | "Infinity" | "-Infinity" | "NaN"
+    cost: number | "NaN" | "Infinity" | "-Infinity" | "Infinity" | "-Infinity" | "NaN"
+  }>
+}
+
+export type LedgerListResponse = LedgerListResponses[keyof LedgerListResponses]
+
+export type LedgerRecordData = {
+  body?: {
+    sessionID: string
+    providerID: string
+    modelID: string
+    inputTokens: number | "NaN" | "Infinity" | "-Infinity" | "Infinity" | "-Infinity" | "NaN"
+    outputTokens: number | "NaN" | "Infinity" | "-Infinity" | "Infinity" | "-Infinity" | "NaN"
+    cost: number | "NaN" | "Infinity" | "-Infinity" | "Infinity" | "-Infinity" | "NaN"
+  }
+  path?: never
+  query?: {
+    directory?: string
+    workspace?: string
+  }
+  url: "/ledger"
+}
+
+export type LedgerRecordErrors = {
+  /**
+   * Bad request
+   */
+  400: BadRequestError
+}
+
+export type LedgerRecordError = LedgerRecordErrors[keyof LedgerRecordErrors]
+
+export type LedgerRecordResponses = {
+  /**
+   * Recorded entry
+   */
+  200: {
+    id: string
+    sessionID: string
+    providerID: string
+    modelID: string
+    inputTokens: number | "NaN" | "Infinity" | "-Infinity" | "Infinity" | "-Infinity" | "NaN"
+    outputTokens: number | "NaN" | "Infinity" | "-Infinity" | "Infinity" | "-Infinity" | "NaN"
+    cost: number | "NaN" | "Infinity" | "-Infinity" | "Infinity" | "-Infinity" | "NaN"
+  }
+}
+
+export type LedgerRecordResponse = LedgerRecordResponses[keyof LedgerRecordResponses]
+
+export type LedgerSummaryData = {
+  body?: never
+  path?: never
+  query?: {
+    directory?: string
+    workspace?: string
+  }
+  url: "/ledger/summary"
+}
+
+export type LedgerSummaryErrors = {
+  /**
+   * Bad request
+   */
+  400: BadRequestError
+}
+
+export type LedgerSummaryError = LedgerSummaryErrors[keyof LedgerSummaryErrors]
+
+export type LedgerSummaryResponses = {
+  /**
+   * Usage totals
+   */
+  200: {
+    entries: number | "NaN" | "Infinity" | "-Infinity" | "Infinity" | "-Infinity" | "NaN"
+    inputTokens: number | "NaN" | "Infinity" | "-Infinity" | "Infinity" | "-Infinity" | "NaN"
+    outputTokens: number | "NaN" | "Infinity" | "-Infinity" | "Infinity" | "-Infinity" | "NaN"
+    cost: number | "NaN" | "Infinity" | "-Infinity" | "Infinity" | "-Infinity" | "NaN"
+  }
+}
+
+export type LedgerSummaryResponse = LedgerSummaryResponses[keyof LedgerSummaryResponses]
+
+export type A2aSendData = {
+  body?: {
+    from: string
+    to: string
+    type: string
+    payload: unknown
+  }
+  path?: never
+  query?: {
+    directory?: string
+    workspace?: string
+  }
+  url: "/a2a"
+}
+
+export type A2aSendErrors = {
+  /**
+   * Bad request
+   */
+  400: BadRequestError
+}
+
+export type A2aSendError = A2aSendErrors[keyof A2aSendErrors]
+
+export type A2aSendResponses = {
+  /**
+   * Sent message
+   */
+  200: {
+    id: string
+    from: string
+    to: string
+    type: string
+    payload: unknown
+    status: "pending" | "delivered"
+  }
+}
+
+export type A2aSendResponse = A2aSendResponses[keyof A2aSendResponses]
+
+export type A2aInboxData = {
+  body?: never
+  path: {
+    agent: string
+  }
+  query?: {
+    directory?: string
+    workspace?: string
+  }
+  url: "/a2a/inbox/{agent}"
+}
+
+export type A2aInboxErrors = {
+  /**
+   * Bad request
+   */
+  400: BadRequestError
+}
+
+export type A2aInboxError = A2aInboxErrors[keyof A2aInboxErrors]
+
+export type A2aInboxResponses = {
+  /**
+   * Pending messages
+   */
+  200: Array<{
+    id: string
+    from: string
+    to: string
+    type: string
+    payload: unknown
+    status: "pending" | "delivered"
+  }>
+}
+
+export type A2aInboxResponse = A2aInboxResponses[keyof A2aInboxResponses]
+
+export type A2aAckData = {
+  body?: never
+  path: {
+    id: string
+  }
+  query?: {
+    directory?: string
+    workspace?: string
+  }
+  url: "/a2a/{id}/ack"
+}
+
+export type A2aAckErrors = {
+  /**
+   * BadRequest | InvalidRequestError
+   */
+  400: EffectHttpApiErrorBadRequest | InvalidRequestError
+  /**
+   * A2AMessageNotFoundError
+   */
+  404: A2aMessageNotFoundError
+}
+
+export type A2aAckError = A2aAckErrors[keyof A2aAckErrors]
+
+export type A2aAckResponses = {
+  /**
+   * Acknowledged message
+   */
+  200: {
+    id: string
+    from: string
+    to: string
+    type: string
+    payload: unknown
+    status: "pending" | "delivered"
+  }
+}
+
+export type A2aAckResponse = A2aAckResponses[keyof A2aAckResponses]
+
+export type GovernanceListRulesData = {
+  body?: never
+  path?: never
+  query?: {
+    directory?: string
+    workspace?: string
+  }
+  url: "/governance/rules"
+}
+
+export type GovernanceListRulesErrors = {
+  /**
+   * Bad request
+   */
+  400: BadRequestError
+}
+
+export type GovernanceListRulesError = GovernanceListRulesErrors[keyof GovernanceListRulesErrors]
+
+export type GovernanceListRulesResponses = {
+  /**
+   * List of rules
+   */
+  200: Array<{
+    id: string
+    pattern: string
+    effect: "allow" | "deny" | "approve"
+  }>
+}
+
+export type GovernanceListRulesResponse = GovernanceListRulesResponses[keyof GovernanceListRulesResponses]
+
+export type GovernanceAddRuleData = {
+  body?: {
+    pattern: string
+    effect: "allow" | "deny" | "approve"
+  }
+  path?: never
+  query?: {
+    directory?: string
+    workspace?: string
+  }
+  url: "/governance/rules"
+}
+
+export type GovernanceAddRuleErrors = {
+  /**
+   * Bad request
+   */
+  400: BadRequestError
+}
+
+export type GovernanceAddRuleError = GovernanceAddRuleErrors[keyof GovernanceAddRuleErrors]
+
+export type GovernanceAddRuleResponses = {
+  /**
+   * Added rule
+   */
+  200: {
+    id: string
+    pattern: string
+    effect: "allow" | "deny" | "approve"
+  }
+}
+
+export type GovernanceAddRuleResponse = GovernanceAddRuleResponses[keyof GovernanceAddRuleResponses]
+
+export type GovernanceEvaluateData = {
+  body?: {
+    action: string
+  }
+  path?: never
+  query?: {
+    directory?: string
+    workspace?: string
+  }
+  url: "/governance/evaluate"
+}
+
+export type GovernanceEvaluateErrors = {
+  /**
+   * Bad request
+   */
+  400: BadRequestError
+}
+
+export type GovernanceEvaluateError = GovernanceEvaluateErrors[keyof GovernanceEvaluateErrors]
+
+export type GovernanceEvaluateResponses = {
+  /**
+   * Policy decision
+   */
+  200: {
+    action: string
+    decision: "allow" | "deny" | "approve"
+    ruleID?: string
+  }
+}
+
+export type GovernanceEvaluateResponse = GovernanceEvaluateResponses[keyof GovernanceEvaluateResponses]
+
 export type ExperimentalWorkspaceAdapterListData = {
   body?: never
   path?: never
@@ -13587,6 +14262,680 @@ export type V2ProjectCopyRefreshResponses = {
 }
 
 export type V2ProjectCopyRefreshResponse = V2ProjectCopyRefreshResponses[keyof V2ProjectCopyRefreshResponses]
+
+export type V2WorkboardBoardsListData = {
+  body?: never
+  path?: never
+  query?: never
+  url: "/api/workboard/boards"
+}
+
+export type V2WorkboardBoardsListErrors = {
+  /**
+   * InvalidRequestError
+   */
+  400: InvalidRequestError
+  /**
+   * UnauthorizedError
+   */
+  401: UnauthorizedError
+}
+
+export type V2WorkboardBoardsListError = V2WorkboardBoardsListErrors[keyof V2WorkboardBoardsListErrors]
+
+export type V2WorkboardBoardsListResponses = {
+  /**
+   * Success
+   */
+  200: Array<{
+    id: string
+    name: string
+  }>
+}
+
+export type V2WorkboardBoardsListResponse = V2WorkboardBoardsListResponses[keyof V2WorkboardBoardsListResponses]
+
+export type V2WorkboardBoardsCreateData = {
+  body: {
+    name: string
+  }
+  path?: never
+  query?: never
+  url: "/api/workboard/boards"
+}
+
+export type V2WorkboardBoardsCreateErrors = {
+  /**
+   * InvalidRequestError
+   */
+  400: InvalidRequestError
+  /**
+   * UnauthorizedError
+   */
+  401: UnauthorizedError
+}
+
+export type V2WorkboardBoardsCreateError = V2WorkboardBoardsCreateErrors[keyof V2WorkboardBoardsCreateErrors]
+
+export type V2WorkboardBoardsCreateResponses = {
+  /**
+   * Success
+   */
+  200: {
+    id: string
+    name: string
+  }
+}
+
+export type V2WorkboardBoardsCreateResponse = V2WorkboardBoardsCreateResponses[keyof V2WorkboardBoardsCreateResponses]
+
+export type V2WorkboardTasksListData = {
+  body?: never
+  path: {
+    boardID: string
+  }
+  query?: never
+  url: "/api/workboard/boards/{boardID}/tasks"
+}
+
+export type V2WorkboardTasksListErrors = {
+  /**
+   * InvalidRequestError
+   */
+  400: InvalidRequestError
+  /**
+   * UnauthorizedError
+   */
+  401: UnauthorizedError
+}
+
+export type V2WorkboardTasksListError = V2WorkboardTasksListErrors[keyof V2WorkboardTasksListErrors]
+
+export type V2WorkboardTasksListResponses = {
+  /**
+   * Success
+   */
+  200: Array<{
+    id: string
+    boardID: string
+    title: string
+    status: "open" | "doing" | "done"
+    priority: number | "NaN" | "Infinity" | "-Infinity" | "Infinity" | "-Infinity" | "NaN"
+  }>
+}
+
+export type V2WorkboardTasksListResponse = V2WorkboardTasksListResponses[keyof V2WorkboardTasksListResponses]
+
+export type V2WorkboardTasksCreateData = {
+  body: {
+    title: string
+    priority?: number | "NaN" | "Infinity" | "-Infinity" | "Infinity" | "-Infinity" | "NaN"
+  }
+  path: {
+    boardID: string
+  }
+  query?: never
+  url: "/api/workboard/boards/{boardID}/tasks"
+}
+
+export type V2WorkboardTasksCreateErrors = {
+  /**
+   * InvalidRequestError
+   */
+  400: InvalidRequestError
+  /**
+   * UnauthorizedError
+   */
+  401: UnauthorizedError
+}
+
+export type V2WorkboardTasksCreateError = V2WorkboardTasksCreateErrors[keyof V2WorkboardTasksCreateErrors]
+
+export type V2WorkboardTasksCreateResponses = {
+  /**
+   * Success
+   */
+  200: {
+    id: string
+    boardID: string
+    title: string
+    status: "open" | "doing" | "done"
+    priority: number | "NaN" | "Infinity" | "-Infinity" | "Infinity" | "-Infinity" | "NaN"
+  }
+}
+
+export type V2WorkboardTasksCreateResponse = V2WorkboardTasksCreateResponses[keyof V2WorkboardTasksCreateResponses]
+
+export type V2WorkboardTasksMoveData = {
+  body: {
+    status: "open" | "doing" | "done"
+  }
+  path: {
+    taskID: string
+  }
+  query?: never
+  url: "/api/workboard/tasks/{taskID}/move"
+}
+
+export type V2WorkboardTasksMoveErrors = {
+  /**
+   * InvalidRequestError
+   */
+  400: InvalidRequestError
+  /**
+   * UnauthorizedError
+   */
+  401: UnauthorizedError
+  /**
+   * WorkTaskNotFoundError
+   */
+  404: WorkTaskNotFoundError
+}
+
+export type V2WorkboardTasksMoveError = V2WorkboardTasksMoveErrors[keyof V2WorkboardTasksMoveErrors]
+
+export type V2WorkboardTasksMoveResponses = {
+  /**
+   * Success
+   */
+  200: {
+    id: string
+    boardID: string
+    title: string
+    status: "open" | "doing" | "done"
+    priority: number | "NaN" | "Infinity" | "-Infinity" | "Infinity" | "-Infinity" | "NaN"
+  }
+}
+
+export type V2WorkboardTasksMoveResponse = V2WorkboardTasksMoveResponses[keyof V2WorkboardTasksMoveResponses]
+
+export type V2MemoryEntriesForgetData = {
+  body?: never
+  path: {
+    namespace: string
+    key: string
+  }
+  query?: never
+  url: "/api/memory/{namespace}/{key}"
+}
+
+export type V2MemoryEntriesForgetErrors = {
+  /**
+   * InvalidRequestError
+   */
+  400: InvalidRequestError
+  /**
+   * UnauthorizedError
+   */
+  401: UnauthorizedError
+}
+
+export type V2MemoryEntriesForgetError = V2MemoryEntriesForgetErrors[keyof V2MemoryEntriesForgetErrors]
+
+export type V2MemoryEntriesForgetResponses = {
+  /**
+   * Success
+   */
+  200: boolean
+}
+
+export type V2MemoryEntriesForgetResponse = V2MemoryEntriesForgetResponses[keyof V2MemoryEntriesForgetResponses]
+
+export type V2MemoryEntriesGetData = {
+  body?: never
+  path: {
+    namespace: string
+    key: string
+  }
+  query?: never
+  url: "/api/memory/{namespace}/{key}"
+}
+
+export type V2MemoryEntriesGetErrors = {
+  /**
+   * InvalidRequestError
+   */
+  400: InvalidRequestError
+  /**
+   * UnauthorizedError
+   */
+  401: UnauthorizedError
+  /**
+   * MemoryEntryNotFoundError
+   */
+  404: MemoryEntryNotFoundError
+}
+
+export type V2MemoryEntriesGetError = V2MemoryEntriesGetErrors[keyof V2MemoryEntriesGetErrors]
+
+export type V2MemoryEntriesGetResponses = {
+  /**
+   * Success
+   */
+  200: {
+    id: string
+    namespace: string
+    key: string
+    value: unknown
+  }
+}
+
+export type V2MemoryEntriesGetResponse = V2MemoryEntriesGetResponses[keyof V2MemoryEntriesGetResponses]
+
+export type V2MemoryEntriesPutData = {
+  body: {
+    value: unknown
+  }
+  path: {
+    namespace: string
+    key: string
+  }
+  query?: never
+  url: "/api/memory/{namespace}/{key}"
+}
+
+export type V2MemoryEntriesPutErrors = {
+  /**
+   * InvalidRequestError
+   */
+  400: InvalidRequestError
+  /**
+   * UnauthorizedError
+   */
+  401: UnauthorizedError
+}
+
+export type V2MemoryEntriesPutError = V2MemoryEntriesPutErrors[keyof V2MemoryEntriesPutErrors]
+
+export type V2MemoryEntriesPutResponses = {
+  /**
+   * Success
+   */
+  200: {
+    id: string
+    namespace: string
+    key: string
+    value: unknown
+  }
+}
+
+export type V2MemoryEntriesPutResponse = V2MemoryEntriesPutResponses[keyof V2MemoryEntriesPutResponses]
+
+export type V2MemoryEntriesListData = {
+  body?: never
+  path: {
+    namespace: string
+  }
+  query?: never
+  url: "/api/memory/{namespace}"
+}
+
+export type V2MemoryEntriesListErrors = {
+  /**
+   * InvalidRequestError
+   */
+  400: InvalidRequestError
+  /**
+   * UnauthorizedError
+   */
+  401: UnauthorizedError
+}
+
+export type V2MemoryEntriesListError = V2MemoryEntriesListErrors[keyof V2MemoryEntriesListErrors]
+
+export type V2MemoryEntriesListResponses = {
+  /**
+   * Success
+   */
+  200: Array<{
+    id: string
+    namespace: string
+    key: string
+    value: unknown
+  }>
+}
+
+export type V2MemoryEntriesListResponse = V2MemoryEntriesListResponses[keyof V2MemoryEntriesListResponses]
+
+export type V2LedgerEntriesListData = {
+  body?: never
+  path?: never
+  query?: never
+  url: "/api/ledger/entries"
+}
+
+export type V2LedgerEntriesListErrors = {
+  /**
+   * InvalidRequestError
+   */
+  400: InvalidRequestError
+  /**
+   * UnauthorizedError
+   */
+  401: UnauthorizedError
+}
+
+export type V2LedgerEntriesListError = V2LedgerEntriesListErrors[keyof V2LedgerEntriesListErrors]
+
+export type V2LedgerEntriesListResponses = {
+  /**
+   * Success
+   */
+  200: Array<{
+    id: string
+    sessionID: string
+    providerID: string
+    modelID: string
+    inputTokens: number | "NaN" | "Infinity" | "-Infinity" | "Infinity" | "-Infinity" | "NaN"
+    outputTokens: number | "NaN" | "Infinity" | "-Infinity" | "Infinity" | "-Infinity" | "NaN"
+    cost: number | "NaN" | "Infinity" | "-Infinity" | "Infinity" | "-Infinity" | "NaN"
+  }>
+}
+
+export type V2LedgerEntriesListResponse = V2LedgerEntriesListResponses[keyof V2LedgerEntriesListResponses]
+
+export type V2LedgerEntriesRecordData = {
+  body: {
+    sessionID: string
+    providerID: string
+    modelID: string
+    inputTokens: number | "NaN" | "Infinity" | "-Infinity" | "Infinity" | "-Infinity" | "NaN"
+    outputTokens: number | "NaN" | "Infinity" | "-Infinity" | "Infinity" | "-Infinity" | "NaN"
+    cost: number | "NaN" | "Infinity" | "-Infinity" | "Infinity" | "-Infinity" | "NaN"
+  }
+  path?: never
+  query?: never
+  url: "/api/ledger/entries"
+}
+
+export type V2LedgerEntriesRecordErrors = {
+  /**
+   * InvalidRequestError
+   */
+  400: InvalidRequestError
+  /**
+   * UnauthorizedError
+   */
+  401: UnauthorizedError
+}
+
+export type V2LedgerEntriesRecordError = V2LedgerEntriesRecordErrors[keyof V2LedgerEntriesRecordErrors]
+
+export type V2LedgerEntriesRecordResponses = {
+  /**
+   * Success
+   */
+  200: {
+    id: string
+    sessionID: string
+    providerID: string
+    modelID: string
+    inputTokens: number | "NaN" | "Infinity" | "-Infinity" | "Infinity" | "-Infinity" | "NaN"
+    outputTokens: number | "NaN" | "Infinity" | "-Infinity" | "Infinity" | "-Infinity" | "NaN"
+    cost: number | "NaN" | "Infinity" | "-Infinity" | "Infinity" | "-Infinity" | "NaN"
+  }
+}
+
+export type V2LedgerEntriesRecordResponse = V2LedgerEntriesRecordResponses[keyof V2LedgerEntriesRecordResponses]
+
+export type V2LedgerSummaryGetData = {
+  body?: never
+  path?: never
+  query?: never
+  url: "/api/ledger/summary"
+}
+
+export type V2LedgerSummaryGetErrors = {
+  /**
+   * InvalidRequestError
+   */
+  400: InvalidRequestError
+  /**
+   * UnauthorizedError
+   */
+  401: UnauthorizedError
+}
+
+export type V2LedgerSummaryGetError = V2LedgerSummaryGetErrors[keyof V2LedgerSummaryGetErrors]
+
+export type V2LedgerSummaryGetResponses = {
+  /**
+   * Success
+   */
+  200: {
+    entries: number | "NaN" | "Infinity" | "-Infinity" | "Infinity" | "-Infinity" | "NaN"
+    inputTokens: number | "NaN" | "Infinity" | "-Infinity" | "Infinity" | "-Infinity" | "NaN"
+    outputTokens: number | "NaN" | "Infinity" | "-Infinity" | "Infinity" | "-Infinity" | "NaN"
+    cost: number | "NaN" | "Infinity" | "-Infinity" | "Infinity" | "-Infinity" | "NaN"
+  }
+}
+
+export type V2LedgerSummaryGetResponse = V2LedgerSummaryGetResponses[keyof V2LedgerSummaryGetResponses]
+
+export type V2A2aMessagesSendData = {
+  body: {
+    from: string
+    to: string
+    type: string
+    payload: unknown
+  }
+  path?: never
+  query?: never
+  url: "/api/a2a/messages"
+}
+
+export type V2A2aMessagesSendErrors = {
+  /**
+   * InvalidRequestError
+   */
+  400: InvalidRequestError
+  /**
+   * UnauthorizedError
+   */
+  401: UnauthorizedError
+}
+
+export type V2A2aMessagesSendError = V2A2aMessagesSendErrors[keyof V2A2aMessagesSendErrors]
+
+export type V2A2aMessagesSendResponses = {
+  /**
+   * Success
+   */
+  200: {
+    id: string
+    from: string
+    to: string
+    type: string
+    payload: unknown
+    status: "pending" | "delivered"
+  }
+}
+
+export type V2A2aMessagesSendResponse = V2A2aMessagesSendResponses[keyof V2A2aMessagesSendResponses]
+
+export type V2A2aInboxListData = {
+  body?: never
+  path: {
+    agent: string
+  }
+  query?: never
+  url: "/api/a2a/inbox/{agent}"
+}
+
+export type V2A2aInboxListErrors = {
+  /**
+   * InvalidRequestError
+   */
+  400: InvalidRequestError
+  /**
+   * UnauthorizedError
+   */
+  401: UnauthorizedError
+}
+
+export type V2A2aInboxListError = V2A2aInboxListErrors[keyof V2A2aInboxListErrors]
+
+export type V2A2aInboxListResponses = {
+  /**
+   * Success
+   */
+  200: Array<{
+    id: string
+    from: string
+    to: string
+    type: string
+    payload: unknown
+    status: "pending" | "delivered"
+  }>
+}
+
+export type V2A2aInboxListResponse = V2A2aInboxListResponses[keyof V2A2aInboxListResponses]
+
+export type V2A2aMessagesAckData = {
+  body?: never
+  path: {
+    id: string
+  }
+  query?: never
+  url: "/api/a2a/messages/{id}/ack"
+}
+
+export type V2A2aMessagesAckErrors = {
+  /**
+   * InvalidRequestError
+   */
+  400: InvalidRequestError
+  /**
+   * UnauthorizedError
+   */
+  401: UnauthorizedError
+  /**
+   * A2AMessageNotFoundError
+   */
+  404: A2aMessageNotFoundError
+}
+
+export type V2A2aMessagesAckError = V2A2aMessagesAckErrors[keyof V2A2aMessagesAckErrors]
+
+export type V2A2aMessagesAckResponses = {
+  /**
+   * Success
+   */
+  200: {
+    id: string
+    from: string
+    to: string
+    type: string
+    payload: unknown
+    status: "pending" | "delivered"
+  }
+}
+
+export type V2A2aMessagesAckResponse = V2A2aMessagesAckResponses[keyof V2A2aMessagesAckResponses]
+
+export type V2GovernanceRulesListData = {
+  body?: never
+  path?: never
+  query?: never
+  url: "/api/governance/rules"
+}
+
+export type V2GovernanceRulesListErrors = {
+  /**
+   * InvalidRequestError
+   */
+  400: InvalidRequestError
+  /**
+   * UnauthorizedError
+   */
+  401: UnauthorizedError
+}
+
+export type V2GovernanceRulesListError = V2GovernanceRulesListErrors[keyof V2GovernanceRulesListErrors]
+
+export type V2GovernanceRulesListResponses = {
+  /**
+   * Success
+   */
+  200: Array<{
+    id: string
+    pattern: string
+    effect: "allow" | "deny" | "approve"
+  }>
+}
+
+export type V2GovernanceRulesListResponse = V2GovernanceRulesListResponses[keyof V2GovernanceRulesListResponses]
+
+export type V2GovernanceRulesAddData = {
+  body: {
+    pattern: string
+    effect: "allow" | "deny" | "approve"
+  }
+  path?: never
+  query?: never
+  url: "/api/governance/rules"
+}
+
+export type V2GovernanceRulesAddErrors = {
+  /**
+   * InvalidRequestError
+   */
+  400: InvalidRequestError
+  /**
+   * UnauthorizedError
+   */
+  401: UnauthorizedError
+}
+
+export type V2GovernanceRulesAddError = V2GovernanceRulesAddErrors[keyof V2GovernanceRulesAddErrors]
+
+export type V2GovernanceRulesAddResponses = {
+  /**
+   * Success
+   */
+  200: {
+    id: string
+    pattern: string
+    effect: "allow" | "deny" | "approve"
+  }
+}
+
+export type V2GovernanceRulesAddResponse = V2GovernanceRulesAddResponses[keyof V2GovernanceRulesAddResponses]
+
+export type V2GovernanceEvaluateData = {
+  body: {
+    action: string
+  }
+  path?: never
+  query?: never
+  url: "/api/governance/evaluate"
+}
+
+export type V2GovernanceEvaluateErrors = {
+  /**
+   * InvalidRequestError
+   */
+  400: InvalidRequestError
+  /**
+   * UnauthorizedError
+   */
+  401: UnauthorizedError
+}
+
+export type V2GovernanceEvaluateError = V2GovernanceEvaluateErrors[keyof V2GovernanceEvaluateErrors]
+
+export type V2GovernanceEvaluateResponses = {
+  /**
+   * Success
+   */
+  200: {
+    action: string
+    decision: "allow" | "deny" | "approve"
+    ruleID?: string
+  }
+}
+
+export type V2GovernanceEvaluateResponse = V2GovernanceEvaluateResponses[keyof V2GovernanceEvaluateResponses]
 
 export type PtyConnectData = {
   body?: never

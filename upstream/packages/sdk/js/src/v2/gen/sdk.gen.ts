@@ -3,6 +3,12 @@
 import { client } from "./client.gen.js"
 import { buildClientParams, type Client, type Options as Options2, type TDataShape } from "./client/index.js"
 import type {
+  A2aAckErrors,
+  A2aAckResponses,
+  A2aInboxErrors,
+  A2aInboxResponses,
+  A2aSendErrors,
+  A2aSendResponses,
   AgentPartInput,
   AppAgentsErrors,
   AppAgentsResponses,
@@ -88,8 +94,20 @@ import type {
   GlobalHealthResponses,
   GlobalUpgradeErrors,
   GlobalUpgradeResponses,
+  GovernanceAddRuleErrors,
+  GovernanceAddRuleResponses,
+  GovernanceEvaluateErrors,
+  GovernanceEvaluateResponses,
+  GovernanceListRulesErrors,
+  GovernanceListRulesResponses,
   InstanceDisposeErrors,
   InstanceDisposeResponses,
+  LedgerListErrors,
+  LedgerListResponses,
+  LedgerRecordErrors,
+  LedgerRecordResponses,
+  LedgerSummaryErrors,
+  LedgerSummaryResponses,
   LocationRef,
   LspStatusErrors,
   LspStatusResponses,
@@ -111,6 +129,14 @@ import type {
   McpRemoteConfig,
   McpStatusErrors,
   McpStatusResponses,
+  MemoryOsForgetErrors,
+  MemoryOsForgetResponses,
+  MemoryOsGetErrors,
+  MemoryOsGetResponses,
+  MemoryOsListErrors,
+  MemoryOsListResponses,
+  MemoryOsPutErrors,
+  MemoryOsPutResponses,
   ModelRef,
   MoveSessionDestination,
   OutputFormat,
@@ -263,6 +289,12 @@ import type {
   TuiShowToastResponses,
   TuiSubmitPromptErrors,
   TuiSubmitPromptResponses,
+  V2A2aInboxListErrors,
+  V2A2aInboxListResponses,
+  V2A2aMessagesAckErrors,
+  V2A2aMessagesAckResponses,
+  V2A2aMessagesSendErrors,
+  V2A2aMessagesSendResponses,
   V2AgentListErrors,
   V2AgentListResponses,
   V2CommandListErrors,
@@ -279,6 +311,12 @@ import type {
   V2FsListResponses,
   V2FsReadErrors,
   V2FsReadResponses,
+  V2GovernanceEvaluateErrors,
+  V2GovernanceEvaluateResponses,
+  V2GovernanceRulesAddErrors,
+  V2GovernanceRulesAddResponses,
+  V2GovernanceRulesListErrors,
+  V2GovernanceRulesListResponses,
   V2HealthGetErrors,
   V2HealthGetResponses,
   V2IntegrationAttemptCancelErrors,
@@ -295,8 +333,22 @@ import type {
   V2IntegrationGetResponses,
   V2IntegrationListErrors,
   V2IntegrationListResponses,
+  V2LedgerEntriesListErrors,
+  V2LedgerEntriesListResponses,
+  V2LedgerEntriesRecordErrors,
+  V2LedgerEntriesRecordResponses,
+  V2LedgerSummaryGetErrors,
+  V2LedgerSummaryGetResponses,
   V2LocationGetErrors,
   V2LocationGetResponses,
+  V2MemoryEntriesForgetErrors,
+  V2MemoryEntriesForgetResponses,
+  V2MemoryEntriesGetErrors,
+  V2MemoryEntriesGetResponses,
+  V2MemoryEntriesListErrors,
+  V2MemoryEntriesListResponses,
+  V2MemoryEntriesPutErrors,
+  V2MemoryEntriesPutResponses,
   V2ModelListErrors,
   V2ModelListResponses,
   V2PermissionRequestListErrors,
@@ -385,6 +437,16 @@ import type {
   V2SessionWaitResponses,
   V2SkillListErrors,
   V2SkillListResponses,
+  V2WorkboardBoardsCreateErrors,
+  V2WorkboardBoardsCreateResponses,
+  V2WorkboardBoardsListErrors,
+  V2WorkboardBoardsListResponses,
+  V2WorkboardTasksCreateErrors,
+  V2WorkboardTasksCreateResponses,
+  V2WorkboardTasksListErrors,
+  V2WorkboardTasksListResponses,
+  V2WorkboardTasksMoveErrors,
+  V2WorkboardTasksMoveResponses,
   VcsApplyErrors,
   VcsApplyResponses,
   VcsDiffErrors,
@@ -395,6 +457,16 @@ import type {
   VcsGetResponses,
   VcsStatusErrors,
   VcsStatusResponses,
+  WorkBoardCreateBoardErrors,
+  WorkBoardCreateBoardResponses,
+  WorkBoardCreateTaskErrors,
+  WorkBoardCreateTaskResponses,
+  WorkBoardListBoardsErrors,
+  WorkBoardListBoardsResponses,
+  WorkBoardListTasksErrors,
+  WorkBoardListTasksResponses,
+  WorkBoardMoveTaskErrors,
+  WorkBoardMoveTaskResponses,
   WorktreeCreateErrors,
   WorktreeCreateInput,
   WorktreeCreateResponses,
@@ -5021,6 +5093,662 @@ export class Tui extends HeyApiClient {
   }
 }
 
+export class WorkBoard extends HeyApiClient {
+  /**
+   * List work boards
+   *
+   * Get all work boards in creation order.
+   */
+  public listBoards<ThrowOnError extends boolean = false>(
+    parameters?: {
+      directory?: string
+      workspace?: string
+    },
+    options?: Options<never, ThrowOnError>,
+  ) {
+    const params = buildClientParams(
+      [parameters],
+      [
+        {
+          args: [
+            { in: "query", key: "directory" },
+            { in: "query", key: "workspace" },
+          ],
+        },
+      ],
+    )
+    return (options?.client ?? this.client).get<WorkBoardListBoardsResponses, WorkBoardListBoardsErrors, ThrowOnError>({
+      url: "/work-board",
+      ...options,
+      ...params,
+    })
+  }
+
+  /**
+   * Create a work board
+   *
+   * Create a board that groups work tasks.
+   */
+  public createBoard<ThrowOnError extends boolean = false>(
+    parameters?: {
+      directory?: string
+      workspace?: string
+      name?: string
+    },
+    options?: Options<never, ThrowOnError>,
+  ) {
+    const params = buildClientParams(
+      [parameters],
+      [
+        {
+          args: [
+            { in: "query", key: "directory" },
+            { in: "query", key: "workspace" },
+            { in: "body", key: "name" },
+          ],
+        },
+      ],
+    )
+    return (options?.client ?? this.client).post<
+      WorkBoardCreateBoardResponses,
+      WorkBoardCreateBoardErrors,
+      ThrowOnError
+    >({
+      url: "/work-board",
+      ...options,
+      ...params,
+      headers: {
+        "Content-Type": "application/json",
+        ...options?.headers,
+        ...params.headers,
+      },
+    })
+  }
+
+  /**
+   * List board tasks
+   *
+   * Get all tasks on a board in creation order.
+   */
+  public listTasks<ThrowOnError extends boolean = false>(
+    parameters: {
+      boardID: string
+      directory?: string
+      workspace?: string
+    },
+    options?: Options<never, ThrowOnError>,
+  ) {
+    const params = buildClientParams(
+      [parameters],
+      [
+        {
+          args: [
+            { in: "path", key: "boardID" },
+            { in: "query", key: "directory" },
+            { in: "query", key: "workspace" },
+          ],
+        },
+      ],
+    )
+    return (options?.client ?? this.client).get<WorkBoardListTasksResponses, WorkBoardListTasksErrors, ThrowOnError>({
+      url: "/work-board/{boardID}/tasks",
+      ...options,
+      ...params,
+    })
+  }
+
+  /**
+   * Create a task
+   *
+   * Create an open task on a board.
+   */
+  public createTask<ThrowOnError extends boolean = false>(
+    parameters: {
+      boardID: string
+      directory?: string
+      workspace?: string
+      title?: string
+      priority?: number | "NaN" | "Infinity" | "-Infinity" | "Infinity" | "-Infinity" | "NaN"
+    },
+    options?: Options<never, ThrowOnError>,
+  ) {
+    const params = buildClientParams(
+      [parameters],
+      [
+        {
+          args: [
+            { in: "path", key: "boardID" },
+            { in: "query", key: "directory" },
+            { in: "query", key: "workspace" },
+            { in: "body", key: "title" },
+            { in: "body", key: "priority" },
+          ],
+        },
+      ],
+    )
+    return (options?.client ?? this.client).post<WorkBoardCreateTaskResponses, WorkBoardCreateTaskErrors, ThrowOnError>(
+      {
+        url: "/work-board/{boardID}/tasks",
+        ...options,
+        ...params,
+        headers: {
+          "Content-Type": "application/json",
+          ...options?.headers,
+          ...params.headers,
+        },
+      },
+    )
+  }
+
+  /**
+   * Move a task
+   *
+   * Change a task status (open, doing, done).
+   */
+  public moveTask<ThrowOnError extends boolean = false>(
+    parameters: {
+      taskID: string
+      directory?: string
+      workspace?: string
+      status?: "open" | "doing" | "done"
+    },
+    options?: Options<never, ThrowOnError>,
+  ) {
+    const params = buildClientParams(
+      [parameters],
+      [
+        {
+          args: [
+            { in: "path", key: "taskID" },
+            { in: "query", key: "directory" },
+            { in: "query", key: "workspace" },
+            { in: "body", key: "status" },
+          ],
+        },
+      ],
+    )
+    return (options?.client ?? this.client).post<WorkBoardMoveTaskResponses, WorkBoardMoveTaskErrors, ThrowOnError>({
+      url: "/work-board/tasks/{taskID}/move",
+      ...options,
+      ...params,
+      headers: {
+        "Content-Type": "application/json",
+        ...options?.headers,
+        ...params.headers,
+      },
+    })
+  }
+}
+
+export class MemoryOs extends HeyApiClient {
+  /**
+   * Forget a memory entry
+   *
+   * Delete one namespaced memory entry by key.
+   */
+  public forget<ThrowOnError extends boolean = false>(
+    parameters: {
+      namespace: string
+      key: string
+      directory?: string
+      workspace?: string
+    },
+    options?: Options<never, ThrowOnError>,
+  ) {
+    const params = buildClientParams(
+      [parameters],
+      [
+        {
+          args: [
+            { in: "path", key: "namespace" },
+            { in: "path", key: "key" },
+            { in: "query", key: "directory" },
+            { in: "query", key: "workspace" },
+          ],
+        },
+      ],
+    )
+    return (options?.client ?? this.client).delete<MemoryOsForgetResponses, MemoryOsForgetErrors, ThrowOnError>({
+      url: "/memory/{namespace}/{key}",
+      ...options,
+      ...params,
+    })
+  }
+
+  /**
+   * Read a memory entry
+   *
+   * Get one namespaced memory entry by key.
+   */
+  public get<ThrowOnError extends boolean = false>(
+    parameters: {
+      namespace: string
+      key: string
+      directory?: string
+      workspace?: string
+    },
+    options?: Options<never, ThrowOnError>,
+  ) {
+    const params = buildClientParams(
+      [parameters],
+      [
+        {
+          args: [
+            { in: "path", key: "namespace" },
+            { in: "path", key: "key" },
+            { in: "query", key: "directory" },
+            { in: "query", key: "workspace" },
+          ],
+        },
+      ],
+    )
+    return (options?.client ?? this.client).get<MemoryOsGetResponses, MemoryOsGetErrors, ThrowOnError>({
+      url: "/memory/{namespace}/{key}",
+      ...options,
+      ...params,
+    })
+  }
+
+  /**
+   * Store a memory entry
+   *
+   * Create or overwrite a namespaced memory entry.
+   */
+  public put<ThrowOnError extends boolean = false>(
+    parameters: {
+      namespace: string
+      key: string
+      directory?: string
+      workspace?: string
+      value?: unknown
+    },
+    options?: Options<never, ThrowOnError>,
+  ) {
+    const params = buildClientParams(
+      [parameters],
+      [
+        {
+          args: [
+            { in: "path", key: "namespace" },
+            { in: "path", key: "key" },
+            { in: "query", key: "directory" },
+            { in: "query", key: "workspace" },
+            { in: "body", key: "value" },
+          ],
+        },
+      ],
+    )
+    return (options?.client ?? this.client).put<MemoryOsPutResponses, MemoryOsPutErrors, ThrowOnError>({
+      url: "/memory/{namespace}/{key}",
+      ...options,
+      ...params,
+      headers: {
+        "Content-Type": "application/json",
+        ...options?.headers,
+        ...params.headers,
+      },
+    })
+  }
+
+  /**
+   * List namespace entries
+   *
+   * Get all memory entries in a namespace.
+   */
+  public list<ThrowOnError extends boolean = false>(
+    parameters: {
+      namespace: string
+      directory?: string
+      workspace?: string
+    },
+    options?: Options<never, ThrowOnError>,
+  ) {
+    const params = buildClientParams(
+      [parameters],
+      [
+        {
+          args: [
+            { in: "path", key: "namespace" },
+            { in: "query", key: "directory" },
+            { in: "query", key: "workspace" },
+          ],
+        },
+      ],
+    )
+    return (options?.client ?? this.client).get<MemoryOsListResponses, MemoryOsListErrors, ThrowOnError>({
+      url: "/memory/{namespace}",
+      ...options,
+      ...params,
+    })
+  }
+}
+
+export class Ledger extends HeyApiClient {
+  /**
+   * List ledger entries
+   *
+   * Get ledger entries in creation order.
+   */
+  public list<ThrowOnError extends boolean = false>(
+    parameters?: {
+      directory?: string
+      workspace?: string
+    },
+    options?: Options<never, ThrowOnError>,
+  ) {
+    const params = buildClientParams(
+      [parameters],
+      [
+        {
+          args: [
+            { in: "query", key: "directory" },
+            { in: "query", key: "workspace" },
+          ],
+        },
+      ],
+    )
+    return (options?.client ?? this.client).get<LedgerListResponses, LedgerListErrors, ThrowOnError>({
+      url: "/ledger",
+      ...options,
+      ...params,
+    })
+  }
+
+  /**
+   * Record usage
+   *
+   * Append one usage record to the ledger (append-only).
+   */
+  public record<ThrowOnError extends boolean = false>(
+    parameters?: {
+      directory?: string
+      workspace?: string
+      sessionID?: string
+      providerID?: string
+      modelID?: string
+      inputTokens?: number | "NaN" | "Infinity" | "-Infinity" | "Infinity" | "-Infinity" | "NaN"
+      outputTokens?: number | "NaN" | "Infinity" | "-Infinity" | "Infinity" | "-Infinity" | "NaN"
+      cost?: number | "NaN" | "Infinity" | "-Infinity" | "Infinity" | "-Infinity" | "NaN"
+    },
+    options?: Options<never, ThrowOnError>,
+  ) {
+    const params = buildClientParams(
+      [parameters],
+      [
+        {
+          args: [
+            { in: "query", key: "directory" },
+            { in: "query", key: "workspace" },
+            { in: "body", key: "sessionID" },
+            { in: "body", key: "providerID" },
+            { in: "body", key: "modelID" },
+            { in: "body", key: "inputTokens" },
+            { in: "body", key: "outputTokens" },
+            { in: "body", key: "cost" },
+          ],
+        },
+      ],
+    )
+    return (options?.client ?? this.client).post<LedgerRecordResponses, LedgerRecordErrors, ThrowOnError>({
+      url: "/ledger",
+      ...options,
+      ...params,
+      headers: {
+        "Content-Type": "application/json",
+        ...options?.headers,
+        ...params.headers,
+      },
+    })
+  }
+
+  /**
+   * Summarize usage
+   *
+   * Get total entries, tokens, and cost.
+   */
+  public summary<ThrowOnError extends boolean = false>(
+    parameters?: {
+      directory?: string
+      workspace?: string
+    },
+    options?: Options<never, ThrowOnError>,
+  ) {
+    const params = buildClientParams(
+      [parameters],
+      [
+        {
+          args: [
+            { in: "query", key: "directory" },
+            { in: "query", key: "workspace" },
+          ],
+        },
+      ],
+    )
+    return (options?.client ?? this.client).get<LedgerSummaryResponses, LedgerSummaryErrors, ThrowOnError>({
+      url: "/ledger/summary",
+      ...options,
+      ...params,
+    })
+  }
+}
+
+export class A2A extends HeyApiClient {
+  /**
+   * Send a message
+   *
+   * Send an agent-to-agent message (local transport).
+   */
+  public send<ThrowOnError extends boolean = false>(
+    parameters?: {
+      directory?: string
+      workspace?: string
+      from?: string
+      to?: string
+      type?: string
+      payload?: unknown
+    },
+    options?: Options<never, ThrowOnError>,
+  ) {
+    const params = buildClientParams(
+      [parameters],
+      [
+        {
+          args: [
+            { in: "query", key: "directory" },
+            { in: "query", key: "workspace" },
+            { in: "body", key: "from" },
+            { in: "body", key: "to" },
+            { in: "body", key: "type" },
+            { in: "body", key: "payload" },
+          ],
+        },
+      ],
+    )
+    return (options?.client ?? this.client).post<A2aSendResponses, A2aSendErrors, ThrowOnError>({
+      url: "/a2a",
+      ...options,
+      ...params,
+      headers: {
+        "Content-Type": "application/json",
+        ...options?.headers,
+        ...params.headers,
+      },
+    })
+  }
+
+  /**
+   * Read inbox
+   *
+   * Get pending messages addressed to an agent.
+   */
+  public inbox<ThrowOnError extends boolean = false>(
+    parameters: {
+      agent: string
+      directory?: string
+      workspace?: string
+    },
+    options?: Options<never, ThrowOnError>,
+  ) {
+    const params = buildClientParams(
+      [parameters],
+      [
+        {
+          args: [
+            { in: "path", key: "agent" },
+            { in: "query", key: "directory" },
+            { in: "query", key: "workspace" },
+          ],
+        },
+      ],
+    )
+    return (options?.client ?? this.client).get<A2aInboxResponses, A2aInboxErrors, ThrowOnError>({
+      url: "/a2a/inbox/{agent}",
+      ...options,
+      ...params,
+    })
+  }
+
+  /**
+   * Acknowledge a message
+   *
+   * Mark a message delivered so it leaves the inbox.
+   */
+  public ack<ThrowOnError extends boolean = false>(
+    parameters: {
+      id: string
+      directory?: string
+      workspace?: string
+    },
+    options?: Options<never, ThrowOnError>,
+  ) {
+    const params = buildClientParams(
+      [parameters],
+      [
+        {
+          args: [
+            { in: "path", key: "id" },
+            { in: "query", key: "directory" },
+            { in: "query", key: "workspace" },
+          ],
+        },
+      ],
+    )
+    return (options?.client ?? this.client).post<A2aAckResponses, A2aAckErrors, ThrowOnError>({
+      url: "/a2a/{id}/ack",
+      ...options,
+      ...params,
+    })
+  }
+}
+
+export class Governance extends HeyApiClient {
+  /**
+   * List policy rules
+   *
+   * Get all policy rules in creation order.
+   */
+  public listRules<ThrowOnError extends boolean = false>(
+    parameters?: {
+      directory?: string
+      workspace?: string
+    },
+    options?: Options<never, ThrowOnError>,
+  ) {
+    const params = buildClientParams(
+      [parameters],
+      [
+        {
+          args: [
+            { in: "query", key: "directory" },
+            { in: "query", key: "workspace" },
+          ],
+        },
+      ],
+    )
+    return (options?.client ?? this.client).get<GovernanceListRulesResponses, GovernanceListRulesErrors, ThrowOnError>({
+      url: "/governance/rules",
+      ...options,
+      ...params,
+    })
+  }
+
+  /**
+   * Add a policy rule
+   *
+   * Add an allow, deny, or approve rule for action patterns.
+   */
+  public addRule<ThrowOnError extends boolean = false>(
+    parameters?: {
+      directory?: string
+      workspace?: string
+      pattern?: string
+      effect?: "allow" | "deny" | "approve"
+    },
+    options?: Options<never, ThrowOnError>,
+  ) {
+    const params = buildClientParams(
+      [parameters],
+      [
+        {
+          args: [
+            { in: "query", key: "directory" },
+            { in: "query", key: "workspace" },
+            { in: "body", key: "pattern" },
+            { in: "body", key: "effect" },
+          ],
+        },
+      ],
+    )
+    return (options?.client ?? this.client).post<GovernanceAddRuleResponses, GovernanceAddRuleErrors, ThrowOnError>({
+      url: "/governance/rules",
+      ...options,
+      ...params,
+      headers: {
+        "Content-Type": "application/json",
+        ...options?.headers,
+        ...params.headers,
+      },
+    })
+  }
+
+  /**
+   * Evaluate an action
+   *
+   * Decide an action against the rules and audit the decision.
+   */
+  public evaluate<ThrowOnError extends boolean = false>(
+    parameters?: {
+      directory?: string
+      workspace?: string
+      action?: string
+    },
+    options?: Options<never, ThrowOnError>,
+  ) {
+    const params = buildClientParams(
+      [parameters],
+      [
+        {
+          args: [
+            { in: "query", key: "directory" },
+            { in: "query", key: "workspace" },
+            { in: "body", key: "action" },
+          ],
+        },
+      ],
+    )
+    return (options?.client ?? this.client).post<GovernanceEvaluateResponses, GovernanceEvaluateErrors, ThrowOnError>({
+      url: "/governance/evaluate",
+      ...options,
+      ...params,
+      headers: {
+        "Content-Type": "application/json",
+        ...options?.headers,
+        ...params.headers,
+      },
+    })
+  }
+}
+
 export class Health extends HeyApiClient {
   /**
    * Check server health
@@ -6987,6 +7715,564 @@ export class ProjectCopy2 extends HeyApiClient {
   }
 }
 
+export class Boards extends HeyApiClient {
+  /**
+   * List work boards
+   *
+   * Get all work boards in creation order.
+   */
+  public list<ThrowOnError extends boolean = false>(options?: Options<never, ThrowOnError>) {
+    return (options?.client ?? this.client).get<
+      V2WorkboardBoardsListResponses,
+      V2WorkboardBoardsListErrors,
+      ThrowOnError
+    >({ url: "/api/workboard/boards", ...options })
+  }
+
+  /**
+   * Create a work board
+   *
+   * Create a board that groups work tasks.
+   */
+  public create<ThrowOnError extends boolean = false>(
+    parameters?: {
+      name?: string
+    },
+    options?: Options<never, ThrowOnError>,
+  ) {
+    const params = buildClientParams([parameters], [{ args: [{ in: "body", key: "name" }] }])
+    return (options?.client ?? this.client).post<
+      V2WorkboardBoardsCreateResponses,
+      V2WorkboardBoardsCreateErrors,
+      ThrowOnError
+    >({
+      url: "/api/workboard/boards",
+      ...options,
+      ...params,
+      headers: {
+        "Content-Type": "application/json",
+        ...options?.headers,
+        ...params.headers,
+      },
+    })
+  }
+}
+
+export class Tasks extends HeyApiClient {
+  /**
+   * List board tasks
+   *
+   * Get all tasks on a board in creation order.
+   */
+  public list<ThrowOnError extends boolean = false>(
+    parameters: {
+      boardID: string
+    },
+    options?: Options<never, ThrowOnError>,
+  ) {
+    const params = buildClientParams([parameters], [{ args: [{ in: "path", key: "boardID" }] }])
+    return (options?.client ?? this.client).get<
+      V2WorkboardTasksListResponses,
+      V2WorkboardTasksListErrors,
+      ThrowOnError
+    >({
+      url: "/api/workboard/boards/{boardID}/tasks",
+      ...options,
+      ...params,
+    })
+  }
+
+  /**
+   * Create a task
+   *
+   * Create an open task on a board.
+   */
+  public create<ThrowOnError extends boolean = false>(
+    parameters: {
+      boardID: string
+      title?: string
+      priority?: number | "NaN" | "Infinity" | "-Infinity" | "Infinity" | "-Infinity" | "NaN"
+    },
+    options?: Options<never, ThrowOnError>,
+  ) {
+    const params = buildClientParams(
+      [parameters],
+      [
+        {
+          args: [
+            { in: "path", key: "boardID" },
+            { in: "body", key: "title" },
+            { in: "body", key: "priority" },
+          ],
+        },
+      ],
+    )
+    return (options?.client ?? this.client).post<
+      V2WorkboardTasksCreateResponses,
+      V2WorkboardTasksCreateErrors,
+      ThrowOnError
+    >({
+      url: "/api/workboard/boards/{boardID}/tasks",
+      ...options,
+      ...params,
+      headers: {
+        "Content-Type": "application/json",
+        ...options?.headers,
+        ...params.headers,
+      },
+    })
+  }
+
+  /**
+   * Move a task
+   *
+   * Change a task status (open, doing, done).
+   */
+  public move<ThrowOnError extends boolean = false>(
+    parameters: {
+      taskID: string
+      status?: "open" | "doing" | "done"
+    },
+    options?: Options<never, ThrowOnError>,
+  ) {
+    const params = buildClientParams(
+      [parameters],
+      [
+        {
+          args: [
+            { in: "path", key: "taskID" },
+            { in: "body", key: "status" },
+          ],
+        },
+      ],
+    )
+    return (options?.client ?? this.client).post<
+      V2WorkboardTasksMoveResponses,
+      V2WorkboardTasksMoveErrors,
+      ThrowOnError
+    >({
+      url: "/api/workboard/tasks/{taskID}/move",
+      ...options,
+      ...params,
+      headers: {
+        "Content-Type": "application/json",
+        ...options?.headers,
+        ...params.headers,
+      },
+    })
+  }
+}
+
+export class Workboard extends HeyApiClient {
+  private _boards?: Boards
+  get boards(): Boards {
+    return (this._boards ??= new Boards({ client: this.client }))
+  }
+
+  private _tasks?: Tasks
+  get tasks(): Tasks {
+    return (this._tasks ??= new Tasks({ client: this.client }))
+  }
+}
+
+export class Entries extends HeyApiClient {
+  /**
+   * Forget a memory entry
+   *
+   * Delete one namespaced memory entry by key.
+   */
+  public forget<ThrowOnError extends boolean = false>(
+    parameters: {
+      namespace: string
+      key: string
+    },
+    options?: Options<never, ThrowOnError>,
+  ) {
+    const params = buildClientParams(
+      [parameters],
+      [
+        {
+          args: [
+            { in: "path", key: "namespace" },
+            { in: "path", key: "key" },
+          ],
+        },
+      ],
+    )
+    return (options?.client ?? this.client).delete<
+      V2MemoryEntriesForgetResponses,
+      V2MemoryEntriesForgetErrors,
+      ThrowOnError
+    >({
+      url: "/api/memory/{namespace}/{key}",
+      ...options,
+      ...params,
+    })
+  }
+
+  /**
+   * Read a memory entry
+   *
+   * Get one namespaced memory entry by key.
+   */
+  public get<ThrowOnError extends boolean = false>(
+    parameters: {
+      namespace: string
+      key: string
+    },
+    options?: Options<never, ThrowOnError>,
+  ) {
+    const params = buildClientParams(
+      [parameters],
+      [
+        {
+          args: [
+            { in: "path", key: "namespace" },
+            { in: "path", key: "key" },
+          ],
+        },
+      ],
+    )
+    return (options?.client ?? this.client).get<V2MemoryEntriesGetResponses, V2MemoryEntriesGetErrors, ThrowOnError>({
+      url: "/api/memory/{namespace}/{key}",
+      ...options,
+      ...params,
+    })
+  }
+
+  /**
+   * Store a memory entry
+   *
+   * Create or overwrite a namespaced memory entry.
+   */
+  public put<ThrowOnError extends boolean = false>(
+    parameters: {
+      namespace: string
+      key: string
+      value?: unknown
+    },
+    options?: Options<never, ThrowOnError>,
+  ) {
+    const params = buildClientParams(
+      [parameters],
+      [
+        {
+          args: [
+            { in: "path", key: "namespace" },
+            { in: "path", key: "key" },
+            { in: "body", key: "value" },
+          ],
+        },
+      ],
+    )
+    return (options?.client ?? this.client).put<V2MemoryEntriesPutResponses, V2MemoryEntriesPutErrors, ThrowOnError>({
+      url: "/api/memory/{namespace}/{key}",
+      ...options,
+      ...params,
+      headers: {
+        "Content-Type": "application/json",
+        ...options?.headers,
+        ...params.headers,
+      },
+    })
+  }
+
+  /**
+   * List namespace entries
+   *
+   * Get all memory entries in a namespace.
+   */
+  public list<ThrowOnError extends boolean = false>(
+    parameters: {
+      namespace: string
+    },
+    options?: Options<never, ThrowOnError>,
+  ) {
+    const params = buildClientParams([parameters], [{ args: [{ in: "path", key: "namespace" }] }])
+    return (options?.client ?? this.client).get<V2MemoryEntriesListResponses, V2MemoryEntriesListErrors, ThrowOnError>({
+      url: "/api/memory/{namespace}",
+      ...options,
+      ...params,
+    })
+  }
+}
+
+export class Memory extends HeyApiClient {
+  private _entries?: Entries
+  get entries(): Entries {
+    return (this._entries ??= new Entries({ client: this.client }))
+  }
+}
+
+export class Entries2 extends HeyApiClient {
+  /**
+   * List ledger entries
+   *
+   * Get ledger entries in creation order.
+   */
+  public list<ThrowOnError extends boolean = false>(options?: Options<never, ThrowOnError>) {
+    return (options?.client ?? this.client).get<V2LedgerEntriesListResponses, V2LedgerEntriesListErrors, ThrowOnError>({
+      url: "/api/ledger/entries",
+      ...options,
+    })
+  }
+
+  /**
+   * Record usage
+   *
+   * Append one usage record to the ledger (append-only).
+   */
+  public record<ThrowOnError extends boolean = false>(
+    parameters?: {
+      sessionID?: string
+      providerID?: string
+      modelID?: string
+      inputTokens?: number | "NaN" | "Infinity" | "-Infinity" | "Infinity" | "-Infinity" | "NaN"
+      outputTokens?: number | "NaN" | "Infinity" | "-Infinity" | "Infinity" | "-Infinity" | "NaN"
+      cost?: number | "NaN" | "Infinity" | "-Infinity" | "Infinity" | "-Infinity" | "NaN"
+    },
+    options?: Options<never, ThrowOnError>,
+  ) {
+    const params = buildClientParams(
+      [parameters],
+      [
+        {
+          args: [
+            { in: "body", key: "sessionID" },
+            { in: "body", key: "providerID" },
+            { in: "body", key: "modelID" },
+            { in: "body", key: "inputTokens" },
+            { in: "body", key: "outputTokens" },
+            { in: "body", key: "cost" },
+          ],
+        },
+      ],
+    )
+    return (options?.client ?? this.client).post<
+      V2LedgerEntriesRecordResponses,
+      V2LedgerEntriesRecordErrors,
+      ThrowOnError
+    >({
+      url: "/api/ledger/entries",
+      ...options,
+      ...params,
+      headers: {
+        "Content-Type": "application/json",
+        ...options?.headers,
+        ...params.headers,
+      },
+    })
+  }
+}
+
+export class Summary extends HeyApiClient {
+  /**
+   * Summarize usage
+   *
+   * Get total entries, tokens, and cost.
+   */
+  public get<ThrowOnError extends boolean = false>(options?: Options<never, ThrowOnError>) {
+    return (options?.client ?? this.client).get<V2LedgerSummaryGetResponses, V2LedgerSummaryGetErrors, ThrowOnError>({
+      url: "/api/ledger/summary",
+      ...options,
+    })
+  }
+}
+
+export class Ledger2 extends HeyApiClient {
+  private _entries?: Entries2
+  get entries(): Entries2 {
+    return (this._entries ??= new Entries2({ client: this.client }))
+  }
+
+  private _summary?: Summary
+  get summary(): Summary {
+    return (this._summary ??= new Summary({ client: this.client }))
+  }
+}
+
+export class Messages extends HeyApiClient {
+  /**
+   * Send a message
+   *
+   * Send an agent-to-agent message (local transport).
+   */
+  public send<ThrowOnError extends boolean = false>(
+    parameters?: {
+      from?: string
+      to?: string
+      type?: string
+      payload?: unknown
+    },
+    options?: Options<never, ThrowOnError>,
+  ) {
+    const params = buildClientParams(
+      [parameters],
+      [
+        {
+          args: [
+            { in: "body", key: "from" },
+            { in: "body", key: "to" },
+            { in: "body", key: "type" },
+            { in: "body", key: "payload" },
+          ],
+        },
+      ],
+    )
+    return (options?.client ?? this.client).post<V2A2aMessagesSendResponses, V2A2aMessagesSendErrors, ThrowOnError>({
+      url: "/api/a2a/messages",
+      ...options,
+      ...params,
+      headers: {
+        "Content-Type": "application/json",
+        ...options?.headers,
+        ...params.headers,
+      },
+    })
+  }
+
+  /**
+   * Acknowledge a message
+   *
+   * Mark a message delivered so it leaves the inbox.
+   */
+  public ack<ThrowOnError extends boolean = false>(
+    parameters: {
+      id: string
+    },
+    options?: Options<never, ThrowOnError>,
+  ) {
+    const params = buildClientParams([parameters], [{ args: [{ in: "path", key: "id" }] }])
+    return (options?.client ?? this.client).post<V2A2aMessagesAckResponses, V2A2aMessagesAckErrors, ThrowOnError>({
+      url: "/api/a2a/messages/{id}/ack",
+      ...options,
+      ...params,
+    })
+  }
+}
+
+export class Inbox extends HeyApiClient {
+  /**
+   * Read inbox
+   *
+   * Get pending messages addressed to an agent.
+   */
+  public list<ThrowOnError extends boolean = false>(
+    parameters: {
+      agent: string
+    },
+    options?: Options<never, ThrowOnError>,
+  ) {
+    const params = buildClientParams([parameters], [{ args: [{ in: "path", key: "agent" }] }])
+    return (options?.client ?? this.client).get<V2A2aInboxListResponses, V2A2aInboxListErrors, ThrowOnError>({
+      url: "/api/a2a/inbox/{agent}",
+      ...options,
+      ...params,
+    })
+  }
+}
+
+export class A2A2 extends HeyApiClient {
+  private _messages?: Messages
+  get messages(): Messages {
+    return (this._messages ??= new Messages({ client: this.client }))
+  }
+
+  private _inbox?: Inbox
+  get inbox(): Inbox {
+    return (this._inbox ??= new Inbox({ client: this.client }))
+  }
+}
+
+export class Rules extends HeyApiClient {
+  /**
+   * List policy rules
+   *
+   * Get all policy rules in creation order.
+   */
+  public list<ThrowOnError extends boolean = false>(options?: Options<never, ThrowOnError>) {
+    return (options?.client ?? this.client).get<
+      V2GovernanceRulesListResponses,
+      V2GovernanceRulesListErrors,
+      ThrowOnError
+    >({ url: "/api/governance/rules", ...options })
+  }
+
+  /**
+   * Add a policy rule
+   *
+   * Add an allow, deny, or approve rule for action patterns.
+   */
+  public add<ThrowOnError extends boolean = false>(
+    parameters?: {
+      pattern?: string
+      effect?: "allow" | "deny" | "approve"
+    },
+    options?: Options<never, ThrowOnError>,
+  ) {
+    const params = buildClientParams(
+      [parameters],
+      [
+        {
+          args: [
+            { in: "body", key: "pattern" },
+            { in: "body", key: "effect" },
+          ],
+        },
+      ],
+    )
+    return (options?.client ?? this.client).post<
+      V2GovernanceRulesAddResponses,
+      V2GovernanceRulesAddErrors,
+      ThrowOnError
+    >({
+      url: "/api/governance/rules",
+      ...options,
+      ...params,
+      headers: {
+        "Content-Type": "application/json",
+        ...options?.headers,
+        ...params.headers,
+      },
+    })
+  }
+}
+
+export class Governance2 extends HeyApiClient {
+  /**
+   * Evaluate an action
+   *
+   * Decide an action against the rules and audit the decision.
+   */
+  public evaluate<ThrowOnError extends boolean = false>(
+    parameters?: {
+      action?: string
+    },
+    options?: Options<never, ThrowOnError>,
+  ) {
+    const params = buildClientParams([parameters], [{ args: [{ in: "body", key: "action" }] }])
+    return (options?.client ?? this.client).post<
+      V2GovernanceEvaluateResponses,
+      V2GovernanceEvaluateErrors,
+      ThrowOnError
+    >({
+      url: "/api/governance/evaluate",
+      ...options,
+      ...params,
+      headers: {
+        "Content-Type": "application/json",
+        ...options?.headers,
+        ...params.headers,
+      },
+    })
+  }
+
+  private _rules?: Rules
+  get rules(): Rules {
+    return (this._rules ??= new Rules({ client: this.client }))
+  }
+}
+
 export class V2 extends HeyApiClient {
   private _health?: Health
   get health(): Health {
@@ -7071,6 +8357,31 @@ export class V2 extends HeyApiClient {
   private _projectCopy?: ProjectCopy2
   get projectCopy(): ProjectCopy2 {
     return (this._projectCopy ??= new ProjectCopy2({ client: this.client }))
+  }
+
+  private _workboard?: Workboard
+  get workboard(): Workboard {
+    return (this._workboard ??= new Workboard({ client: this.client }))
+  }
+
+  private _memory?: Memory
+  get memory(): Memory {
+    return (this._memory ??= new Memory({ client: this.client }))
+  }
+
+  private _ledger?: Ledger2
+  get ledger(): Ledger2 {
+    return (this._ledger ??= new Ledger2({ client: this.client }))
+  }
+
+  private _a2A?: A2A2
+  get a2A(): A2A2 {
+    return (this._a2A ??= new A2A2({ client: this.client }))
+  }
+
+  private _governance?: Governance2
+  get governance(): Governance2 {
+    return (this._governance ??= new Governance2({ client: this.client }))
   }
 }
 
@@ -7210,6 +8521,31 @@ export class Apt5Client extends HeyApiClient {
   private _tui?: Tui
   get tui(): Tui {
     return (this._tui ??= new Tui({ client: this.client }))
+  }
+
+  private _workBoard?: WorkBoard
+  get workBoard(): WorkBoard {
+    return (this._workBoard ??= new WorkBoard({ client: this.client }))
+  }
+
+  private _memoryOs?: MemoryOs
+  get memoryOs(): MemoryOs {
+    return (this._memoryOs ??= new MemoryOs({ client: this.client }))
+  }
+
+  private _ledger?: Ledger
+  get ledger(): Ledger {
+    return (this._ledger ??= new Ledger({ client: this.client }))
+  }
+
+  private _a2A?: A2A
+  get a2A(): A2A {
+    return (this._a2A ??= new A2A({ client: this.client }))
+  }
+
+  private _governance?: Governance
+  get governance(): Governance {
+    return (this._governance ??= new Governance({ client: this.client }))
   }
 
   private _v2?: V2
