@@ -88,7 +88,10 @@ jobs:
             d="sdks/$lang"
             [ -d "$d" ] || { echo "MISSING: $lang"; fail=1; continue; }
             count=$(find "$d" -type f | wc -l)
-            [ "$count" -gt 10 ] || { echo "EMPTY: $lang"; fail=1; }
+            # Threshold is low on purpose: tiny clients (bash: 8 files,
+            # typescript-axios: 11) are legitimate; the markers check below
+            # is the real content gate.
+            [ "$count" -gt 5 ] || { echo "EMPTY: $lang"; fail=1; }
             grep -rli "workboard\|work-board\|ledger\|governance" "$d" > /dev/null || { echo "NO-CIV: $lang"; fail=1; }
             echo "$lang: $count files"
           done
