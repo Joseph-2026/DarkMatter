@@ -66,6 +66,11 @@ import { SessionProjector } from "@apt5/core/session/projector"
 import { SessionV2 } from "@apt5/core/session"
 import { SessionExecution } from "@apt5/core/session/execution"
 import * as SessionExecutionLocal from "@apt5/core/session/execution/local"
+import { WorkBoard } from "@apt5/core/work-board"
+import { MemoryOS } from "@apt5/core/memory-os"
+import { Ledger } from "@apt5/core/ledger"
+import { A2A } from "@apt5/core/a2a"
+import { Governance } from "@apt5/core/governance"
 import { lazy } from "@/util/lazy"
 import { CorsConfig, isAllowedCorsOrigin, type CorsOptions } from "@apt5/server/cors"
 import { serveUIEffect } from "@/server/shared/ui"
@@ -81,6 +86,7 @@ import {
 } from "./middleware/authorization"
 import { EventApi } from "./groups/event"
 import { PtyConnectApi } from "./groups/pty"
+import { a2aHandlers } from "./handlers/a2a"
 import { eventHandlers } from "./handlers/event"
 import { configHandlers } from "./handlers/config"
 import { controlHandlers } from "./handlers/control"
@@ -88,8 +94,11 @@ import { controlPlaneHandlers } from "./handlers/control-plane"
 import { experimentalHandlers } from "./handlers/experimental"
 import { fileHandlers } from "./handlers/file"
 import { globalHandlers } from "./handlers/global"
+import { governanceHandlers } from "./handlers/governance"
 import { instanceHandlers } from "./handlers/instance"
+import { ledgerHandlers } from "./handlers/ledger"
 import { mcpHandlers } from "./handlers/mcp"
+import { memoryOSHandlers } from "./handlers/memory-os"
 import { permissionHandlers } from "./handlers/permission"
 import { projectHandlers } from "./handlers/project"
 import { projectCopyHandlers } from "./handlers/project-copy"
@@ -99,6 +108,7 @@ import { questionHandlers } from "./handlers/question"
 import { sessionHandlers } from "./handlers/session"
 import { syncHandlers } from "./handlers/sync"
 import { tuiHandlers } from "./handlers/tui"
+import { workBoardHandlers } from "./handlers/work-board"
 import { handlers } from "@apt5/server/handlers"
 import { buildLocationServiceMap, LocationServiceMap } from "@apt5/core/location-services"
 import { layer as locationLayer } from "@apt5/server/location"
@@ -167,6 +177,11 @@ const instanceApiRoutes = HttpApiBuilder.layer(InstanceHttpApi).pipe(
     sessionHandlers,
     syncHandlers,
     tuiHandlers,
+    workBoardHandlers,
+    memoryOSHandlers,
+    ledgerHandlers,
+    a2aHandlers,
+    governanceHandlers,
     workspaceHandlers,
   ]),
 )
@@ -266,6 +281,11 @@ const app = LayerNode.group([
   ProjectV2.node,
   ProjectCopy.node,
   PtyTicket.node,
+  WorkBoard.node,
+  MemoryOS.node,
+  Ledger.node,
+  A2A.node,
+  Governance.node,
 ])
 
 export function createRoutes(

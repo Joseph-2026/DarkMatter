@@ -149,6 +149,34 @@ export class McpServerNotFoundError extends Schema.TaggedErrorClass<McpServerNot
   { httpApiStatus: 404 },
 ) {}
 
+export class WorkTaskNotFoundError extends Schema.TaggedErrorClass<WorkTaskNotFoundError>()(
+  "WorkTaskNotFoundError",
+  {
+    taskID: Schema.String,
+    message: Schema.String,
+  },
+  { httpApiStatus: 404 },
+) {}
+
+export class MemoryEntryNotFoundError extends Schema.TaggedErrorClass<MemoryEntryNotFoundError>()(
+  "MemoryEntryNotFoundError",
+  {
+    namespace: Schema.String,
+    key: Schema.String,
+    message: Schema.String,
+  },
+  { httpApiStatus: 404 },
+) {}
+
+export class A2AMessageNotFoundError extends Schema.TaggedErrorClass<A2AMessageNotFoundError>()(
+  "A2AMessageNotFoundError",
+  {
+    messageID: Schema.String,
+    message: Schema.String,
+  },
+  { httpApiStatus: 404 },
+) {}
+
 export class PtyNotFoundError extends Schema.TaggedErrorClass<PtyNotFoundError>()(
   "PtyNotFoundError",
   {

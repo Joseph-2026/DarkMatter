@@ -77,9 +77,10 @@ User (Joseph) has the final word on lanes. Claim a lane by editing this table in
 
 - [x] Civilization round 1 (core domains + migration + tests)
 - [x] Free router core (`FreeRouter.Chain`, `Catalog.model.free`, guard test)
-- [ ] Civilization round 2: HttpApi groups + client regen for the 5 domains
-- [ ] TUI surfaces for WorkBoard / Memory / Ledger (Claude Code lane)
+- [ ] Civilization round 2: HttpApi groups + client regen for the 5 domains (Spark, in progress — branch `civilization-api`)
+- [ ] TUI surfaces for WorkBoard / Memory / Ledger (Claude Code lane — blocked until round 2 merges)
 - [ ] Docs: provider + free-router + governance policy format (`packages/web`)
+- [ ] Vendor tarball decision: app still uses pinned `apt5-client-1.17.13-apt5.0.tgz`; rebuilding it from the new surface is a separate round (needs app verification)
 - [ ] Release `apt-5-v1.0.0` (after rounds above are green)
 
 ## 8. Claude Code — start here
