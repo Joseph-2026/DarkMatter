@@ -33,6 +33,11 @@ export const groupNames = {
   "server.event": "events",
   "server.pty": "ptys",
   "server.question": "questions",
+  "server.workboard": "workboards",
+  "server.memory": "memories",
+  "server.ledger": "ledgers",
+  "server.a2a": "a2a",
+  "server.governance": "governance",
   "server.reference": "references",
   "server.projectCopy": "projectCopies",
 } as const
@@ -48,6 +53,11 @@ export const endpointNames = {
   "permission.saved.list": "listSaved",
   "permission.saved.remove": "removeSaved",
   "question.request.list": "listRequests",
+  "workboard.boards.create": "createBoard",
+  "workboard.boards.list": "listBoards",
+  "workboard.tasks.create": "createTask",
+  "workboard.tasks.list": "listTasks",
+  "workboard.tasks.move": "moveTask",
 } as const
 
 export const omitEndpoints = new Set(["fs.read", "pty.connect", "pty.connectToken"])
