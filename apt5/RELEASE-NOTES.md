@@ -1,6 +1,6 @@
 # Release Notes — apt-5-v1.0.0
 
-**Date:** 2026-09-23 — **main:** `1c8f3699425632b754965c76bbb221fe469c4f2b` (PR #10 merge) — repo `Joseph-2026/DarkMatter`
+**Date:** 2026-09-23 — **main:** `2b378e836bb4719fa235a86f253b507f072c5bce` (PR #12 merge) — repo `Joseph-2026/DarkMatter`
 Verified via `gh pr list`, `gh run list --branch main`, `gh pr checks` on 2026-09-23.
 
 ## Shipped (per merged PR, all CI success on main)
@@ -15,6 +15,8 @@ Verified via `gh pr list`, `gh run list --branch main`, `gh pr checks` on 2026-0
 - **PR #8 — sdk regen** — merge `16614899b` (2026-09-23T11:48:39Z, head `802287193`). js v2 client with civilization namespaces. Run `35856701594`: success. URL: https://github.com/Joseph-2026/DarkMatter/actions/runs/35856701594
 - **PR #9 — tui read-only surfaces** — merge `2d32feece` (2026-09-23T12:06:43Z, head `d7058e698`). Board dialog + ledger summary. Run `35858468084`: success. URL: https://github.com/Joseph-2026/DarkMatter/actions/runs/35858468084
 - **PR #10 — civilization runtime** — merge `1c8f36994` (2026-09-23T12:40:03Z, head `9786de48b`). Runtime service + ledger auto-ingest + HTTP e2e (23 expects). Run `35861932003`: success. URL: https://github.com/Joseph-2026/DarkMatter/actions/runs/35861932003
+- **PR #11 — release docs + vendor deferral** — merge `5c3a49e4c` (2026-09-23T14:42:10Z, head `1ced3f1ef`). Run on main: success.
+- **PR #12 — 20-language SDK matrix + civilization indexes** — merge `2b378e836` (2026-09-23T18:09:11Z, head `d5063b68c`). Spec + normalize + generate.sh (20 langs) + manifest (20/20 present, 23,735 files, 138MB) + CI `sdk-matrix` job + 5 DB indexes. Run `35900491945`: success. URL: https://github.com/Joseph-2026/DarkMatter/actions/runs/35900491945
 
 ## Pending (open PRs)
 
@@ -22,10 +24,11 @@ None. `gh pr list --state open` is empty.
 
 ## Known debts (post-v1.0.0, tracked in BOARD §7)
 
-- **Vendor round (deferred):** app still uses pinned `apt5-client-1.17.13-apt5.0.tgz` for its promise leg; new endpoints are served via the live `@apt5/sdk/v2` leg. Rebuild = new TS→dist pipeline + ~92 app import migrations (sdk probe). Separate round with app verification.
+- **Vendor round (deferred, PR #11 recorded the decision):** app still uses pinned `apt5-client-1.17.13-apt5.0.tgz` for its promise leg; new endpoints are served via the live `@apt5/sdk/v2` leg. Rebuild = new TS→dist pipeline + ~92 app import migrations (sdk probe). Separate round with app verification.
 - **TUI mutations** (create/move tasks), memory/a2a/governance UI, app desktop surfaces, web docs pages — API-complete and HTTP-tested; surfaces are v1.1.
+- **Dart SDK** (generator-blocked upstream) replaced by `c` in the 20-language matrix; `go` needs upstream recursive-type fix to compile. Both recorded in `sdks/README.md` + `manifest.json`.
 
 ## Release (apt-5-v1.0.0)
 
-Criteria met: 10/10 PRs merged, latest main run `35861932003` success, no open PRs, artifacts present (`bin/apt-5` + `darkmatter` alias, `AGENTS.md`, `.cursor/agents/` ×7, theme, migration).
-Tag: `apt-5-v1.0.0` on `1c8f3699425632b754965c76bbb221fe469c4f2b`.
+Criteria met: 12/12 PRs merged, latest main run `35900491945` success, no open PRs, artifacts present (`bin/apt-5` + `darkmatter` alias, `AGENTS.md`, `.cursor/agents/` ×7, theme, migration).
+Tag: `apt-5-v1.0.0` on `2b378e836bb4719fa235a86f253b507f072c5bce`.
