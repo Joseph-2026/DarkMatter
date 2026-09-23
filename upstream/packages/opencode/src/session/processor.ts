@@ -480,16 +480,7 @@ const layer = Layer.effect(
                 outputTokens: usage.tokens.output,
                 cost: usage.cost,
               })
-              .pipe(
-                Effect.tapError((error) =>
-                  Effect.logWarning("ledger record failed", {
-                    sessionID: String(ctx.sessionID),
-                    error: error instanceof Error ? error.message : String(error),
-                  }),
-                ),
-                Effect.ignore,
-                Effect.forkIn(scope),
-              )
+              .pipe(Effect.ignore, Effect.forkIn(scope))
             if (ctx.snapshot) {
               const patch = yield* snapshot.patch(ctx.snapshot)
               if (patch.files.length) {
