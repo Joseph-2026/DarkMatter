@@ -13,6 +13,7 @@ export function DialogStatus() {
   const dialog = useDialog()
 
   const enabledFormatters = createMemo(() => sync.data.formatter.filter((f) => f.enabled))
+  const ledger = createMemo(() => sync.data.ledger_summary)
 
   const plugins = createMemo(() => {
     const list = sync.data.config.plugin ?? []
@@ -50,6 +51,17 @@ export function DialogStatus() {
           esc
         </text>
       </box>
+      <Show when={ledger()} fallback={<text fg={theme.textMuted}>Ledger: no usage recorded</text>}>
+        {(summary) => (
+          <box>
+            <text fg={theme.text}>Ledger usage</text>
+            <text fg={theme.textMuted}>
+              {formatCount(summary().entries)} entries · {formatTokens(summary().inputTokens, summary().outputTokens)}{" "}
+              tokens · {formatCost(summary().cost)}
+            </text>
+          </box>
+        )}
+      </Show>
       <Show when={Object.keys(sync.data.mcp).length > 0} fallback={<text fg={theme.text}>No MCP Servers</text>}>
         <box>
           <text fg={theme.text}>{Object.keys(sync.data.mcp).length} MCP Servers</text>
@@ -165,4 +177,22 @@ export function DialogStatus() {
       </Show>
     </box>
   )
+}
+
+function toNumber(value: number | string) {
+  const parsed = Number(value)
+  if (!Number.isFinite(parsed)) return 0
+  return parsed
+}
+
+function formatCount(value: number | string) {
+  return Math.round(toNumber(value)).toLocaleString("en-US")
+}
+
+function formatTokens(input: number | string, output: number | string) {
+  return Math.round(toNumber(input) + toNumber(output)).toLocaleString("en-US")
+}
+
+function formatCost(value: number | string) {
+  return `$${toNumber(value).toFixed(4)}`
 }

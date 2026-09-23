@@ -1,6 +1,6 @@
 import type { TuiPlugin, TuiPluginApi } from "@apt5/plugin/tui"
 import type { BuiltinTuiPlugin } from "../builtins"
-import { createMemo, Match, Show, Switch } from "solid-js"
+import { createMemo, createResource, Match, Show, Switch } from "solid-js"
 import { abbreviateHome } from "../../runtime"
 import { useTuiPaths } from "../../context/runtime"
 import { useHomeSessionDestination } from "../../routes/home/session-destination"
@@ -61,6 +61,40 @@ function Version(props: { api: TuiPluginApi }) {
   )
 }
 
+function Ledger(props: { api: TuiPluginApi }) {
+  const theme = () => props.api.theme.current
+  const [summary] = createResource(() => undefined, () =>
+    props.api.client.ledger.summary().then(
+      (result) => result.data,
+      () => undefined,
+    ),
+  )
+
+  const label = createMemo(() => {
+    const data = summary()
+    if (!data) return undefined
+    const tokens = toFiniteNumber(data.inputTokens) + toFiniteNumber(data.outputTokens)
+    const cost = toFiniteNumber(data.cost)
+    return `${Math.round(tokens).toLocaleString("en-US")} tokens · $${cost.toFixed(4)}`
+  })
+
+  return (
+    <Show when={label()}>
+      {(value) => (
+        <box flexShrink={0}>
+          <text fg={theme().textMuted}>{value()}</text>
+        </box>
+      )}
+    </Show>
+  )
+}
+
+function toFiniteNumber(value: number | string) {
+  const parsed = Number(value)
+  if (!Number.isFinite(parsed)) return 0
+  return parsed
+}
+
 function View(props: { api: TuiPluginApi }) {
   return (
     <box
@@ -76,6 +110,7 @@ function View(props: { api: TuiPluginApi }) {
       <Directory api={props.api} />
       <Mcp api={props.api} />
       <box flexGrow={1} />
+      <Ledger api={props.api} />
       <Version api={props.api} />
     </box>
   )
