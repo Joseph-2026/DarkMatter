@@ -66,6 +66,11 @@ import { SessionProjector } from "@apt5/core/session/projector"
 import { SessionV2 } from "@apt5/core/session"
 import { SessionExecution } from "@apt5/core/session/execution"
 import * as SessionExecutionLocal from "@apt5/core/session/execution/local"
+import { WorkBoard } from "@apt5/core/work-board"
+import { MemoryOS } from "@apt5/core/memory-os"
+import { Ledger } from "@apt5/core/ledger"
+import { A2A } from "@apt5/core/a2a"
+import { Governance } from "@apt5/core/governance"
 import { lazy } from "@/util/lazy"
 import { CorsConfig, isAllowedCorsOrigin, type CorsOptions } from "@apt5/server/cors"
 import { serveUIEffect } from "@/server/shared/ui"
@@ -276,6 +281,11 @@ const app = LayerNode.group([
   ProjectV2.node,
   ProjectCopy.node,
   PtyTicket.node,
+  WorkBoard.node,
+  MemoryOS.node,
+  Ledger.node,
+  A2A.node,
+  Governance.node,
 ])
 
 export function createRoutes(
