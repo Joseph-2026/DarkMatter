@@ -123,8 +123,8 @@ const appBindingCommands = [
   "variant.list",
   "provider.connect",
   "console.org.switch",
-  "opencode.status",
-  "opencode.debug",
+  "apt5.status",
+  "apt5.debug",
   "theme.switch",
   "theme.switch_mode",
   "theme.mode.lock",
@@ -828,7 +828,7 @@ function App(props: { onSnapshot?: () => Promise<string[]>; pluginHost: TuiPlugi
           ]
         : []),
       {
-        name: "opencode.status",
+        name: "apt5.status",
         title: "View status",
         slashName: "status",
         run: () => {
@@ -837,7 +837,7 @@ function App(props: { onSnapshot?: () => Promise<string[]>; pluginHost: TuiPlugi
         category: "System",
       },
       {
-        name: "opencode.debug",
+        name: "apt5.debug",
         title: "View debug info",
         slashName: "debug",
         run: () => {
@@ -1137,7 +1137,7 @@ function App(props: { onSnapshot?: () => Promise<string[]>; pluginHost: TuiPlugi
     await DialogAlert.show(
       dialog,
       "Update Complete",
-      `Successfully updated to OpenCode v${result.data.version}. Please restart the application.`,
+      `Successfully updated to APT-5 v${result.data.version}. Please restart the application.`,
     )
 
     void exit()

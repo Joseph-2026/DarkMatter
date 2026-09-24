@@ -115,7 +115,7 @@ async function backupAndStripLegacy(file: string, source: string) {
 async function apt5Files(input: { directories: string[]; cwd: string }) {
   const files = [
     ...ConfigPaths.fileInDirectory(Global.Path.config, "darkmatter"),
-    ...(await Filesystem.findUp(["opencode.json", "opencode.jsonc"], input.cwd, undefined, { rootFirst: true })),
+    ...(await Filesystem.findUp(["apt5.json", "apt5.jsonc", "opencode.json", "opencode.jsonc"], input.cwd, undefined, { rootFirst: true })),
   ]
   for (const dir of unique(input.directories)) {
     files.push(...ConfigPaths.fileInDirectory(dir, "darkmatter"))

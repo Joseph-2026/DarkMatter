@@ -188,7 +188,7 @@ export const prepare = Effect.fn("LLMRequestPrep.prepare")(function* (input: Pre
       ...(input.model.providerID.startsWith("darkmatter")
         ? {
             ...(apt5ProjectID ? { "x-opencode-project": apt5ProjectID } : {}),
-            "x-opencode-session": input.sessionID,
+            "x-apt5-session": input.sessionID,
             "x-opencode-request": input.user.id,
             "x-opencode-client": input.flags.client,
             "User-Agent": USER_AGENT,

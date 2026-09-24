@@ -127,7 +127,7 @@ function getConfig() {
       return {
         ...base,
         appId,
-        productName: "OpenCode Dev",
+        productName: "APT-5 Dev",
         deb: { fpm: [metainfoFpm(appId)] },
         rpm: { packageName: "opencode-dev", fpm: [metainfoFpm(appId)] },
       }
@@ -136,7 +136,7 @@ function getConfig() {
       return {
         ...base,
         appId,
-        productName: "OpenCode Beta",
+        productName: "APT-5 Beta",
         protocols: { name: "OpenCode Beta", schemes: ["darkmatter"] },
         publish: { provider: "github", owner: "anomalyco", repo: "opencode-beta", channel: "latest" },
         deb: { fpm: [metainfoFpm(appId)] },
@@ -147,7 +147,7 @@ function getConfig() {
       return {
         ...base,
         appId,
-        productName: "OpenCode",
+        productName: "APT-5",
         protocols: { name: "OpenCode", schemes: ["darkmatter"] },
         publish: { provider: "github", owner: "anomalyco", repo: "darkmatter", channel: "latest" },
         deb: { fpm: [metainfoFpm(appId), legacyDesktopEntryFpm] },

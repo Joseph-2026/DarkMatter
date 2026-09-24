@@ -1,13 +1,13 @@
 ---
 title: SDK
-description: Type-safe JS client for opencode server.
+description: Type-safe JS client for apt-5 server.
 ---
 
 import config from "../../../config.mjs"
 export const typesUrl = `${config.github}/blob/dev/packages/sdk/js/src/gen/types.gen.ts`
 
-The opencode JS/TS SDK provides a type-safe client for interacting with the server.
-Use it to build integrations and control opencode programmatically.
+The apt-5 JS/TS SDK provides a type-safe client for interacting with the server.
+Use it to build integrations and control apt-5 programmatically.
 
 [Learn more](/docs/server) about how the server works. For examples, check out the [projects](/docs/ecosystem#projects) built by the community.
 
@@ -25,7 +25,7 @@ npm install @apt5/sdk
 
 ## Create client
 
-Create an instance of opencode:
+Create an instance of apt-5:
 
 ```javascript
 import { createOpencode } from "@apt5/sdk"
@@ -69,7 +69,7 @@ opencode.server.close()
 
 ## Client only
 
-If you already have a running instance of opencode, you can create a client instance to connect to it:
+If you already have a running instance of apt-5, you can create a client instance to connect to it:
 
 ```javascript
 import { createApt5Client } from "@apt5/sdk"
