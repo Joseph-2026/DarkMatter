@@ -31,7 +31,7 @@ const SKILL_PATTERN = "**/SKILL.md"
 // actual schemas instead of guesses.
 const CUSTOMIZE_APT5_SKILL_NAME = "customize-opencode"
 const CUSTOMIZE_APT5_SKILL_DESCRIPTION =
-  "Use ONLY when the user is editing or creating opencode's own configuration: opencode.json, opencode.jsonc, files under .apt5/, or files under ~/.config/opencode/. Also use when creating or fixing opencode agents, subagents, skills, plugins, MCP servers, or permission rules. Do not use for the user's own application code, or for any project that is not configuring opencode itself."
+  "Use ONLY when the user is editing or creating APT-5's own configuration: apt5.json, apt5.jsonc, files under .apt5/, or files under ~/.config/darkmatter/. Also use when creating or fixing APT-5 agents, subagents, skills, plugins, MCP servers, or permission rules. Do not use for the user's own application code, or for any project that is not configuring APT-5 itself."
 const CUSTOMIZE_APT5_SKILL_BODY = SkillPlugin.CustomizeApt5Content
 
 export const Info = Schema.Struct({

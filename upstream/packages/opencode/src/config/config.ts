@@ -138,7 +138,7 @@ export class Service extends Context.Service<Service, Interface>()("@opencode/Co
 export const use = serviceUse(Service)
 
 function globalConfigFile() {
-  const candidates = ["opencode.jsonc", "opencode.json", "config.json"].map((file) =>
+  const candidates = ["apt5.jsonc", "apt5.json", "opencode.jsonc", "opencode.json", "config.json"].map((file) =>
     path.join(Global.Path.config, file),
   )
   for (const file of candidates) {
@@ -272,6 +272,8 @@ const layer = Layer.effect(
       result = mergeConfig(result, yield* loadFile(path.join(Global.Path.config, "config.json"), env))
       result = mergeConfig(result, yield* loadFile(path.join(Global.Path.config, "opencode.json"), env))
       result = mergeConfig(result, yield* loadFile(path.join(Global.Path.config, "opencode.jsonc"), env))
+      result = mergeConfig(result, yield* loadFile(path.join(Global.Path.config, "apt5.json"), env))
+      result = mergeConfig(result, yield* loadFile(path.join(Global.Path.config, "apt5.jsonc"), env))
 
       const legacy = path.join(Global.Path.config, "config")
       if (existsSync(legacy)) {
@@ -437,7 +439,7 @@ const layer = Layer.effect(
 
         for (const dir of directories) {
           if (dir.endsWith(".apt5") || dir === Flag.APT5_CONFIG_DIR) {
-            for (const file of ["opencode.json", "opencode.jsonc"]) {
+            for (const file of ["apt5.json", "apt5.jsonc", "opencode.json", "opencode.jsonc"]) {
               const source = path.join(dir, file)
               yield* Effect.logDebug(`loading config from ${source}`)
               yield* merge(source, yield* loadFile(source, authEnv))
@@ -529,7 +531,7 @@ const layer = Layer.effect(
 
         const managedDir = ConfigManaged.managedConfigDir()
         if (existsSync(managedDir)) {
-          for (const file of ["opencode.json", "opencode.jsonc"]) {
+          for (const file of ["apt5.json", "apt5.jsonc", "opencode.json", "opencode.jsonc"]) {
             const source = path.join(managedDir, file)
             yield* merge(source, yield* loadFile(source), "global")
           }

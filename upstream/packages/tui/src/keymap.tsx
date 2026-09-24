@@ -21,7 +21,7 @@ export const LEADER_TOKEN = "leader"
 export const APT5_BASE_MODE = "base"
 export const COMMAND_PALETTE_COMMAND = "command.palette.show"
 
-const APT5_MODE_KEY = "opencode.mode"
+const APT5_MODE_KEY = "apt5.mode"
 
 export const Apt5KeymapProvider = KeymapProvider
 export const useApt5Keymap = useKeymap
