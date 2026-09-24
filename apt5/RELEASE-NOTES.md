@@ -1,6 +1,12 @@
-# Release Notes — apt-5-v1.0.0 / v1.1.0
+# Release Notes — apt-5-v1.0.0 / v1.1.0 / v1.2.0
 
 **Repo:** `Joseph-2026/DarkMatter` — merge SHAs below are immutable facts; tag annotations record exact release commits. Verified via `gh pr list`, `gh run list --branch main`, `gh pr checks`.
+
+## v1.2.0 (2026-09-24) — A2A auth + swarm serving + surfaces
+
+- **PR #21 — tui memory/a2a/governance surfaces** — merge `e44e83653` (2026-09-24T10:48:57Z, head `2205baca5`). namespace browser, inbox viewer, rules + evaluate (audited), commands + keybinds.
+- **PR #22 — a2a signed agents** — merge `9fc1809e9` (2026-09-24T12:21:33Z, head `c85bb8c4a`). ed25519 registry, sendSigned/verify, origin tracking, both API surfaces + SDK regens, swarm split (registry static, runner location-bound), e2e incl 401 on forgery.
+- **PR #23 — tui origin badges** — merge `2df287032` (2026-09-24T12:42:47Z, head `e05cee89c`). verified/service/legacy display.
 
 ## v1.1.0 (2026-09-24) — swarm + vendor pipeline + TUI mutations + docs
 
@@ -32,10 +38,10 @@
 
 None. `gh pr list --state open` is empty.
 
-## Known debts (post-v1.1.0, tracked in BOARD §7)
+## Known debts (post-v1.2.0, tracked in BOARD §7)
 
 - **Vendor pin flip:** new-surface tarball built + verified (PR #17); flip awaits the app import migration window with its own QA cycle.
-- **Remaining surfaces:** memory/a2a/governance UI, app desktop surfaces — API-complete and HTTP-tested; v1.2.
+- **Remaining surfaces:** app desktop surfaces — API-complete and HTTP-tested; v1.3.
 - **Dart SDK** (generator-blocked upstream) replaced by `c` in the 20-language matrix; `go` needs upstream recursive-type fix to compile. Both recorded in `sdks/README.md` + `manifest.json`.
 
 ## Release (apt-5-v1.0.0) — shipped 2026-09-23
@@ -43,6 +49,10 @@ None. `gh pr list --state open` is empty.
 Criteria met: 13/13 PRs merged (#1–#13, SHAs above), main CI green at merge time for each, no open PRs, artifacts present (`bin/apt-5` + `darkmatter` alias, `AGENTS.md`, `.cursor/agents/` ×7, theme, migrations).
 Tag `apt-5-v1.0.0` created on the green main HEAD; annotation records the exact SHA.
 
-## Release (apt-5-v1.1.0) — criteria
+## Release (apt-5-v1.1.0) — shipped 2026-09-24
 
-19/19 PRs merged (#1–#19 above), main CI green, no open PRs. Tag `apt-5-v1.1.0` on the green main HEAD; annotation records the exact SHA (no pre-pin by design).
+19/19 PRs merged (#1–#19), main CI green, no open PRs. Tag `apt-5-v1.1.0` created on the green main HEAD; annotation records the exact SHA.
+
+## Release (apt-5-v1.2.0) — criteria
+
+23/23 PRs merged (#1–#23 above), main CI green, no open PRs. Tag `apt-5-v1.2.0` on the green main HEAD; annotation records the exact SHA (no pre-pin by design).
