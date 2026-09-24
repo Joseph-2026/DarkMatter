@@ -1,0 +1,34 @@
+---
+title: Governance Policy
+description: Rule matching, effects, evaluation, and audit storage.
+---
+
+A `Rule` has three fields: `id`, `pattern`, and `effect` (`upstream/packages/core/src/governance.ts:22-26`).
+
+Rule IDs are branded `Governance.RuleID` values created with a `gov_` prefix (`upstream/packages/schema/src/governance.ts:7-10`).
+
+The allowed rule effects are `allow`, `deny`, and `approve` (`upstream/packages/schema/src/governance.ts:19`).
+
+Decisions use the same closed set: `allow`, `deny`, and `approve` (`upstream/packages/schema/src/governance.ts:22`).
+
+## Matching
+
+A pattern ending in `*` is a prefix match against the action; any other pattern requires exact equality (`upstream/packages/core/src/governance.ts:46-47`).
+
+`evaluate(action)` loads all rules ordered by creation time and selects the first rule whose pattern matches (`upstream/packages/core/src/governance.ts:66-73`).
+
+When a rule matches, the evaluation decision is that rule's effect and `ruleID` is the matching rule's ID (`upstream/packages/core/src/governance.ts:74-75`).
+
+When no rule matches, the evaluation defaults to `allow` with `ruleID` undefined (`upstream/packages/core/src/governance.ts:76`).
+
+Every `evaluate()` call writes one audit row carrying the action, the decision, and the matched rule ID (or undefined) (`upstream/packages/core/src/governance.ts:77-80`).
+
+## Storage
+
+Rules persist in the `governance_rule` table with `id`, `action_pattern`, and `effect` columns (`upstream/packages/core/src/governance/sql.ts:5-10`).
+
+Audit rows persist in the `governance_audit` table with `id`, `action`, `decision`, and nullable `rule_id` columns (`upstream/packages/core/src/governance/sql.ts:12-22`).
+
+The audit table carries an index on the `action` column (`upstream/packages/core/src/governance/sql.ts:21`).
+
+Operator guidance: place the most specific rules earliest, since first-created match wins; use `deny` for hard blocks and `approve` where a human approval step is intended.

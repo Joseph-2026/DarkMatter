@@ -1,0 +1,27 @@
+---
+title: Free Router
+description: Ordered OpenRouter free-tier chain and Catalog free-model resolution.
+---
+
+`FreeRouter.Chain` is the ordered OpenRouter free-tier chain, primary first with fallbacks after (`upstream/packages/core/src/free-router.ts:11-12`).
+
+Chain order, each entry pinned to the `openrouter` provider (`upstream/packages/core/src/free-router.ts:13-18`):
+
+1. `nex-agi/nex-n2.5-mini:free` — primary (`upstream/packages/core/src/free-router.ts:14`)
+2. `nvidia/nemotron-3-ultra` — first fallback (`upstream/packages/core/src/free-router.ts:15`)
+3. `liquid/lfm-2.5` — second fallback (`upstream/packages/core/src/free-router.ts:16`)
+4. `cohere/north-mini-code` — third fallback (`upstream/packages/core/src/free-router.ts:17`)
+
+`FreeRouter.resolve(chain, models)` returns the first chain entry present in the available catalog (`upstream/packages/core/src/free-router.ts:20-24`).
+
+`Catalog.model.free()` resolves by calling `FreeRouter.resolve(FreeRouter.Chain, ...)` over the available models, then loads the hit with `model.get(hit.providerID, hit.modelID)` (`upstream/packages/core/src/catalog.ts:236-243`).
+
+The candidate set is `model.available()`, which keeps only models whose provider is available and whose model is enabled (`upstream/packages/core/src/catalog.ts:212-215`).
+
+If no chain entry matches, `Catalog.model.free()` returns `undefined` (`upstream/packages/core/src/catalog.ts:241`).
+
+## Credentials
+
+The OpenRouter route resolves its bearer credential from the `OPENROUTER_API_KEY` environment variable (`upstream/packages/llm/src/providers/openrouter.ts:84`).
+
+Operator guidance: set `OPENROUTER_API_KEY` in the environment before relying on free-tier resolution; without it the provider is not authenticated even if chain resolution succeeds.

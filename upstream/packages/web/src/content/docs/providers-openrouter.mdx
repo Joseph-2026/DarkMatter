@@ -1,0 +1,16 @@
+---
+title: OpenRouter Provider
+description: OpenRouter SDK wiring and request headers.
+---
+
+The `openrouter` provider is wired through the `@openrouter/ai-sdk-provider` package via its `createOpenRouter` factory (`upstream/packages/opencode/src/provider/provider.ts:124`).
+
+The `openrouter` entry sets `autoload: false` (`upstream/packages/opencode/src/provider/provider.ts:478-480`).
+
+Its default request options set the `HTTP-Referer` header (`upstream/packages/opencode/src/provider/provider.ts:481-483`).
+
+Its default request options set the `X-Title: darkmatter` header (`upstream/packages/opencode/src/provider/provider.ts:483-484`).
+
+The full openrouter options block (autoload plus both headers) is defined at (`upstream/packages/opencode/src/provider/provider.ts:478-487`).
+
+Operator guidance: this page covers only the openrouter wiring delta; for general provider setup (credentials, base URL, model selection) see the Providers page. Set `OPENROUTER_API_KEY` per the Free Router page before using OpenRouter models.
