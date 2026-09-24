@@ -1,7 +1,16 @@
-# Release Notes — apt-5-v1.0.0
+# Release Notes — apt-5-v1.0.0 / v1.1.0
 
-**Date:** 2026-09-23 — repo `Joseph-2026/DarkMatter` — covers PRs #1–#13 (merge SHAs below are immutable facts; the tag annotation records the exact release commit).
-Verified via `gh pr list`, `gh run list --branch main`, `gh pr checks` on 2026-09-23.
+**Repo:** `Joseph-2026/DarkMatter` — merge SHAs below are immutable facts; tag annotations record exact release commits. Verified via `gh pr list`, `gh run list --branch main`, `gh pr checks`.
+
+## v1.1.0 (2026-09-24) — swarm + vendor pipeline + TUI mutations + docs
+
+- **PR #15 — swarm orchestrator** — merge `a5aa3e47e` (2026-09-24T06:04:29Z, head `4d46c66e2`). Swarm/run registry + migration, one brain (`Catalog.model.free`, `NoBrainError`), preamble, spawnRun with real sessions.
+- **PR #16 — swarm demo chain** — merge `b40a2580a` (2026-09-24T07:56:09Z, head `96e069d73`). researcher→coder→reviewer accumulation proof, A2A channel convention, completed tasks visible in preamble.
+- **PR #17 — vendor pipeline (pin unchanged)** — merge `242495b9e` (2026-09-24T08:18:37Z, head `a078bfad5`). New-surface tarball `apt5-client-1.18.32-apt5.0.tgz` built + verified; app pin stays (evidence: 1 value-use + 24 type-only files; new client has different construction).
+- **PR #18 — tui mutations** — merge `810e20f3c` (2026-09-24T08:45:10Z, head `730f5c74f`). create/move tasks with server refresh, error toasts. Run `35977087623`: success. URL: https://github.com/Joseph-2026/DarkMatter/actions/runs/35977087623
+- **PR #19 — docs pages** — merge `6ba024aba` (2026-09-24T09:18:58Z, head `29718c324`). free-router, governance, openrouter provider (all claims cited path:line).
+
+## v1.0.0 (2026-09-23) — PRs #1–#13
 
 ## Shipped (per merged PR, all CI success on main)
 
@@ -23,13 +32,17 @@ Verified via `gh pr list`, `gh run list --branch main`, `gh pr checks` on 2026-0
 
 None. `gh pr list --state open` is empty.
 
-## Known debts (post-v1.0.0, tracked in BOARD §7)
+## Known debts (post-v1.1.0, tracked in BOARD §7)
 
-- **Vendor round (deferred, PR #11 recorded the decision):** app still uses pinned `apt5-client-1.17.13-apt5.0.tgz` for its promise leg; new endpoints are served via the live `@apt5/sdk/v2` leg. Rebuild = new TS→dist pipeline + ~92 app import migrations (sdk probe). Separate round with app verification.
-- **TUI mutations** (create/move tasks), memory/a2a/governance UI, app desktop surfaces, web docs pages — API-complete and HTTP-tested; surfaces are v1.1.
+- **Vendor pin flip:** new-surface tarball built + verified (PR #17); flip awaits the app import migration window with its own QA cycle.
+- **Remaining surfaces:** memory/a2a/governance UI, app desktop surfaces — API-complete and HTTP-tested; v1.2.
 - **Dart SDK** (generator-blocked upstream) replaced by `c` in the 20-language matrix; `go` needs upstream recursive-type fix to compile. Both recorded in `sdks/README.md` + `manifest.json`.
 
-## Release (apt-5-v1.0.0)
+## Release (apt-5-v1.0.0) — shipped 2026-09-23
 
 Criteria met: 13/13 PRs merged (#1–#13, SHAs above), main CI green at merge time for each, no open PRs, artifacts present (`bin/apt-5` + `darkmatter` alias, `AGENTS.md`, `.cursor/agents/` ×7, theme, migrations).
-Tag `apt-5-v1.0.0` is created on the main HEAD whose push-run is green; the tag annotation records the exact SHA (no SHA is pre-pinned here by design — pinning HEAD in a file guarantees staleness on the next merge).
+Tag `apt-5-v1.0.0` created on the green main HEAD; annotation records the exact SHA.
+
+## Release (apt-5-v1.1.0) — criteria
+
+19/19 PRs merged (#1–#19 above), main CI green, no open PRs. Tag `apt-5-v1.1.0` on the green main HEAD; annotation records the exact SHA (no pre-pin by design).
