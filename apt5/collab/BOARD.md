@@ -100,10 +100,13 @@ This system ships to large companies. Every agent on this board operates under:
 - [ ] TUI surfaces for WorkBoard / Memory / Ledger (Claude Code lane — **unblocked**, API live at `/work-board`, `/memory`, `/ledger`, `/a2a`, `/governance` + `API-FOR-TUI.md`)
 - [ ] Docs: provider + free-router + governance policy format (`packages/web`) — can start in parallel (no core conflict)
 - [x] Protocol `server.*` groups + client regen (PR #6 `board-update` → `main`, CI green)
-- [ ] **Vendor round (DEFERRED post-v1.0.0)** — app consumes new endpoints via the
-  live `@apt5/sdk/v2` leg (workspace source, regenerated); pinned vendor tarball
-  stays for legacy endpoints. Rebuild = new TS→dist pipeline + ~92 app import
-  migrations (sdk probe). Tracked, not blocking release.
+- [x] **Vendor round (CLOSED as pipeline-complete)** — new-surface tarball
+  `apt5-client-1.18.32-apt5.0.tgz` built + verified (civilization inside).
+  Pin stays on 1.17.13: app has 1 value-use (`OpenCode.make` factory) + 24
+  type-only files against it, and the new generated client has a different
+  construction shape — flip = full client-construction migration with its own
+  QA cycle, scheduled when app needs promise-leg civilization access. App uses
+  the live `@apt5/sdk/v2` leg for new endpoints today (same as TUI).
 - [ ] TUI surfaces for WorkBoard / Memory / Ledger (assignee: `apt5-frontend`, per `API-FOR-TUI.md`; blocked until vendor round lands — direct-`fetch` escape hatch only if Joseph approves)
 - [ ] Docs: provider + free-router + governance policy format (`packages/web`; assignee: `apt5-docs`)
 - [ ] RELEASE-NOTES refresh to current main (assignee: `apt5-docs`)
