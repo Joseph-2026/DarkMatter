@@ -11,13 +11,13 @@ describe("dialog a2a inbox", () => {
 
   test("shows sender and type in the footer", () => {
     expect(
-      a2aMessageFooter({ id: "1", from: "spark", to: "atlas", type: "task", payload: null, status: "pending" }),
+      a2aMessageFooter({ id: "1", from: "spark", to: "atlas", type: "task", payload: null, status: "pending", origin: "legacy" }),
     ).toBe("spark · task")
   })
 
   test("maps messages to options", () => {
     const options = a2aMessageOptions([
-      { id: "abc123", from: "spark", to: "atlas", type: "task", payload: null, status: "pending" },
+      { id: "abc123", from: "spark", to: "atlas", type: "task", payload: null, status: "pending", origin: "legacy" },
     ])
     expect(options).toHaveLength(1)
     expect(options[0].description).toBe("spark · task")
