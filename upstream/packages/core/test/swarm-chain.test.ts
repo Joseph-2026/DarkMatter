@@ -7,8 +7,6 @@ import { Policy } from "@apt5/core/policy"
 import { ProviderV2 } from "@apt5/core/provider"
 import { ModelV2 } from "@apt5/core/model"
 import { ProjectV2 } from "@apt5/core/project"
-import { Location } from "@apt5/core/location"
-import { AbsolutePath } from "@apt5/core/schema"
 import { Catalog } from "@apt5/core/catalog"
 import { Database } from "@apt5/core/database/database"
 import { AppNodeBuilder } from "@apt5/core/effect/app-node-builder"
@@ -17,6 +15,8 @@ import { EventV2 } from "@apt5/core/event"
 import { A2A } from "@apt5/core/a2a"
 import { MemoryOS } from "@apt5/core/memory-os"
 import { WorkBoard } from "@apt5/core/work-board"
+import { Location } from "@apt5/core/location"
+import { AbsolutePath } from "@apt5/core/schema"
 import { SessionV2 } from "@apt5/core/session"
 import { SessionExecution } from "@apt5/core/session/execution"
 import { SessionProjector } from "@apt5/core/session/projector"
@@ -25,11 +25,6 @@ import { Swarm } from "@apt5/core/swarm"
 import { testEffect } from "./lib/effect"
 import { tmpdir } from "./fixture/tmpdir"
 import { location } from "./fixture/location"
-
-const locationLayer = Layer.succeed(
-  Location.Service,
-  Location.Service.of(location({ directory: AbsolutePath.make("project") })),
-)
 
 function required<T>(value: T | undefined): T {
   if (value === undefined) throw new Error("Expected value")
@@ -43,6 +38,11 @@ const projects = Layer.succeed(
     directories: () => Effect.succeed([]),
     commit: () => Effect.void,
   }),
+)
+
+const locationLayer = Layer.succeed(
+  Location.Service,
+  Location.Service.of(location({ directory: AbsolutePath.make("project") })),
 )
 
 const services = AppNodeBuilder.build(
@@ -83,60 +83,72 @@ const seedBrain = Effect.gen(function* () {
   })
 })
 
-describe("Swarm", () => {
-  it.effect("creates a swarm with a board, resolves one brain, and shares preamble", () =>
-    Effect.gen(function* () {
-      const swarm = yield* Swarm.Service
-      yield* seedBrain
-
-      const created = yield* swarm.createSwarm("Calculator")
-      expect(created.name).toBe("Calculator")
-      expect(created.status).toBe("active")
-      expect(created.boardID).toBeDefined()
-
-      const brain = yield* swarm.resolveBrain()
-      expect(String(brain.id)).toBe("nex-agi/nex-n2.5-mini:free")
-      expect(String(brain.providerID)).toBe("openrouter")
-
-      const preamble = yield* swarm.sharedPreamble(created.id)
-      expect(preamble).toContain("No tasks yet.")
-
-      const memory = yield* MemoryOS.Service
-      yield* memory.put(`swarm:${String(created.id)}`, "stack", "bun")
-      const preamble2 = yield* swarm.sharedPreamble(created.id)
-      expect(preamble2).toContain("stack")
-    }),
-  )
-
-  it.effect("spawns a run as a real session with board linkage", () =>
+// Mirrors the document's live example: researcher discovers, coder builds on
+// it, reviewer reads both — through shared board + memory + sessions.
+describe("Swarm chain", () => {
+  it.effect("researcher, coder, and reviewer build on shared state", () =>
     Effect.gen(function* () {
       const swarm = yield* Swarm.Service
       const sessions = yield* SessionV2.Service
-      const boards = yield* WorkBoard.Service
-      const tmp = yield* Effect.promise(() => tmpdir())
+      const memory = yield* MemoryOS.Service
+      const bus = yield* A2A.Service
+      const researchDir = yield* Effect.promise(() => tmpdir())
+      const codeDir = yield* Effect.promise(() => tmpdir())
+      const reviewDir = yield* Effect.promise(() => tmpdir())
       try {
         yield* seedBrain
-        const created = yield* swarm.createSwarm("Calc")
-        const run = required(
+        const created = yield* swarm.createSwarm("Calculator")
+
+        const research = required(
           yield* swarm.spawnRun(created.id, {
             role: AgentV2.ID.make("researcher"),
             task: "Research calculator structure",
-            directory: tmp.path,
+            directory: researchDir.path,
           }),
         )
-        expect(run.status).toBe("running")
-        expect(run.sessionID).toBeDefined()
+        const researchSession = yield* sessions.get(SessionV2.ID.make(required(research.sessionID))).pipe(Effect.orDie)
+        expect(String(researchSession.agent)).toBe("researcher")
 
-        const session = yield* sessions.get(SessionV2.ID.make(required(run.sessionID))).pipe(Effect.orDie)
-        expect(session).toBeDefined()
+        yield* memory.put(`swarm:${String(created.id)}`, "requirements", ["add", "subtract", "divide-by-zero"])
+        yield* swarm.completeRun(research.id)
 
-        const tasks = yield* boards.listTasks(required(created.boardID))
-        expect(tasks.length).toBe(1)
+        const coderPreamble = yield* swarm.sharedPreamble(created.id)
+        expect(coderPreamble).toContain("Research calculator structure")
+        expect(coderPreamble).toContain("requirements")
 
-        const done = required(yield* swarm.completeRun(run.id))
-        expect(done.status).toBe("done")
+        const code = required(
+          yield* swarm.spawnRun(created.id, {
+            role: AgentV2.ID.make("coder"),
+            task: "Build calculator",
+            directory: codeDir.path,
+          }),
+        )
+        yield* swarm.completeRun(code.id)
+
+        const reviewPreamble = yield* swarm.sharedPreamble(created.id)
+        expect(reviewPreamble).toContain("Research calculator structure")
+        expect(reviewPreamble).toContain("Build calculator")
+
+        const review = required(
+          yield* swarm.spawnRun(created.id, {
+            role: AgentV2.ID.make("reviewer"),
+            task: "Review calculator",
+            directory: reviewDir.path,
+          }),
+        )
+        yield* swarm.completeRun(review.id)
+
+        const runs = yield* swarm.listRuns(created.id)
+        expect(runs.filter((run) => run.status === "done")).toHaveLength(3)
+        expect(new Set(runs.map((run) => run.directory)).size).toBe(3)
+
+        const inbox = yield* bus.inbox(A2A.channel(String(created.id)))
+        expect(inbox.length).toBeGreaterThanOrEqual(3)
+        expect(A2A.channel(String(created.id))).toBe(`swarm:${String(created.id)}`)
       } finally {
-        yield* Effect.promise(() => tmp[Symbol.asyncDispose]())
+        yield* Effect.promise(() => researchDir[Symbol.asyncDispose]())
+        yield* Effect.promise(() => codeDir[Symbol.asyncDispose]())
+        yield* Effect.promise(() => reviewDir[Symbol.asyncDispose]())
       }
     }),
   )

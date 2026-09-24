@@ -112,14 +112,10 @@ const layer = Layer.effect(
         .where(eq(SwarmTable.id, swarmID))
         .get()
         .pipe(Effect.orDie)
-      const tasks = swarm?.board_id
-        ? yield* boards.listTasks(swarm.board_id).pipe(
-            Effect.map((entries) => entries.filter((entry) => entry.status === "open" || entry.status === "doing")),
-          )
-        : []
+      const tasks = swarm?.board_id ? yield* boards.listTasks(swarm.board_id) : []
       const memories = yield* memory.list(`swarm:${String(swarmID)}`)
       const lines = ["## Shared context (read first, left by earlier runs)"]
-      if (tasks.length === 0) lines.push("- No open tasks.")
+      if (tasks.length === 0) lines.push("- No tasks yet.")
       for (const task of tasks) lines.push(`- [${task.status}] ${task.title}`)
       if (memories.length > 0) {
         lines.push("## Shared memory")
@@ -212,8 +208,9 @@ const layer = Layer.effect(
           .pipe(Effect.orDie)
         if (!row) return undefined
         if (row.task_id) yield* boards.moveTask(row.task_id, "done").pipe(Effect.orDie)
+        const channel = A2A.channel(String(row.swarm_id))
         yield* bus
-          .send(`swarm:${String(row.swarm_id)}`, `swarm:${String(row.swarm_id)}`, "run.done", {
+          .send(channel, channel, "run.done", {
             runID: String(row.id),
             role: row.role,
           })

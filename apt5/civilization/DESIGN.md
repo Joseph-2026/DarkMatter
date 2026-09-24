@@ -21,8 +21,19 @@
 | work-board | `work_board`, `work_task` | boards + tasks, `moveTask` changes status |
 | memory-os | `memory_entry` (unique namespace,key) | put/get/list/forget |
 | ledger | `ledger_entry` | record/list/summary, append-only |
-| a2a | `a2a_message` | send/inbox/ack |
+| a2a | `a2a_message` | send/inbox/ack, `channel(swarmID)` convention |
 | governance | `governance_rule`, `governance_audit` | addRule/listRules/evaluate |
+| swarm | `swarm`, `swarm_run` | registry, one brain, preamble, spawn/complete runs |
+
+## Swarm sandbox + roles
+
+- Each run gets its own directory (filesystem sandbox) + its own session.
+- `role` passes through to the session agent, so the agent's own permission
+  ruleset applies at runtime (verified: session agent equals run role).
+- One brain per swarm (`Catalog.model.free` → default, else explicit
+  `NoBrainError`); usage auto-attributes per session in the ledger.
+- Runs announce completion on the swarm A2A channel; boundaries (allowlist,
+  exfiltration guards) are v1.1 with the vendor round.
 
 ## Round 2 — HttpApi (2026-09-23, PR #5 `civilization-api`)
 
