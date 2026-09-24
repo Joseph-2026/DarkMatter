@@ -28,6 +28,7 @@ import { optional } from "@apt5/core/schema"
 import { ProviderTransform } from "./transform"
 import { ProviderV2 } from "@apt5/core/provider"
 import { ModelV2 } from "@apt5/core/model"
+import { FreeRouter } from "@apt5/core/free-router"
 import { ModelStatus } from "./model-status"
 import { RuntimeFlags } from "@/effect/runtime-flags"
 import { ProviderError } from "./error"
@@ -2029,6 +2030,9 @@ const layer = Layer.effect(
         return { providerID: entry.providerID, modelID: entry.modelID }
       }
 
+      const free = preferFreeModel(s.providers)
+      if (free) return free
+
       const configured = Object.keys(cfg.provider ?? {})
       const provider = Object.values(s.providers).find((p) => configured.length === 0 || configured.includes(p.id))
       if (!provider) return yield* new NoProvidersError()
@@ -2053,6 +2057,17 @@ export function sort<T extends { id: string }>(models: T[]) {
     [(model) => (model.id.includes("latest") ? 0 : 1), "asc"],
     [(model) => model.id, "desc"],
   )
+}
+
+export function preferFreeModel(providers: Record<string, { id: ProviderV2.ID; models: Record<string, { id: ModelV2.ID }> }>) {
+  const router = providers[String(ProviderV2.ID.openrouter)]
+  if (!router) return undefined
+  for (const ref of FreeRouter.Chain) {
+    if (String(ref.providerID) !== String(ProviderV2.ID.openrouter)) continue
+    const model = router.models[String(ref.modelID)]
+    if (model) return { providerID: router.id, modelID: model.id }
+  }
+  return undefined
 }
 
 export function parseModel(model: string) {

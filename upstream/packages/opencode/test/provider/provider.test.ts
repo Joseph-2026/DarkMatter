@@ -347,6 +347,38 @@ test("parseModel handles model IDs with slashes", () => {
   expect(String(result.modelID)).toBe("anthropic/claude-3-opus")
 })
 
+test("preferFreeModel returns chain head when present", () => {
+  const result = Provider.preferFreeModel({
+    anthropic: { id: ProviderV2.ID.make("anthropic"), models: { "x": { id: ModelV2.ID.make("x") } } },
+    openrouter: {
+      id: ProviderV2.ID.openrouter,
+      models: {
+        "cohere/north-mini-code": { id: ModelV2.ID.make("cohere/north-mini-code") },
+        "nex-agi/nex-n2.5-mini:free": { id: ModelV2.ID.make("nex-agi/nex-n2.5-mini:free") },
+      },
+    },
+  })
+  expect(String(result?.providerID)).toBe("openrouter")
+  expect(String(result?.modelID)).toBe("nex-agi/nex-n2.5-mini:free")
+})
+
+test("preferFreeModel falls through to first available fallback", () => {
+  const result = Provider.preferFreeModel({
+    openrouter: {
+      id: ProviderV2.ID.openrouter,
+      models: { "liquid/lfm-2.5": { id: ModelV2.ID.make("liquid/lfm-2.5") } },
+    },
+  })
+  expect(String(result?.modelID)).toBe("liquid/lfm-2.5")
+})
+
+test("preferFreeModel returns undefined without openrouter", () => {
+  const result = Provider.preferFreeModel({
+    anthropic: { id: ProviderV2.ID.make("anthropic"), models: { "x": { id: ModelV2.ID.make("x") } } },
+  })
+  expect(result).toBeUndefined()
+})
+
 it.instance("defaultModel returns first available model when no config set", () =>
   Effect.gen(function* () {
     yield* setProcessEnv("ANTHROPIC_API_KEY", "test-api-key")
