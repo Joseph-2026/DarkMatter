@@ -122,7 +122,7 @@ export async function handler(
       })
       if (response) return response
     }
-    const sessionId = input.request.headers.get("x-opencode-session") ?? ""
+    const sessionId = input.request.headers.get("x-apt5-session") ?? ""
     const requestId = input.request.headers.get("x-opencode-request") ?? ""
     const ocClient = input.request.headers.get("x-opencode-client") ?? ""
     const projectId = input.request.headers.get("x-opencode-project") ?? ""
@@ -259,7 +259,7 @@ export async function handler(
           headers.delete("host")
           headers.delete("content-length")
           if (!isNewInference) {
-            headers.delete("x-opencode-session")
+            headers.delete("x-apt5-session")
             headers.delete("x-opencode-project")
             headers.delete("x-opencode-client")
             headers.delete("x-opencode-request")
