@@ -47,13 +47,10 @@ describe("world showcase", () => {
           Effect.flatMap(HttpClient.execute),
         )
       const get = (path: string) => HttpClientRequest.get(path).pipe(directoryHeader(dir), HttpClient.execute)
-      const body = <T>(response: { json: Effect.Effect<unknown> }) =>
-        response.json.pipe(Effect.map((value) => value as T))
 
-      narrate("1", "A swarm is born with its own board.")
       const swarm = yield* post("/swarm", { name: "WorldDemo" })
       expect(swarm.status).toBe(200)
-      const swarmBody = yield* body<{ id: string }>(swarm)
+      const swarmBody = yield* swarm.json.pipe(Effect.map((value) => value as { id: string }))
 
       narrate("2", "The researcher leaves discoveries in shared memory.")
       const memory = yield* HttpClientRequest.put(`/memory/swarm:${swarmBody.id}/stack`).pipe(
@@ -66,10 +63,10 @@ describe("world showcase", () => {
       narrate("3", "Two agents enroll with cryptographic identities — no forgeries possible.")
       const coder = yield* post("/a2a/agents", { swarmID: swarmBody.id, name: "coder" })
       expect(coder.status).toBe(200)
-      const coderReg = yield* body<{ id: string; privateKey: string }>(coder)
+      const coderReg = yield* coder.json.pipe(Effect.map((value) => value as { id: string; privateKey: string }))
       const reviewer = yield* post("/a2a/agents", { swarmID: swarmBody.id, name: "reviewer" })
       expect(reviewer.status).toBe(200)
-      const reviewerReg = yield* body<{ id: string; privateKey: string }>(reviewer)
+      const reviewerReg = yield* reviewer.json.pipe(Effect.map((value) => value as { id: string; privateKey: string }))
       expect(coderReg.privateKey).toContain("PRIVATE KEY")
 
       narrate("4", "The coder announces signed work; the signature verifies on delivery.")
@@ -126,7 +123,7 @@ describe("world showcase", () => {
       expect(usage.status).toBe(200)
       const summary = yield* get("/ledger/summary")
       expect(summary.status).toBe(200)
-      const totals = yield* body<{ entries: number; inputTokens: number; cost: number }>(summary)
+      const totals = yield* summary.json.pipe(Effect.map((value) => value as { entries: number; inputTokens: number; cost: number }))
       expect(totals.entries).toBeGreaterThanOrEqual(1)
       expect(totals.inputTokens).toBeGreaterThanOrEqual(1200)
 
