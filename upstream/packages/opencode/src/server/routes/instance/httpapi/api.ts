@@ -27,6 +27,7 @@ import { PtyApi, PtyConnectApi } from "./groups/pty"
 import { QuestionApi } from "./groups/question"
 import { SessionApi } from "./groups/session"
 import { SyncApi } from "./groups/sync"
+import { SwarmApi } from "./groups/swarm"
 import { TuiApi } from "./groups/tui"
 import { WorkBoardApi } from "./groups/work-board"
 import { WorkspaceApi } from "./groups/workspace"
@@ -77,6 +78,7 @@ export const InstanceHttpApi = HttpApi.make("opencode-instance")
   .addHttpApi(ProviderApi)
   .addHttpApi(SessionApi)
   .addHttpApi(SyncApi)
+  .addHttpApi(SwarmApi)
   .addHttpApi(TuiApi)
   .addHttpApi(WorkBoardApi)
   .addHttpApi(MemoryOSApi)

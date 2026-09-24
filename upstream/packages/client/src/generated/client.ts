@@ -139,6 +139,10 @@ import type {
   A2aListOutput,
   A2aAckInput,
   A2aAckOutput,
+  A2aRegisterInput,
+  A2aRegisterOutput,
+  A2aSendSignedInput,
+  A2aSendSignedOutput,
   GovernanceAddInput,
   GovernanceAddOutput,
   GovernanceListOutput,
@@ -1198,6 +1202,36 @@ export function make(options: ClientOptions) {
           {
             method: "POST",
             path: `/api/a2a/messages/${encodeURIComponent(input.id)}/ack`,
+            successStatus: 200,
+            declaredStatuses: [404, 401, 400],
+            empty: false,
+          },
+          requestOptions,
+        ),
+      register: (input: A2aRegisterInput, requestOptions?: RequestOptions) =>
+        request<A2aRegisterOutput>(
+          {
+            method: "POST",
+            path: `/api/a2a/agents`,
+            body: { swarmID: input["swarmID"], name: input["name"] },
+            successStatus: 200,
+            declaredStatuses: [401, 400],
+            empty: false,
+          },
+          requestOptions,
+        ),
+      sendSigned: (input: A2aSendSignedInput, requestOptions?: RequestOptions) =>
+        request<A2aSendSignedOutput>(
+          {
+            method: "POST",
+            path: `/api/a2a/messages/signed`,
+            body: {
+              agentID: input["agentID"],
+              to: input["to"],
+              type: input["type"],
+              payload: input["payload"],
+              signature: input["signature"],
+            },
             successStatus: 200,
             declaredStatuses: [404, 401, 400],
             empty: false,

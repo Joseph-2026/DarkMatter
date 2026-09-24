@@ -60,6 +60,7 @@ const services = AppNodeBuilder.build(
     Policy.node,
     A2A.node,
     Swarm.node,
+    Swarm.runnerNode,
   ]),
   [
     [ProjectV2.node, projects],
@@ -89,6 +90,7 @@ describe("Swarm chain", () => {
   it.effect("researcher, coder, and reviewer build on shared state", () =>
     Effect.gen(function* () {
       const swarm = yield* Swarm.Service
+      const runner = yield* Swarm.RunnerService
       const sessions = yield* SessionV2.Service
       const memory = yield* MemoryOS.Service
       const bus = yield* A2A.Service
@@ -100,7 +102,7 @@ describe("Swarm chain", () => {
         const created = yield* swarm.createSwarm("Calculator")
 
         const research = required(
-          yield* swarm.spawnRun(created.id, {
+          yield* runner.spawnRun(created.id, {
             role: AgentV2.ID.make("researcher"),
             task: "Research calculator structure",
             directory: researchDir.path,
@@ -117,7 +119,7 @@ describe("Swarm chain", () => {
         expect(coderPreamble).toContain("requirements")
 
         const code = required(
-          yield* swarm.spawnRun(created.id, {
+          yield* runner.spawnRun(created.id, {
             role: AgentV2.ID.make("coder"),
             task: "Build calculator",
             directory: codeDir.path,
@@ -130,7 +132,7 @@ describe("Swarm chain", () => {
         expect(reviewPreamble).toContain("Build calculator")
 
         const review = required(
-          yield* swarm.spawnRun(created.id, {
+          yield* runner.spawnRun(created.id, {
             role: AgentV2.ID.make("reviewer"),
             task: "Review calculator",
             directory: reviewDir.path,

@@ -5,7 +5,7 @@ import { Context, Effect, Layer, Schema } from "effect"
 import { A2A } from "./a2a"
 import { Catalog } from "./catalog"
 import { Database } from "./database/database"
-import { makeLocationNode } from "./effect/app-node"
+import { makeGlobalNode, makeLocationNode } from "./effect/app-node"
 import { Location } from "./location"
 import { MemoryOS } from "./memory-os"
 import { ModelV2 } from "./model"
@@ -62,50 +62,40 @@ export interface Interface {
   readonly createSwarm: (name: string) => Effect.Effect<Info>
   readonly getSwarm: (id: SwarmID) => Effect.Effect<Info | undefined>
   readonly listRuns: (swarmID: SwarmID) => Effect.Effect<Run[]>
-  readonly resolveBrain: () => Effect.Effect<ModelV2.Ref, NoBrainError>
   readonly sharedPreamble: (swarmID: SwarmID) => Effect.Effect<string>
+  readonly completeRun: (id: RunID) => Effect.Effect<Run | undefined>
+}
+
+export class RunnerService extends Context.Service<RunnerService, RunnerInterface>()("@opencode/SwarmRunner") {}
+
+export interface RunnerInterface {
+  readonly resolveBrain: () => Effect.Effect<ModelV2.Ref, NoBrainError>
   readonly spawnRun: (
     swarmID: SwarmID,
     input: SpawnInput,
   ) => Effect.Effect<Run | undefined, NoBrainError | SessionV2.NotFoundError | SessionV2.PromptConflictError>
-  readonly completeRun: (id: RunID) => Effect.Effect<Run | undefined>
 }
 
-const layer = Layer.effect(
-  Service,
-  Effect.gen(function* () {
-    const database = yield* Database.Service
-    const boards = yield* WorkBoard.Service
-    const memory = yield* MemoryOS.Service
-    const catalog = yield* Catalog.Service
-    const sessions = yield* SessionV2.Service
-    const bus = yield* A2A.Service
+const toInfo = (row: typeof SwarmTable.$inferSelect): Info => ({
+  id: row.id,
+  name: row.name,
+  status: row.status,
+  boardID: row.board_id ?? undefined,
+})
 
-    const toInfo = (row: typeof SwarmTable.$inferSelect): Info => ({
-      id: row.id,
-      name: row.name,
-      status: row.status,
-      boardID: row.board_id ?? undefined,
-    })
+const toRun = (row: typeof SwarmRunTable.$inferSelect): Run => ({
+  id: row.id,
+  swarmID: row.swarm_id,
+  role: row.role,
+  task: row.task,
+  directory: row.directory,
+  sessionID: row.session_id ?? undefined,
+  status: row.status,
+})
 
-    const toRun = (row: typeof SwarmRunTable.$inferSelect): Run => ({
-      id: row.id,
-      swarmID: row.swarm_id,
-      role: row.role,
-      task: row.task,
-      directory: row.directory,
-      sessionID: row.session_id ?? undefined,
-      status: row.status,
-    })
-
-    const brainRef = Effect.fn("Swarm.brainRef")(function* () {
-      const free = yield* catalog.model.free()
-      const fallback = free ?? (yield* catalog.model.default())
-      if (!fallback) return yield* new NoBrainError({ message: "No model available for swarm runs" })
-      return ModelV2.Ref.make({ id: fallback.id, providerID: fallback.providerID })
-    })
-
-    const preambleText = Effect.fn("Swarm.preamble")(function* (swarmID: SwarmID) {
+const preambleText =
+  (database: Database.Interface, boards: WorkBoard.Interface, memory: MemoryOS.Interface) =>
+    Effect.fn("Swarm.preamble")(function* (swarmID: SwarmID) {
       const swarm = yield* database.db
         .select()
         .from(SwarmTable)
@@ -124,6 +114,14 @@ const layer = Layer.effect(
       return lines.join("\n")
     })
 
+const layer = Layer.effect(
+  Service,
+  Effect.gen(function* () {
+    const database = yield* Database.Service
+    const boards = yield* WorkBoard.Service
+    const memory = yield* MemoryOS.Service
+    const bus = yield* A2A.Service
+    const preamble = preambleText(database, boards, memory)
     return Service.of({
       createSwarm: Effect.fn("Swarm.createSwarm")(function* (name: string) {
         const id = SwarmID.create()
@@ -151,13 +149,71 @@ const layer = Layer.effect(
           .pipe(Effect.orDie)
         return rows.map(toRun)
       }),
-      resolveBrain: Effect.fn("Swarm.resolveBrain")(function* () {
+      sharedPreamble: Effect.fn("Swarm.sharedPreamble")(function* (swarmID: SwarmID) {
+        return yield* preamble(swarmID)
+      }),
+      completeRun: Effect.fn("Swarm.completeRun")(function* (id: RunID) {
+        const row = yield* database.db
+          .select()
+          .from(SwarmRunTable)
+          .where(eq(SwarmRunTable.id, id))
+          .get()
+          .pipe(Effect.orDie)
+        if (!row) return undefined
+        if (row.task_id) yield* boards.moveTask(row.task_id, "done").pipe(Effect.orDie)
+        const channel = A2A.channel(String(row.swarm_id))
+        yield* bus
+          .send(
+            channel,
+            channel,
+            "run.done",
+            {
+              runID: String(row.id),
+              role: row.role,
+            },
+            "service",
+          )
+          .pipe(Effect.orDie)
+        const updated = yield* database.db
+          .update(SwarmRunTable)
+          .set({ status: "done" })
+          .where(eq(SwarmRunTable.id, id))
+          .returning()
+          .get()
+          .pipe(Effect.orDie)
+        if (!updated) return undefined
+        return toRun(updated)
+      }),
+    })
+  }),
+)
+
+export const node = makeGlobalNode({
+  service: Service,
+  layer,
+  deps: [Database.node, WorkBoard.node, MemoryOS.node, A2A.node],
+})
+
+const runnerLayer = Layer.effect(
+  RunnerService,
+  Effect.gen(function* () {
+    const database = yield* Database.Service
+    const boards = yield* WorkBoard.Service
+    const memory = yield* MemoryOS.Service
+    const catalog = yield* Catalog.Service
+    const sessions = yield* SessionV2.Service
+    const preamble = preambleText(database, boards, memory)
+    const brainRef = Effect.fn("SwarmRunner.brainRef")(function* () {
+      const free = yield* catalog.model.free()
+      const fallback = free ?? (yield* catalog.model.default())
+      if (!fallback) return yield* new NoBrainError({ message: "No model available for swarm runs" })
+      return ModelV2.Ref.make({ id: fallback.id, providerID: fallback.providerID })
+    })
+    return RunnerService.of({
+      resolveBrain: Effect.fn("SwarmRunner.resolveBrain")(function* () {
         return yield* brainRef()
       }),
-      sharedPreamble: Effect.fn("Swarm.sharedPreamble")(function* (swarmID: SwarmID) {
-        return yield* preambleText(swarmID)
-      }),
-      spawnRun: Effect.fn("Swarm.spawnRun")(function* (swarmID: SwarmID, input: SpawnInput) {
+      spawnRun: Effect.fn("SwarmRunner.spawnRun")(function* (swarmID: SwarmID, input: SpawnInput) {
         const swarm = yield* database.db
           .select()
           .from(SwarmTable)
@@ -168,7 +224,7 @@ const layer = Layer.effect(
         const brain = yield* brainRef()
         const location = Location.Ref.make({ directory: AbsolutePath.make(input.directory) })
         const info = yield* sessions.create({ agent: input.role, model: brain, location })
-        const preamble = yield* preambleText(swarmID)
+        const text = yield* preamble(swarmID)
         const boardTask = swarm.board_id
           ? yield* boards.createTask(swarm.board_id, `${String(input.role)}: ${input.task.slice(0, 80)}`)
           : undefined
@@ -188,7 +244,7 @@ const layer = Layer.effect(
           .pipe(Effect.orDie)
         yield* sessions.prompt({
           sessionID: info.id,
-          prompt: Prompt.make({ text: `${preamble}\n\n## Task (${String(input.role)})\n${input.task}` }),
+          prompt: Prompt.make({ text: `${text}\n\n## Task (${String(input.role)})\n${input.task}` }),
         })
         const created = yield* database.db
           .select()
@@ -199,38 +255,12 @@ const layer = Layer.effect(
         if (!created) return undefined
         return toRun(created)
       }),
-      completeRun: Effect.fn("Swarm.completeRun")(function* (id: RunID) {
-        const row = yield* database.db
-          .select()
-          .from(SwarmRunTable)
-          .where(eq(SwarmRunTable.id, id))
-          .get()
-          .pipe(Effect.orDie)
-        if (!row) return undefined
-        if (row.task_id) yield* boards.moveTask(row.task_id, "done").pipe(Effect.orDie)
-        const channel = A2A.channel(String(row.swarm_id))
-        yield* bus
-          .send(channel, channel, "run.done", {
-            runID: String(row.id),
-            role: row.role,
-          })
-          .pipe(Effect.orDie)
-        const updated = yield* database.db
-          .update(SwarmRunTable)
-          .set({ status: "done" })
-          .where(eq(SwarmRunTable.id, id))
-          .returning()
-          .get()
-          .pipe(Effect.orDie)
-        if (!updated) return undefined
-        return toRun(updated)
-      }),
     })
   }),
 )
 
-export const node = makeLocationNode({
-  service: Service,
-  layer,
-  deps: [Database.node, WorkBoard.node, MemoryOS.node, Catalog.node, SessionV2.node, A2A.node],
+export const runnerNode = makeLocationNode({
+  service: RunnerService,
+  layer: runnerLayer,
+  deps: [Database.node, WorkBoard.node, MemoryOS.node, Catalog.node, SessionV2.node, A2A.node, node],
 })

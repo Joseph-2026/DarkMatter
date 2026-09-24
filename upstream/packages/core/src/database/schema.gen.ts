@@ -31,8 +31,21 @@ export default {
           \`type\` text NOT NULL,
           \`payload\` text NOT NULL,
           \`status\` text DEFAULT 'pending' NOT NULL,
+          \`origin\` text DEFAULT 'legacy' NOT NULL,
+          \`signature\` text,
           \`time_created\` integer NOT NULL,
           \`time_updated\` integer NOT NULL
+        );
+      `)
+      yield* tx.run(`
+        CREATE TABLE \`swarm_agent\` (
+          \`id\` text PRIMARY KEY,
+          \`swarm_id\` text NOT NULL,
+          \`name\` text NOT NULL,
+          \`public_key\` text NOT NULL,
+          \`time_created\` integer NOT NULL,
+          \`time_updated\` integer NOT NULL,
+          CONSTRAINT \`fk_swarm_agent_swarm_id_swarm_id_fk\` FOREIGN KEY (\`swarm_id\`) REFERENCES \`swarm\`(\`id\`)
         );
       `)
       yield* tx.run(`
@@ -336,6 +349,7 @@ export default {
         );
       `)
       yield* tx.run(`CREATE INDEX \`a2a_message_to_status_idx\` ON \`a2a_message\` (\`to_agent\`,\`status\`);`)
+      yield* tx.run(`CREATE INDEX \`swarm_agent_swarm_name_idx\` ON \`swarm_agent\` (\`swarm_id\`,\`name\`);`)
       yield* tx.run(`CREATE UNIQUE INDEX \`event_aggregate_seq_idx\` ON \`event\` (\`aggregate_id\`,\`seq\`);`)
       yield* tx.run(`CREATE INDEX \`event_aggregate_type_seq_idx\` ON \`event\` (\`aggregate_id\`,\`type\`,\`seq\`);`)
       yield* tx.run(`CREATE INDEX \`governance_audit_action_idx\` ON \`governance_audit\` (\`action\`);`)

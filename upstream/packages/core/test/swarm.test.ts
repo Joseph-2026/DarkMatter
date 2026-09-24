@@ -60,6 +60,7 @@ const services = AppNodeBuilder.build(
     Policy.node,
     A2A.node,
     Swarm.node,
+    Swarm.runnerNode,
   ]),
   [
     [ProjectV2.node, projects],
@@ -94,7 +95,8 @@ describe("Swarm", () => {
       expect(created.status).toBe("active")
       expect(created.boardID).toBeDefined()
 
-      const brain = yield* swarm.resolveBrain()
+      const runner = yield* Swarm.RunnerService
+      const brain = yield* runner.resolveBrain()
       expect(String(brain.id)).toBe("nex-agi/nex-n2.5-mini:free")
       expect(String(brain.providerID)).toBe("openrouter")
 
@@ -116,9 +118,10 @@ describe("Swarm", () => {
       const tmp = yield* Effect.promise(() => tmpdir())
       try {
         yield* seedBrain
-        const created = yield* swarm.createSwarm("Calc")
-        const run = required(
-          yield* swarm.spawnRun(created.id, {
+      const created = yield* swarm.createSwarm("Calc")
+      const runner = yield* Swarm.RunnerService
+      const run = required(
+        yield* runner.spawnRun(created.id, {
             role: AgentV2.ID.make("researcher"),
             task: "Research calculator structure",
             directory: tmp.path,

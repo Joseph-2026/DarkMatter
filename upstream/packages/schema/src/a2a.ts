@@ -12,3 +12,12 @@ export type MessageID = typeof MessageID.Type
 
 export const MessageStatus = Schema.Literals(["pending", "delivered"])
 export type MessageStatus = typeof MessageStatus.Type
+
+export const AgentID = Schema.String.pipe(
+  Schema.brand("A2A.AgentID"),
+  statics((schema) => ({ create: () => schema.make("agt_" + ascending()) })),
+)
+export type AgentID = typeof AgentID.Type
+
+export const MessageOrigin = Schema.Literals(["legacy", "service", "signed"])
+export type MessageOrigin = typeof MessageOrigin.Type
