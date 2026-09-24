@@ -13,6 +13,13 @@ export type MessageID = A2A.MessageID
 export const MessageStatus = A2A.MessageStatus
 export type MessageStatus = A2A.MessageStatus
 
+// Swarm channel convention: runs in one swarm share a single channel address.
+// Both sides of a completion announcement use it, so any run (or operator)
+// sees every run.done event with one inbox read.
+export function channel(swarmID: string) {
+  return `swarm:${swarmID}`
+}
+
 export interface Message {
   readonly id: MessageID
   readonly from: string
