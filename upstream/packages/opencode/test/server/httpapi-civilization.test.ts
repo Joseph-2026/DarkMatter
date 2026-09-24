@@ -3,6 +3,7 @@ import { describe, expect } from "bun:test"
 import { Config, Effect, Layer } from "effect"
 import { HttpClient, HttpClientRequest, HttpRouter, HttpServer } from "effect/unstable/http"
 import * as Socket from "effect/unstable/socket/Socket"
+import { A2A } from "@apt5/core/a2a"
 import { HttpApiApp } from "../../src/server/routes/instance/httpapi/server"
 import { resetDatabase } from "../fixture/db"
 import { tmpdirScoped } from "../fixture/fixture"
@@ -110,6 +111,35 @@ describe("civilization runtime", () => {
       const allowed = yield* post("/governance/evaluate", { action: "other.read" })
       expect(allowed.status).toBe(200)
       expect(yield* allowed.json).toMatchObject({ decision: "allow" })
+
+      const swarm = yield* post("/swarm", { name: "Auth" })
+      expect(swarm.status).toBe(200)
+      const swarmBody = yield* swarm.json.pipe(Effect.map((value) => value as { id: string }))
+      const registered = yield* post("/a2a/agents", { swarmID: swarmBody.id, name: "coder" })
+      expect(registered.status).toBe(200)
+      const registration = yield* registered.json.pipe(
+        Effect.map((value) => value as { id: string; privateKey: string }),
+      )
+      const signedPayload = { title: "Build it" }
+      const signature = A2A.signPayload(registration.privateKey, "coder", "agent", "task.assign", signedPayload)
+      const signed = yield* post("/a2a/signed", {
+        agentID: registration.id,
+        to: "agent",
+        type: "task.assign",
+        payload: signedPayload,
+        signature,
+      })
+      expect(signed.status).toBe(200)
+      expect(yield* signed.json).toMatchObject({ origin: "signed", from: "coder" })
+
+      const forged = yield* post("/a2a/signed", {
+        agentID: registration.id,
+        to: "agent",
+        type: "task.assign",
+        payload: signedPayload,
+        signature: "bm90LXJlYWwtc2ln",
+      })
+      expect(forged.status).toBe(401)
     }),
   )
 })

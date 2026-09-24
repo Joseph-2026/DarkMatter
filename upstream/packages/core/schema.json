@@ -1,9 +1,9 @@
 {
   "version": "7",
   "dialect": "sqlite",
-  "id": "c945bd4b-0407-478f-a216-a0b4fde224e0",
+  "id": "e12f3c10-8632-4833-9c28-6985723cd29b",
   "prevIds": [
-    "fb65e2b8-50d2-47a7-8c12-792dbc8291be"
+    "c945bd4b-0407-478f-a216-a0b4fde224e0"
   ],
   "ddl": [
     {
@@ -16,6 +16,10 @@
     },
     {
       "name": "a2a_message",
+      "entityType": "tables"
+    },
+    {
+      "name": "swarm_agent",
       "entityType": "tables"
     },
     {
@@ -279,6 +283,26 @@
       "table": "a2a_message"
     },
     {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": "'legacy'",
+      "generated": null,
+      "name": "origin",
+      "entityType": "columns",
+      "table": "a2a_message"
+    },
+    {
+      "type": "text",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "signature",
+      "entityType": "columns",
+      "table": "a2a_message"
+    },
+    {
       "type": "integer",
       "notNull": true,
       "autoincrement": false,
@@ -297,6 +321,66 @@
       "name": "time_updated",
       "entityType": "columns",
       "table": "a2a_message"
+    },
+    {
+      "type": "text",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "id",
+      "entityType": "columns",
+      "table": "swarm_agent"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "swarm_id",
+      "entityType": "columns",
+      "table": "swarm_agent"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "name",
+      "entityType": "columns",
+      "table": "swarm_agent"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "public_key",
+      "entityType": "columns",
+      "table": "swarm_agent"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "time_created",
+      "entityType": "columns",
+      "table": "swarm_agent"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "time_updated",
+      "entityType": "columns",
+      "table": "swarm_agent"
     },
     {
       "type": "integer",
@@ -2145,6 +2229,21 @@
     },
     {
       "columns": [
+        "swarm_id"
+      ],
+      "tableTo": "swarm",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
+      "nameExplicit": false,
+      "name": "fk_swarm_agent_swarm_id_swarm_id_fk",
+      "entityType": "fks",
+      "table": "swarm_agent"
+    },
+    {
+      "columns": [
         "active_account_id"
       ],
       "tableTo": "account",
@@ -2415,6 +2514,15 @@
         "id"
       ],
       "nameExplicit": false,
+      "name": "swarm_agent_pk",
+      "table": "swarm_agent",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
       "name": "account_state_pk",
       "table": "account_state",
       "entityType": "pks"
@@ -2625,6 +2733,24 @@
       "name": "a2a_message_to_status_idx",
       "entityType": "indexes",
       "table": "a2a_message"
+    },
+    {
+      "columns": [
+        {
+          "value": "swarm_id",
+          "isExpression": false
+        },
+        {
+          "value": "name",
+          "isExpression": false
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "origin": "manual",
+      "name": "swarm_agent_swarm_name_idx",
+      "entityType": "indexes",
+      "table": "swarm_agent"
     },
     {
       "columns": [

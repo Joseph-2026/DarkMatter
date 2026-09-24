@@ -71,6 +71,7 @@ import { MemoryOS } from "@apt5/core/memory-os"
 import { Ledger } from "@apt5/core/ledger"
 import { A2A } from "@apt5/core/a2a"
 import { Governance } from "@apt5/core/governance"
+import { Swarm } from "@apt5/core/swarm"
 import { lazy } from "@/util/lazy"
 import { CorsConfig, isAllowedCorsOrigin, type CorsOptions } from "@apt5/server/cors"
 import { serveUIEffect } from "@/server/shared/ui"
@@ -107,6 +108,7 @@ import { ptyConnectHandlers, ptyHandlers } from "./handlers/pty"
 import { questionHandlers } from "./handlers/question"
 import { sessionHandlers } from "./handlers/session"
 import { syncHandlers } from "./handlers/sync"
+import { swarmHandlers } from "./handlers/swarm"
 import { tuiHandlers } from "./handlers/tui"
 import { workBoardHandlers } from "./handlers/work-board"
 import { handlers } from "@apt5/server/handlers"
@@ -176,6 +178,7 @@ const instanceApiRoutes = HttpApiBuilder.layer(InstanceHttpApi).pipe(
     providerHandlers,
     sessionHandlers,
     syncHandlers,
+    swarmHandlers,
     tuiHandlers,
     workBoardHandlers,
     memoryOSHandlers,
@@ -286,6 +289,7 @@ const app = LayerNode.group([
   Ledger.node,
   A2A.node,
   Governance.node,
+  Swarm.node,
 ])
 
 export function createRoutes(

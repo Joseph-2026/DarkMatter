@@ -123,6 +123,24 @@ export class A2AMessageNotFoundError extends Schema.TaggedErrorClass<A2AMessageN
   { httpApiStatus: 404 },
 ) {}
 
+export class A2AAgentNotFoundError extends Schema.TaggedErrorClass<A2AAgentNotFoundError>()(
+  "A2AAgentNotFoundError",
+  {
+    agentID: Schema.String,
+    message: Schema.String,
+  },
+  { httpApiStatus: 404 },
+) {}
+
+export class A2AInvalidSignatureError extends Schema.TaggedErrorClass<A2AInvalidSignatureError>()(
+  "A2AInvalidSignatureError",
+  {
+    agentID: Schema.String,
+    message: Schema.String,
+  },
+  { httpApiStatus: 401 },
+) {}
+
 export class ForbiddenError extends Schema.TaggedErrorClass<ForbiddenError>()(  "ForbiddenError",
   { message: Schema.String },
   { httpApiStatus: 403 },

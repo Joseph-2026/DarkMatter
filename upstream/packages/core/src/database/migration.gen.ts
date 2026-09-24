@@ -43,5 +43,6 @@ export const migrations = (
     import("./migration/20260923035633_civilization"),
     import("./migration/20260923150530_civilization-indexes"),
     import("./migration/20260924054856_swarm"),
+    import("./migration/20260924110305_a2a-auth"),
   ])
 ).map((module) => module.default) satisfies DatabaseMigration.Migration[]
