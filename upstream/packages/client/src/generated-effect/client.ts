@@ -823,10 +823,41 @@ type Endpoint21_2Input = { readonly id: Endpoint21_2Request["params"]["id"] }
 const Endpoint21_2 = (raw: RawClient["server.a2a"]) => (input: Endpoint21_2Input) =>
   raw["a2a.messages.ack"]({ params: { id: input["id"] } }).pipe(Effect.mapError(mapClientError))
 
+type Endpoint21_3Request = Parameters<RawClient["server.a2a"]["a2a.agents.register"]>[0]
+type Endpoint21_3Input = {
+  readonly swarmID: Endpoint21_3Request["payload"]["swarmID"]
+  readonly name: Endpoint21_3Request["payload"]["name"]
+}
+const Endpoint21_3 = (raw: RawClient["server.a2a"]) => (input: Endpoint21_3Input) =>
+  raw["a2a.agents.register"]({ payload: { swarmID: input["swarmID"], name: input["name"] } }).pipe(
+    Effect.mapError(mapClientError),
+  )
+
+type Endpoint21_4Request = Parameters<RawClient["server.a2a"]["a2a.messages.sendSigned"]>[0]
+type Endpoint21_4Input = {
+  readonly agentID: Endpoint21_4Request["payload"]["agentID"]
+  readonly to: Endpoint21_4Request["payload"]["to"]
+  readonly type: Endpoint21_4Request["payload"]["type"]
+  readonly payload: Endpoint21_4Request["payload"]["payload"]
+  readonly signature: Endpoint21_4Request["payload"]["signature"]
+}
+const Endpoint21_4 = (raw: RawClient["server.a2a"]) => (input: Endpoint21_4Input) =>
+  raw["a2a.messages.sendSigned"]({
+    payload: {
+      agentID: input["agentID"],
+      to: input["to"],
+      type: input["type"],
+      payload: input["payload"],
+      signature: input["signature"],
+    },
+  }).pipe(Effect.mapError(mapClientError))
+
 const adaptGroup21 = (raw: RawClient["server.a2a"]) => ({
   send: Endpoint21_0(raw),
   list: Endpoint21_1(raw),
   ack: Endpoint21_2(raw),
+  register: Endpoint21_3(raw),
+  sendSigned: Endpoint21_4(raw),
 })
 
 type Endpoint22_0Request = Parameters<RawClient["server.governance"]["governance.rules.add"]>[0]

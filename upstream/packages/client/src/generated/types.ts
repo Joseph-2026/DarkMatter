@@ -126,6 +126,22 @@ export type A2AMessageNotFoundError = {
 export const isA2AMessageNotFoundError = (value: unknown): value is A2AMessageNotFoundError =>
   typeof value === "object" && value !== null && "_tag" in value && value["_tag"] === "A2AMessageNotFoundError"
 
+export type A2AAgentNotFoundError = {
+  readonly _tag: "A2AAgentNotFoundError"
+  readonly agentID: string
+  readonly message: string
+}
+export const isA2AAgentNotFoundError = (value: unknown): value is A2AAgentNotFoundError =>
+  typeof value === "object" && value !== null && "_tag" in value && value["_tag"] === "A2AAgentNotFoundError"
+
+export type A2AInvalidSignatureError = {
+  readonly _tag: "A2AInvalidSignatureError"
+  readonly agentID: string
+  readonly message: string
+}
+export const isA2AInvalidSignatureError = (value: unknown): value is A2AInvalidSignatureError =>
+  typeof value === "object" && value !== null && "_tag" in value && value["_tag"] === "A2AInvalidSignatureError"
+
 export type HealthGetOutput = { readonly healthy: true }
 
 export type LocationGetInput = {
@@ -3022,6 +3038,8 @@ export type A2aSendOutput = {
   readonly type: string
   readonly payload: unknown
   readonly status: "pending" | "delivered"
+  readonly origin: "legacy" | "service" | "signed"
+  readonly signature?: string | undefined
 }
 
 export type A2aListInput = { readonly agent: { readonly agent: string }["agent"] }
@@ -3033,6 +3051,8 @@ export type A2aListOutput = ReadonlyArray<{
   readonly type: string
   readonly payload: unknown
   readonly status: "pending" | "delivered"
+  readonly origin: "legacy" | "service" | "signed"
+  readonly signature?: string | undefined
 }>
 
 export type A2aAckInput = { readonly id: { readonly id: string }["id"] }
@@ -3044,6 +3064,64 @@ export type A2aAckOutput = {
   readonly type: string
   readonly payload: unknown
   readonly status: "pending" | "delivered"
+  readonly origin: "legacy" | "service" | "signed"
+  readonly signature?: string | undefined
+}
+
+export type A2aRegisterInput = {
+  readonly swarmID: { readonly swarmID: string; readonly name: string }["swarmID"]
+  readonly name: { readonly swarmID: string; readonly name: string }["name"]
+}
+
+export type A2aRegisterOutput = { readonly id: string; readonly name: string; readonly privateKey: string }
+
+export type A2aSendSignedInput = {
+  readonly agentID: {
+    readonly agentID: string
+    readonly to: string
+    readonly type: string
+    readonly payload: unknown
+    readonly signature: string
+  }["agentID"]
+  readonly to: {
+    readonly agentID: string
+    readonly to: string
+    readonly type: string
+    readonly payload: unknown
+    readonly signature: string
+  }["to"]
+  readonly type: {
+    readonly agentID: string
+    readonly to: string
+    readonly type: string
+    readonly payload: unknown
+    readonly signature: string
+  }["type"]
+  readonly payload: {
+    readonly agentID: string
+    readonly to: string
+    readonly type: string
+    readonly payload: unknown
+    readonly signature: string
+  }["payload"]
+  readonly signature: {
+    readonly agentID: string
+    readonly to: string
+    readonly type: string
+    readonly payload: unknown
+    readonly signature: string
+  }["signature"]
+}
+
+export type A2aSendSignedOutput = {
+  readonly id: string
+  readonly from: string
+  readonly to: string
+  readonly type: string
+  readonly payload: unknown
+  readonly status: "pending" | "delivered"
+  readonly origin: "legacy" | "service" | "signed"
+  readonly signature?: string | undefined
 }
 
 export type GovernanceAddInput = {

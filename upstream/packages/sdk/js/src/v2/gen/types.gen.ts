@@ -2604,6 +2604,12 @@ export type SessionBusyError = {
   message: string
 }
 
+export type SwarmNotFoundError = {
+  _tag: "SwarmNotFoundError"
+  swarmID: string
+  message: string
+}
+
 export type EventTuiPromptAppend = {
   type: "tui.prompt.append"
   properties: {
@@ -2671,6 +2677,18 @@ export type MemoryEntryNotFoundError = {
 export type A2aMessageNotFoundError = {
   _tag: "A2AMessageNotFoundError"
   messageID: string
+  message: string
+}
+
+export type A2aAgentNotFoundError = {
+  _tag: "A2AAgentNotFoundError"
+  agentID: string
+  message: string
+}
+
+export type A2aInvalidSignatureError = {
+  _tag: "A2AInvalidSignatureError"
+  agentID: string
   message: string
 }
 
@@ -10637,6 +10655,80 @@ export type SyncHistoryListResponses = {
 
 export type SyncHistoryListResponse = SyncHistoryListResponses[keyof SyncHistoryListResponses]
 
+export type SwarmCreateSwarmData = {
+  body?: {
+    name: string
+  }
+  path?: never
+  query?: {
+    directory?: string
+    workspace?: string
+  }
+  url: "/swarm"
+}
+
+export type SwarmCreateSwarmErrors = {
+  /**
+   * Bad request
+   */
+  400: BadRequestError
+}
+
+export type SwarmCreateSwarmError = SwarmCreateSwarmErrors[keyof SwarmCreateSwarmErrors]
+
+export type SwarmCreateSwarmResponses = {
+  /**
+   * Created swarm
+   */
+  200: {
+    id: string
+    name: string
+    status: "active" | "done"
+    boardID?: string
+  }
+}
+
+export type SwarmCreateSwarmResponse = SwarmCreateSwarmResponses[keyof SwarmCreateSwarmResponses]
+
+export type SwarmGetSwarmData = {
+  body?: never
+  path: {
+    id: string
+  }
+  query?: {
+    directory?: string
+    workspace?: string
+  }
+  url: "/swarm/{id}"
+}
+
+export type SwarmGetSwarmErrors = {
+  /**
+   * BadRequest | InvalidRequestError
+   */
+  400: EffectHttpApiErrorBadRequest | InvalidRequestError
+  /**
+   * SwarmNotFoundError
+   */
+  404: SwarmNotFoundError
+}
+
+export type SwarmGetSwarmError = SwarmGetSwarmErrors[keyof SwarmGetSwarmErrors]
+
+export type SwarmGetSwarmResponses = {
+  /**
+   * Swarm
+   */
+  200: {
+    id: string
+    name: string
+    status: "active" | "done"
+    boardID?: string
+  }
+}
+
+export type SwarmGetSwarmResponse = SwarmGetSwarmResponses[keyof SwarmGetSwarmResponses]
+
 export type TuiAppendPromptData = {
   body?: {
     text: string
@@ -11494,6 +11586,8 @@ export type A2aSendResponses = {
     type: string
     payload: unknown
     status: "pending" | "delivered"
+    origin: "legacy" | "service" | "signed"
+    signature?: string
   }
 }
 
@@ -11531,6 +11625,8 @@ export type A2aInboxResponses = {
     type: string
     payload: unknown
     status: "pending" | "delivered"
+    origin: "legacy" | "service" | "signed"
+    signature?: string
   }>
 }
 
@@ -11572,10 +11668,94 @@ export type A2aAckResponses = {
     type: string
     payload: unknown
     status: "pending" | "delivered"
+    origin: "legacy" | "service" | "signed"
+    signature?: string
   }
 }
 
 export type A2aAckResponse = A2aAckResponses[keyof A2aAckResponses]
+
+export type A2aRegisterAgentData = {
+  body?: {
+    swarmID: string
+    name: string
+  }
+  path?: never
+  query?: {
+    directory?: string
+    workspace?: string
+  }
+  url: "/a2a/agents"
+}
+
+export type A2aRegisterAgentErrors = {
+  /**
+   * Bad request
+   */
+  400: BadRequestError
+}
+
+export type A2aRegisterAgentError = A2aRegisterAgentErrors[keyof A2aRegisterAgentErrors]
+
+export type A2aRegisterAgentResponses = {
+  /**
+   * Registered agent with one-time private key
+   */
+  200: {
+    id: string
+    name: string
+    privateKey: string
+  }
+}
+
+export type A2aRegisterAgentResponse = A2aRegisterAgentResponses[keyof A2aRegisterAgentResponses]
+
+export type A2aSendSignedData = {
+  body?: {
+    agentID: string
+    to: string
+    type: string
+    payload: unknown
+    signature: string
+  }
+  path?: never
+  query?: {
+    directory?: string
+    workspace?: string
+  }
+  url: "/a2a/signed"
+}
+
+export type A2aSendSignedErrors = {
+  /**
+   * BadRequest | InvalidRequestError
+   */
+  400: EffectHttpApiErrorBadRequest | InvalidRequestError
+  /**
+   * A2AAgentNotFoundError
+   */
+  404: A2aAgentNotFoundError
+}
+
+export type A2aSendSignedError = A2aSendSignedErrors[keyof A2aSendSignedErrors]
+
+export type A2aSendSignedResponses = {
+  /**
+   * Verified message
+   */
+  200: {
+    id: string
+    from: string
+    to: string
+    type: string
+    payload: unknown
+    status: "pending" | "delivered"
+    origin: "legacy" | "service" | "signed"
+    signature?: string
+  }
+}
+
+export type A2aSendSignedResponse = A2aSendSignedResponses[keyof A2aSendSignedResponses]
 
 export type GovernanceListRulesData = {
   body?: never
@@ -14748,6 +14928,8 @@ export type V2A2aMessagesSendResponses = {
     type: string
     payload: unknown
     status: "pending" | "delivered"
+    origin: "legacy" | "service" | "signed"
+    signature?: string
   }
 }
 
@@ -14786,6 +14968,8 @@ export type V2A2aInboxListResponses = {
     type: string
     payload: unknown
     status: "pending" | "delivered"
+    origin: "legacy" | "service" | "signed"
+    signature?: string
   }>
 }
 
@@ -14828,10 +15012,96 @@ export type V2A2aMessagesAckResponses = {
     type: string
     payload: unknown
     status: "pending" | "delivered"
+    origin: "legacy" | "service" | "signed"
+    signature?: string
   }
 }
 
 export type V2A2aMessagesAckResponse = V2A2aMessagesAckResponses[keyof V2A2aMessagesAckResponses]
+
+export type V2A2aAgentsRegisterData = {
+  body: {
+    swarmID: string
+    name: string
+  }
+  path?: never
+  query?: never
+  url: "/api/a2a/agents"
+}
+
+export type V2A2aAgentsRegisterErrors = {
+  /**
+   * InvalidRequestError
+   */
+  400: InvalidRequestError
+  /**
+   * UnauthorizedError
+   */
+  401: UnauthorizedError
+}
+
+export type V2A2aAgentsRegisterError = V2A2aAgentsRegisterErrors[keyof V2A2aAgentsRegisterErrors]
+
+export type V2A2aAgentsRegisterResponses = {
+  /**
+   * Success
+   */
+  200: {
+    id: string
+    name: string
+    privateKey: string
+  }
+}
+
+export type V2A2aAgentsRegisterResponse = V2A2aAgentsRegisterResponses[keyof V2A2aAgentsRegisterResponses]
+
+export type V2A2aMessagesSendSignedData = {
+  body: {
+    agentID: string
+    to: string
+    type: string
+    payload: unknown
+    signature: string
+  }
+  path?: never
+  query?: never
+  url: "/api/a2a/messages/signed"
+}
+
+export type V2A2aMessagesSendSignedErrors = {
+  /**
+   * InvalidRequestError
+   */
+  400: InvalidRequestError
+  /**
+   * A2AInvalidSignatureError | UnauthorizedError
+   */
+  401: A2aInvalidSignatureError | UnauthorizedError
+  /**
+   * A2AAgentNotFoundError
+   */
+  404: A2aAgentNotFoundError
+}
+
+export type V2A2aMessagesSendSignedError = V2A2aMessagesSendSignedErrors[keyof V2A2aMessagesSendSignedErrors]
+
+export type V2A2aMessagesSendSignedResponses = {
+  /**
+   * Success
+   */
+  200: {
+    id: string
+    from: string
+    to: string
+    type: string
+    payload: unknown
+    status: "pending" | "delivered"
+    origin: "legacy" | "service" | "signed"
+    signature?: string
+  }
+}
+
+export type V2A2aMessagesSendSignedResponse = V2A2aMessagesSendSignedResponses[keyof V2A2aMessagesSendSignedResponses]
 
 export type V2GovernanceRulesListData = {
   body?: never

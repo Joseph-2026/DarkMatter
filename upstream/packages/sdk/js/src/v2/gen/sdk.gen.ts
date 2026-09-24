@@ -7,8 +7,12 @@ import type {
   A2aAckResponses,
   A2aInboxErrors,
   A2aInboxResponses,
+  A2aRegisterAgentErrors,
+  A2aRegisterAgentResponses,
   A2aSendErrors,
   A2aSendResponses,
+  A2aSendSignedErrors,
+  A2aSendSignedResponses,
   AgentPartInput,
   AppAgentsErrors,
   AppAgentsResponses,
@@ -250,6 +254,10 @@ import type {
   SessionUpdateErrors,
   SessionUpdateResponses,
   SubtaskPartInput,
+  SwarmCreateSwarmErrors,
+  SwarmCreateSwarmResponses,
+  SwarmGetSwarmErrors,
+  SwarmGetSwarmResponses,
   SyncHistoryListErrors,
   SyncHistoryListResponses,
   SyncReplayErrors,
@@ -289,12 +297,16 @@ import type {
   TuiShowToastResponses,
   TuiSubmitPromptErrors,
   TuiSubmitPromptResponses,
+  V2A2aAgentsRegisterErrors,
+  V2A2aAgentsRegisterResponses,
   V2A2aInboxListErrors,
   V2A2aInboxListResponses,
   V2A2aMessagesAckErrors,
   V2A2aMessagesAckResponses,
   V2A2aMessagesSendErrors,
   V2A2aMessagesSendResponses,
+  V2A2aMessagesSendSignedErrors,
+  V2A2aMessagesSendSignedResponses,
   V2AgentListErrors,
   V2AgentListResponses,
   V2CommandListErrors,
@@ -4646,6 +4658,77 @@ export class Sync extends HeyApiClient {
   }
 }
 
+export class Swarm extends HeyApiClient {
+  /**
+   * Create a swarm
+   *
+   * Create a swarm with its own work board.
+   */
+  public createSwarm<ThrowOnError extends boolean = false>(
+    parameters?: {
+      directory?: string
+      workspace?: string
+      name?: string
+    },
+    options?: Options<never, ThrowOnError>,
+  ) {
+    const params = buildClientParams(
+      [parameters],
+      [
+        {
+          args: [
+            { in: "query", key: "directory" },
+            { in: "query", key: "workspace" },
+            { in: "body", key: "name" },
+          ],
+        },
+      ],
+    )
+    return (options?.client ?? this.client).post<SwarmCreateSwarmResponses, SwarmCreateSwarmErrors, ThrowOnError>({
+      url: "/swarm",
+      ...options,
+      ...params,
+      headers: {
+        "Content-Type": "application/json",
+        ...options?.headers,
+        ...params.headers,
+      },
+    })
+  }
+
+  /**
+   * Get a swarm
+   *
+   * Get one swarm by ID.
+   */
+  public getSwarm<ThrowOnError extends boolean = false>(
+    parameters: {
+      id: string
+      directory?: string
+      workspace?: string
+    },
+    options?: Options<never, ThrowOnError>,
+  ) {
+    const params = buildClientParams(
+      [parameters],
+      [
+        {
+          args: [
+            { in: "path", key: "id" },
+            { in: "query", key: "directory" },
+            { in: "query", key: "workspace" },
+          ],
+        },
+      ],
+    )
+    return (options?.client ?? this.client).get<SwarmGetSwarmResponses, SwarmGetSwarmErrors, ThrowOnError>({
+      url: "/swarm/{id}",
+      ...options,
+      ...params,
+    })
+  }
+}
+
 export class Control extends HeyApiClient {
   /**
    * Get next TUI request
@@ -5637,6 +5720,90 @@ export class A2A extends HeyApiClient {
       url: "/a2a/{id}/ack",
       ...options,
       ...params,
+    })
+  }
+
+  /**
+   * Register an agent
+   *
+   * Enroll an agent in a swarm; returns the private key once for signing.
+   */
+  public registerAgent<ThrowOnError extends boolean = false>(
+    parameters?: {
+      directory?: string
+      workspace?: string
+      swarmID?: string
+      name?: string
+    },
+    options?: Options<never, ThrowOnError>,
+  ) {
+    const params = buildClientParams(
+      [parameters],
+      [
+        {
+          args: [
+            { in: "query", key: "directory" },
+            { in: "query", key: "workspace" },
+            { in: "body", key: "swarmID" },
+            { in: "body", key: "name" },
+          ],
+        },
+      ],
+    )
+    return (options?.client ?? this.client).post<A2aRegisterAgentResponses, A2aRegisterAgentErrors, ThrowOnError>({
+      url: "/a2a/agents",
+      ...options,
+      ...params,
+      headers: {
+        "Content-Type": "application/json",
+        ...options?.headers,
+        ...params.headers,
+      },
+    })
+  }
+
+  /**
+   * Send a signed message
+   *
+   * Verify the ed25519 signature against the registered key, then deliver.
+   */
+  public sendSigned<ThrowOnError extends boolean = false>(
+    parameters?: {
+      directory?: string
+      workspace?: string
+      agentID?: string
+      to?: string
+      type?: string
+      payload?: unknown
+      signature?: string
+    },
+    options?: Options<never, ThrowOnError>,
+  ) {
+    const params = buildClientParams(
+      [parameters],
+      [
+        {
+          args: [
+            { in: "query", key: "directory" },
+            { in: "query", key: "workspace" },
+            { in: "body", key: "agentID" },
+            { in: "body", key: "to" },
+            { in: "body", key: "type" },
+            { in: "body", key: "payload" },
+            { in: "body", key: "signature" },
+          ],
+        },
+      ],
+    )
+    return (options?.client ?? this.client).post<A2aSendSignedResponses, A2aSendSignedErrors, ThrowOnError>({
+      url: "/a2a/signed",
+      ...options,
+      ...params,
+      headers: {
+        "Content-Type": "application/json",
+        ...options?.headers,
+        ...params.headers,
+      },
     })
   }
 }
@@ -8149,6 +8316,51 @@ export class Messages extends HeyApiClient {
       ...params,
     })
   }
+
+  /**
+   * Send a signed message
+   *
+   * Verify the ed25519 signature against the registered key, then deliver.
+   */
+  public sendSigned<ThrowOnError extends boolean = false>(
+    parameters?: {
+      agentID?: string
+      to?: string
+      type?: string
+      payload?: unknown
+      signature?: string
+    },
+    options?: Options<never, ThrowOnError>,
+  ) {
+    const params = buildClientParams(
+      [parameters],
+      [
+        {
+          args: [
+            { in: "body", key: "agentID" },
+            { in: "body", key: "to" },
+            { in: "body", key: "type" },
+            { in: "body", key: "payload" },
+            { in: "body", key: "signature" },
+          ],
+        },
+      ],
+    )
+    return (options?.client ?? this.client).post<
+      V2A2aMessagesSendSignedResponses,
+      V2A2aMessagesSendSignedErrors,
+      ThrowOnError
+    >({
+      url: "/api/a2a/messages/signed",
+      ...options,
+      ...params,
+      headers: {
+        "Content-Type": "application/json",
+        ...options?.headers,
+        ...params.headers,
+      },
+    })
+  }
 }
 
 export class Inbox extends HeyApiClient {
@@ -8172,6 +8384,45 @@ export class Inbox extends HeyApiClient {
   }
 }
 
+export class Agents extends HeyApiClient {
+  /**
+   * Register an agent
+   *
+   * Enroll an agent in a swarm; returns the private key once for signing.
+   */
+  public register<ThrowOnError extends boolean = false>(
+    parameters?: {
+      swarmID?: string
+      name?: string
+    },
+    options?: Options<never, ThrowOnError>,
+  ) {
+    const params = buildClientParams(
+      [parameters],
+      [
+        {
+          args: [
+            { in: "body", key: "swarmID" },
+            { in: "body", key: "name" },
+          ],
+        },
+      ],
+    )
+    return (options?.client ?? this.client).post<V2A2aAgentsRegisterResponses, V2A2aAgentsRegisterErrors, ThrowOnError>(
+      {
+        url: "/api/a2a/agents",
+        ...options,
+        ...params,
+        headers: {
+          "Content-Type": "application/json",
+          ...options?.headers,
+          ...params.headers,
+        },
+      },
+    )
+  }
+}
+
 export class A2A2 extends HeyApiClient {
   private _messages?: Messages
   get messages(): Messages {
@@ -8181,6 +8432,11 @@ export class A2A2 extends HeyApiClient {
   private _inbox?: Inbox
   get inbox(): Inbox {
     return (this._inbox ??= new Inbox({ client: this.client }))
+  }
+
+  private _agents?: Agents
+  get agents(): Agents {
+    return (this._agents ??= new Agents({ client: this.client }))
   }
 }
 
@@ -8516,6 +8772,11 @@ export class Apt5Client extends HeyApiClient {
   private _sync?: Sync
   get sync(): Sync {
     return (this._sync ??= new Sync({ client: this.client }))
+  }
+
+  private _swarm?: Swarm
+  get swarm(): Swarm {
+    return (this._swarm ??= new Swarm({ client: this.client }))
   }
 
   private _tui?: Tui
