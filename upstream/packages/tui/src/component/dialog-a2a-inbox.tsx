@@ -18,7 +18,7 @@ export function parseAgentName(input: string | null): string | undefined {
 }
 
 export function a2aMessageFooter(message: InboxMessage): string {
-  return `${message.from} · ${message.type}`
+  return `${message.from} · ${message.type} · ${message.origin === "signed" ? "verified" : message.origin}`
 }
 
 export function a2aMessageOptions(messages: InboxMessage[]) {
