@@ -49,6 +49,10 @@ import { DialogHelp } from "./ui/dialog-help"
 import { DialogAgent } from "./component/dialog-agent"
 import { DialogSessionList } from "./component/dialog-session-list"
 import { DialogWorkBoardList } from "./component/dialog-work-board-list"
+import { DialogMemoryList, parseMemoryNamespace } from "./component/dialog-memory-list"
+import { DialogA2AInbox, parseAgentName } from "./component/dialog-a2a-inbox"
+import { DialogGovernanceRules } from "./component/dialog-governance"
+import { DialogPrompt } from "./ui/dialog-prompt"
 import { DialogWorkspaceList } from "./component/dialog-workspace-list"
 import { DialogConsoleOrg } from "./component/dialog-console-org"
 import { ThemeProvider, useTheme } from "./context/theme"
@@ -602,6 +606,48 @@ function App(props: { onSnapshot?: () => Promise<string[]>; pluginHost: TuiPlugi
         slashName: "boards",
         run: () => {
           dialog.replace(() => <DialogWorkBoardList />)
+        },
+      },
+      {
+        name: "memory.list",
+        title: "View memory entries",
+        category: "System",
+        slashName: "memory",
+        run: async () => {
+          const namespace = await DialogPrompt.show(dialog, "Memory namespace", {
+            value: "project",
+            placeholder: "Namespace",
+          })
+          const parsed = parseMemoryNamespace(namespace)
+          if (!parsed) {
+            dialog.clear()
+            return
+          }
+          dialog.replace(() => <DialogMemoryList namespace={parsed} />)
+        },
+      },
+      {
+        name: "a2a.inbox",
+        title: "View A2A inbox",
+        category: "System",
+        slashName: "inbox",
+        run: async () => {
+          const agent = await DialogPrompt.show(dialog, "Agent inbox", { placeholder: "Agent name" })
+          const parsed = parseAgentName(agent)
+          if (!parsed) {
+            dialog.clear()
+            return
+          }
+          dialog.replace(() => <DialogA2AInbox agent={parsed} />)
+        },
+      },
+      {
+        name: "governance.list",
+        title: "View policy rules",
+        category: "System",
+        slashName: "policy",
+        run: () => {
+          dialog.replace(() => <DialogGovernanceRules />)
         },
       },
       {
