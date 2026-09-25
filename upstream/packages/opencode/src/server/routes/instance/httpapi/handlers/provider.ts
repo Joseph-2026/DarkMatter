@@ -4,7 +4,6 @@ import { ModelsDev } from "@apt5/core/models-dev"
 import { Provider } from "@/provider/provider"
 import { Auth } from "@/auth"
 
-import { mapValues } from "remeda"
 import { Effect, Schema } from "effect"
 import { HttpServerRequest, HttpServerResponse } from "effect/unstable/http"
 import { HttpApiBuilder } from "effect/unstable/httpapi"
@@ -51,7 +50,12 @@ export const providerHandlers = HttpApiBuilder.group(InstanceHttpApi, "provider"
       const connected = yield* provider.list()
       const credentials = yield* authStore.all().pipe(Effect.orDie)
       const providers = Object.assign(
-        mapValues(filtered, (item) => Provider.fromModelsDevProvider(item)),
+        Object.fromEntries(
+          Object.entries(filtered).map(([id, item]) => [
+            id === "opencode" ? "darkmatter" : id,
+            Provider.fromModelsDevProvider(item),
+          ]),
+        ),
         connected,
       )
       return {

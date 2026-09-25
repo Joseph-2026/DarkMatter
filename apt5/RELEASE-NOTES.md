@@ -1,6 +1,21 @@
-# Release Notes — apt-5-v1.0.0 / v1.1.0 / v1.2.0
+# Release Notes — apt-5-v1.0.0 / v1.1.0 / v1.2.0 / v1.3.0
 
 **Repo:** `Joseph-2026/DarkMatter` — merge SHAs below are immutable facts; tag annotations record exact release commits. Verified via `gh pr list`, `gh run list --branch main`, `gh pr checks`.
+
+## v1.3.0 (2026-09-25) — stealth edition + world demo
+
+- **PR #26 — world showcase + pitch** — merge `7a3752cad` (2026-09-24T14:27:40Z, head `121fb67b4`). 7-act HTTP demo (CI-enforced), PITCH.md, VIDEO-SCRIPT.md.
+- **PR #27 — showcase transcript + GIF** — merge `d8c3cba6b` (2026-09-24T15:32:48Z, head `52f76d122`). Recorded green run + real terminal GIF.
+- **PR #28 — models catalog + free default** — merge `7aadf9de8` (2026-09-24T17:10:11Z, head `a53ec86e8`). Real catalog URL (was dead domain), preferFreeModel + tests.
+- **PR #29 — product surfaces rebrand** — merge `ff6f83ad1` (2026-09-24T19:06:57Z, head `884eb4b49`). TUI/CLI/server/app/desktop/docs display strings, apt5.json config (+fallback), support URLs.
+- **PR #30 — identifiers** — merge `e6f121610` (2026-09-25T06:08:57Z, head `4f1bba1c4`). Provider IDs darkmatter, tags @apt5, API apt5-*, tools apt5, apt5.db (+automigrate).
+- **PR #31 — residual strings** — merge `1b512faff` (2026-09-25T06:28:40Z, head `5343fb90f`). Keymap, errors, config filenames (62 locales).
+- **PR #32 — managed paths** — merge `263bb0d84` (2026-09-25T06:48:43Z, head `3529bc8fc`). Managed dirs, mDNS apt5.local, ACP names, docs paths.
+- **PR #33 — github flow removal** — merge `cb65f6018` (2026-09-25T15:17:41Z, head `9c7f34cd2`). Upstream-bot installer removed; blind test rewrites fixed (6 tests).
+- **PR #34 — terminal + locales** — merge `941f423c1` (2026-09-25T16:53:40Z, head `b1a8136d2`). Terminal title APT-5, 61 desktop locales, story mock.
+- **PR #35 — catalog mapping** — merge `36e5466f6` (2026-09-25T17:22:18Z, head `6efa97a44`). Upstream house data → darkmatter/APT-5 + mapping test.
+- **PR #36 — data coupling** — merge `b4fb5b617` (2026-09-25T18:09:45Z, head `15ebaad29`). fromModelsDevProvider mapping, transform branches, models sort.
+- **PR #37 — APT-5 logo** — merge `5cb189532` (2026-09-25T18:31:27Z, head `e6e60bd3d`). Block-letter splash, visually verified.
 
 ## v1.2.0 (2026-09-24) — A2A auth + swarm serving + surfaces
 
