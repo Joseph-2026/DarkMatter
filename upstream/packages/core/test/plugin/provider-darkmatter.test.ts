@@ -257,6 +257,74 @@ describe("Apt5Plugin", () => {
     ),
   )
 
+  it.live("maps the upstream house provider to darkmatter in the catalog", () =>
+    Effect.acquireUseRelease(
+      Effect.sync(() => {
+        const gate = Promise.withResolvers<void>()
+        return {
+          release: gate.resolve,
+          server: Bun.serve({
+            port: 0,
+            fetch: async (request) => {
+              await gate.promise
+              return Response.json({
+                config: {
+                  provider: {
+                    opencode: {
+                      name: "OpenCode Zen",
+                      npm: "@ai-sdk/openai-compatible",
+                      api: `${new URL(request.url).origin}/v1`,
+                      env: [],
+                      models: {
+                        "big-pickle": {
+                          name: "Big Pickle",
+                          tool_call: true,
+                          modalities: { input: ["text"], output: ["text"] },
+                          cost: { input: 0, output: 0 },
+                          limit: { context: 1000, output: 100 },
+                        },
+                      },
+                    },
+                  },
+                },
+              })
+            },
+          }),
+        }
+      }),
+      ({ release, server }) =>
+        Effect.gen(function* () {
+          const credentials = yield* Credential.Service
+          const catalog = yield* Catalog.Service
+          yield* credentials.create({
+            integrationID: Integration.ID.make("darkmatter"),
+            value: Credential.Key.make({
+              type: "key",
+              key: "secret",
+              metadata: { server: server.url.origin },
+            }),
+          })
+          yield* addPlugin()
+          release()
+
+          const provider = required(
+            yield* eventually(
+              catalog.provider.get(ProviderV2.ID.make("darkmatter")),
+              (item) => item?.integrationID === Integration.ID.make("darkmatter"),
+            ),
+          )
+          expect(provider).toMatchObject({ name: "APT-5", integrationID: "darkmatter" })
+          expect(yield* catalog.provider.get(ProviderV2.ID.make("opencode"))).toBeUndefined()
+
+          const model = required(
+            yield* catalog.model.get(ProviderV2.ID.make("darkmatter"), ModelV2.ID.make("big-pickle")),
+          )
+          expect(model).toMatchObject({ name: "Big Pickle" })
+        }),
+      ({ server }) => Effect.promise(() => server.stop(true)),
+    ),
+  )
+
   it.effect("uses a public key and disables paid models without credentials", () =>
     withEnv({ APT5_API_KEY: undefined }, () =>
       Effect.gen(function* () {

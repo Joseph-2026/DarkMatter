@@ -117,10 +117,14 @@ export const Apt5Plugin = define<HttpClient.HttpClient | EventV2.Service | Scope
 
     connected = (yield* ctx.integration.connection.active("darkmatter")) !== undefined
     yield* ctx.catalog.transform((catalog) => {
-      for (const [providerID, item] of Object.entries(providers ?? {})) {
+      for (const [upstreamID, item] of Object.entries(providers ?? {})) {
+        // Upstream API keys its house provider "opencode"; our catalog carries
+        // it as "darkmatter" with our display name. All other entries pass through.
+        const providerID =
+          upstreamID === "opencode" ? ProviderV2.ID.make("darkmatter") : ProviderV2.ID.make(upstreamID)
         catalog.provider.update(providerID, (provider) => {
           provider.integrationID = Integration.ID.make("darkmatter")
-          if (item.name !== undefined) provider.name = item.name
+          provider.name = upstreamID === "opencode" ? "APT-5" : (item.name ?? provider.name)
           provider.api = item.npm
             ? { type: "aisdk", package: item.npm, url: item.api }
             : { type: "native", url: item.api, settings: {} }
