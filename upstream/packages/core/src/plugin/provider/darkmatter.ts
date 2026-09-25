@@ -13,7 +13,7 @@ import { ConfigProviderV1 } from "../../v1/config/provider"
 import { ConfigProviderOptionsV1 } from "../../v1/config/provider-options"
 import { ConfigV1 } from "../../v1/config/config"
 
-const defaultServer = "https://github.com/Joseph-2026/DarkMatter/console"
+const defaultServer = "https://console.opencode.ai"
 const clientID = "opencode-cli"
 const methodID = Integration.MethodID.make("device")
 const RemoteResponse = Schema.Struct({ config: ConfigV1.Info })
@@ -36,11 +36,11 @@ const Org = Schema.Struct({ id: Schema.String, name: Schema.String })
 
 function oauth(http: HttpClient.HttpClient) {
   return {
-    integrationID: Integration.ID.make("opencode"),
+    integrationID: Integration.ID.make("darkmatter"),
     method: {
       id: methodID,
       type: "oauth",
-      label: "OpenCode Console account",
+      label: "APT-5 Console account",
     },
     authorize: () =>
       Effect.gen(function* () {
@@ -84,7 +84,7 @@ function oauth(http: HttpClient.HttpClient) {
 }
 
 export const Apt5Plugin = define<HttpClient.HttpClient | EventV2.Service | Scope.Scope>({
-  id: "opencode",
+  id: "darkmatter",
   effect: Effect.fn(function* (ctx) {
     const events = yield* EventV2.Service
     const http = yield* HttpClient.HttpClient
@@ -101,7 +101,7 @@ export const Apt5Plugin = define<HttpClient.HttpClient | EventV2.Service | Scope
       providers = credential
         ? yield* fetchProviders(http, credential).pipe(
             Effect.catch((cause) =>
-              Effect.logWarning("failed to load OpenCode provider config", { cause }).pipe(Effect.as(undefined)),
+              Effect.logWarning("failed to load APT-5 provider config", { cause }).pipe(Effect.as(undefined)),
             ),
           )
         : undefined
@@ -109,17 +109,17 @@ export const Apt5Plugin = define<HttpClient.HttpClient | EventV2.Service | Scope
 
     yield* ctx.integration.transform((draft) => {
       draft.update("darkmatter", (integration) => {
-        integration.name = "OpenCode"
+        integration.name = "APT-5"
       })
       draft.method.update(oauth(http))
-      draft.method.update({ integrationID: "opencode", method: { type: "key", label: "API key (service account)" } })
+      draft.method.update({ integrationID: "darkmatter", method: { type: "key", label: "API key (service account)" } })
     })
 
     connected = (yield* ctx.integration.connection.active("darkmatter")) !== undefined
     yield* ctx.catalog.transform((catalog) => {
       for (const [providerID, item] of Object.entries(providers ?? {})) {
         catalog.provider.update(providerID, (provider) => {
-          provider.integrationID = Integration.ID.make("opencode")
+          provider.integrationID = Integration.ID.make("darkmatter")
           if (item.name !== undefined) provider.name = item.name
           provider.api = item.npm
             ? { type: "aisdk", package: item.npm, url: item.api }
@@ -188,7 +188,7 @@ export const Apt5Plugin = define<HttpClient.HttpClient | EventV2.Service | Scope
 
     const refresh = () => loading.withPermit(load().pipe(Effect.andThen(ctx.catalog.reload())))
     yield* events.subscribe(Integration.Event.ConnectionUpdated).pipe(
-      Stream.filter((event) => event.data.integrationID === Integration.ID.make("opencode")),
+      Stream.filter((event) => event.data.integrationID === Integration.ID.make("darkmatter")),
       Stream.runForEach(refresh),
       Effect.forkScoped({ startImmediately: true }),
     )

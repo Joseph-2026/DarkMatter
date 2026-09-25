@@ -80,7 +80,7 @@ export const LedgerApi = HttpApi.make("ledger")
   )
   .annotateMerge(
     OpenApi.annotations({
-      title: "opencode HttpApi",
+      title: "apt5 HttpApi",
       version: "0.0.1",
       description: "Effect HttpApi surface for instance routes.",
     }),

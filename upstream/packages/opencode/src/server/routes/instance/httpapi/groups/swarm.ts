@@ -57,7 +57,7 @@ export const SwarmApi = HttpApi.make("swarm")
   )
   .annotateMerge(
     OpenApi.annotations({
-      title: "opencode HttpApi",
+      title: "apt5 HttpApi",
       version: "0.0.1",
       description: "Effect HttpApi surface for instance routes.",
     }),

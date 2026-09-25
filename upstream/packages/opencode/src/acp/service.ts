@@ -70,7 +70,7 @@ export type Interface = {
   readonly cancel: (input: CancelNotification) => Effect.Effect<void, Error>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@opencode/ACP/Service") {}
+export class Service extends Context.Service<Service, Interface>()("/ACP/Service") {}
 
 export function make(input: {
   sdk: Apt5Client
@@ -807,7 +807,7 @@ function defaultModelFromConfig(
   // First-session ACP startup must not scan historical sessions just to infer
   // a default. Configured model, opencode provider, then sorted best model keep
   // the protocol response deterministic without extra session/message reads.
-  const apt5Provider = providers[ProviderV2.ID.make("opencode")]
+  const apt5Provider = providers[ProviderV2.ID.make("darkmatter")]
   const apt5Model = apt5Provider ? Provider.sort(Object.values(apt5Provider.models))[0] : undefined
   if (apt5Provider && apt5Model) return { providerID: apt5Provider.id, modelID: apt5Model.id }
 

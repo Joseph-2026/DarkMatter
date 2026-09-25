@@ -22,7 +22,7 @@ export interface Health {
   readonly audits: number
 }
 
-export class Service extends Context.Service<Service, Interface>()("@opencode/Civilization") {}
+export class Service extends Context.Service<Service, Interface>()("/Civilization") {}
 
 export interface Interface {
   readonly boot: () => Effect.Effect<void>

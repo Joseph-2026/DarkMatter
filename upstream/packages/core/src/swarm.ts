@@ -56,7 +56,7 @@ export interface SpawnInput {
   readonly directory: string
 }
 
-export class Service extends Context.Service<Service, Interface>()("@opencode/Swarm") {}
+export class Service extends Context.Service<Service, Interface>()("/Swarm") {}
 
 export interface Interface {
   readonly createSwarm: (name: string) => Effect.Effect<Info>
@@ -66,7 +66,7 @@ export interface Interface {
   readonly completeRun: (id: RunID) => Effect.Effect<Run | undefined>
 }
 
-export class RunnerService extends Context.Service<RunnerService, RunnerInterface>()("@opencode/SwarmRunner") {}
+export class RunnerService extends Context.Service<RunnerService, RunnerInterface>()("/SwarmRunner") {}
 
 export interface RunnerInterface {
   readonly resolveBrain: () => Effect.Effect<ModelV2.Ref, NoBrainError>

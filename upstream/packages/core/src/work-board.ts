@@ -29,7 +29,7 @@ export interface Task {
   readonly priority: number
 }
 
-export class Service extends Context.Service<Service, Interface>()("@opencode/WorkBoard") {}
+export class Service extends Context.Service<Service, Interface>()("/WorkBoard") {}
 
 export interface Interface {
   readonly createBoard: (name: string) => Effect.Effect<Board>

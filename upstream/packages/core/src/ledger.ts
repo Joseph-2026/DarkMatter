@@ -30,7 +30,7 @@ export interface Summary {
   readonly cost: number
 }
 
-export class Service extends Context.Service<Service, Interface>()("@opencode/Ledger") {}
+export class Service extends Context.Service<Service, Interface>()("/Ledger") {}
 
 export interface Interface {
   readonly record: (input: RecordInput) => Effect.Effect<Entry>

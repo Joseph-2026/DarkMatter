@@ -9,7 +9,7 @@ import { Project } from "@apt5/core/project"
 import { AbsolutePath } from "@apt5/core/schema"
 import { Context, Effect, Layer } from "effect"
 
-export class Service extends Context.Service<Service, EventV2.Interface>()("@opencode/EventV2Bridge") {}
+export class Service extends Context.Service<Service, EventV2.Interface>()("/EventV2Bridge") {}
 
 const layer = Layer.effect(
   Service,

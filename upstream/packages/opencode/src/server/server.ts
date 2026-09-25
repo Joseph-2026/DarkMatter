@@ -50,7 +50,7 @@ interface ListenerServer {
 }
 
 class ListenerServerService extends Context.Service<ListenerServerService, ListenerServer>()(
-  "@opencode/ListenerServer",
+  "/ListenerServer",
 ) {}
 
 export const Default = lazy(() => {
