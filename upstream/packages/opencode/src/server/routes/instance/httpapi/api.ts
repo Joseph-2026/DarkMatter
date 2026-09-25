@@ -57,14 +57,14 @@ export const ServerApi = makeApi({
   sessionLocationMiddleware: SessionLocationMiddleware,
 })
 
-export const RootHttpApi = HttpApi.make("opencode-root")
+export const RootHttpApi = HttpApi.make("apt5-root")
   .addHttpApi(ControlApi)
   .addHttpApi(ControlPlaneApi)
   .addHttpApi(GlobalApi)
   .middleware(SchemaErrorMiddleware)
   .middleware(Authorization)
 
-export const InstanceHttpApi = HttpApi.make("opencode-instance")
+export const InstanceHttpApi = HttpApi.make("apt5-instance")
   .addHttpApi(ConfigApi)
   .addHttpApi(ExperimentalApi)
   .addHttpApi(FileApi)
@@ -88,7 +88,7 @@ export const InstanceHttpApi = HttpApi.make("opencode-instance")
   .addHttpApi(WorkspaceApi)
   .middleware(SchemaErrorMiddleware)
 
-export const Apt5HttpApi = HttpApi.make("opencode")
+export const Apt5HttpApi = HttpApi.make("apt5")
   .addHttpApi(RootHttpApi)
   .addHttpApi(EventApi)
   .addHttpApi(InstanceHttpApi)

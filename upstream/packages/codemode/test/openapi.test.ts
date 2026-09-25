@@ -15,7 +15,7 @@ type Recorded = {
 }
 
 const apt5Spec = async (): Promise<Document> => {
-  return Bun.file(new URL("./fixtures/opencode-v2-openapi.json", import.meta.url)).json() as Promise<Document>
+  return Bun.file(new URL("./fixtures/apt5-v2-openapi.json", import.meta.url)).json() as Promise<Document>
 }
 
 const happyPathSpec = async (): Promise<Document> => {
@@ -173,7 +173,7 @@ describe("OpenAPI.fromSpec", () => {
     expect(client.requests[3]!.headers.authorization).toBe("Bearer bearer-secret")
   })
 
-  test("converts representative opencode operations into the expected tool shape", async () => {
+  test("converts representative apt5 operations into the expected tool shape", async () => {
     const spec = await apt5Spec()
     const result = OpenAPI.fromSpec({ spec, baseUrl })
 
@@ -355,7 +355,7 @@ describe("OpenAPI.fromSpec", () => {
     expect(tool.output.$defs).toMatchObject({ Local: { type: "string" }, Global: { type: "number" } })
   })
 
-  test("documents that the opencode fixture is unauthenticated", async () => {
+  test("documents that the apt5 fixture is unauthenticated", async () => {
     const spec = await apt5Spec()
     const components = isRecord(spec.components) ? spec.components : {}
     const result = OpenAPI.fromSpec({ spec, baseUrl })
@@ -369,16 +369,16 @@ describe("OpenAPI.fromSpec", () => {
     expect(Object.keys(isRecord(input.properties) ? input.properties : {})).toStrictEqual([])
   })
 
-  test("exposes real opencode operations through CodeMode discovery", async () => {
+  test("exposes real apt5 operations through CodeMode discovery", async () => {
     const { layer } = recordingClient(() => json({}))
     const runtime = CodeMode.make({
-      tools: { opencode: OpenAPI.fromSpec({ spec: await apt5Spec(), baseUrl }).tools },
+      tools: { apt5: OpenAPI.fromSpec({ spec: await apt5Spec(), baseUrl }).tools },
     })
     const result = await Effect.runPromise(
       runtime
         .execute(
           `
-        return await tools.$codemode.search({ query: "global health", namespace: "opencode", limit: 1 })
+        return await tools.$codemode.search({ query: "global health", namespace: "apt5", limit: 1 })
       `,
         )
         .pipe(Effect.provide(layer)),
@@ -389,7 +389,7 @@ describe("OpenAPI.fromSpec", () => {
     expect(result.value).toMatchObject({
       items: [
         {
-          path: "tools.opencode.v2.health.get",
+          path: "tools.apt5.v2.health.get",
           description: "Check whether the API server is ready to accept requests.",
         },
       ],
@@ -403,15 +403,15 @@ describe("OpenAPI.fromSpec", () => {
       return json({ id: "ses_456" })
     })
     const runtime = CodeMode.make({
-      tools: { opencode: OpenAPI.fromSpec({ spec: await apt5Spec(), baseUrl }).tools },
+      tools: { apt5: OpenAPI.fromSpec({ spec: await apt5Spec(), baseUrl }).tools },
     })
 
     const result = await Effect.runPromise(
       runtime
         .execute(
           `
-          const existing = await tools.opencode.v2.session.get({ sessionID: "ses_123" })
-          const created = await tools.opencode.v2.session.create({ id: "ses_456" })
+          const existing = await tools.apt5.v2.session.get({ sessionID: "ses_123" })
+          const created = await tools.apt5.v2.session.create({ id: "ses_456" })
           return { existing, created }
         `,
         )
@@ -429,7 +429,7 @@ describe("OpenAPI.fromSpec", () => {
     })
   })
 
-  test("serializes deep-object query parameters from the opencode fixture", async () => {
+  test("serializes deep-object query parameters from the apt5 fixture", async () => {
     const client = recordingClient(() => json({ directory: "/tmp" }))
     const location = toolAt(OpenAPI.fromSpec({ spec: await apt5Spec(), baseUrl }).tools, "v2.location.get")
     if (!Tool.isDefinition(location)) throw new Error("v2.location.get was not generated")
@@ -806,11 +806,11 @@ describe("OpenAPI.fromSpec", () => {
   test("fails missing required parameters before auth and network", async () => {
     const { requests, layer } = recordingClient(() => json({}))
     const runtime = CodeMode.make({
-      tools: { opencode: OpenAPI.fromSpec({ spec: await apt5Spec(), baseUrl }).tools },
+      tools: { apt5: OpenAPI.fromSpec({ spec: await apt5Spec(), baseUrl }).tools },
     })
 
     const result = await Effect.runPromise(
-      runtime.execute("return await tools.opencode.v2.session.get({})").pipe(Effect.provide(layer)),
+      runtime.execute("return await tools.apt5.v2.session.get({})").pipe(Effect.provide(layer)),
     )
 
     expect(result).toMatchObject({ ok: false })

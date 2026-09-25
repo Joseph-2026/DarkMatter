@@ -31,7 +31,7 @@ export interface Evaluation {
   readonly ruleID: RuleID | undefined
 }
 
-export class Service extends Context.Service<Service, Interface>()("@opencode/Governance") {}
+export class Service extends Context.Service<Service, Interface>()("/Governance") {}
 
 export interface Interface {
   readonly addRule: (pattern: string, effect: RuleEffect) => Effect.Effect<Rule>

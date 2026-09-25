@@ -61,14 +61,14 @@ export interface Interface {
 }
 
 export class MessageLoader extends Context.Service<MessageLoader, MessageLoaderInterface>()(
-  "@opencode/ACPUsageMessageLoader",
+  "/ACPUsageMessageLoader",
 ) {}
 
 export class ContextLimitLoader extends Context.Service<ContextLimitLoader, ContextLimitLoaderInterface>()(
-  "@opencode/ACPUsageContextLimitLoader",
+  "/ACPUsageContextLimitLoader",
 ) {}
 
-export class Service extends Context.Service<Service, Interface>()("@opencode/ACPUsage") {}
+export class Service extends Context.Service<Service, Interface>()("/ACPUsage") {}
 
 export function messageLoaderFromSDK(sdk: SDK): MessageLoaderInterface {
   return MessageLoader.of({

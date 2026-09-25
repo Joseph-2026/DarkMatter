@@ -8,7 +8,7 @@ import { Integration } from "@apt5/core/integration"
 import { ModelV2 } from "@apt5/core/model"
 import { PluginV2 } from "@apt5/core/plugin"
 import { PluginHost } from "@apt5/core/plugin/host"
-import { Apt5Plugin } from "@apt5/core/plugin/provider/opencode"
+import { Apt5Plugin } from "@apt5/core/plugin/provider/darkmatter"
 import { ProviderV2 } from "@apt5/core/provider"
 import { testEffect } from "../lib/effect"
 import { PluginTestLayer } from "./fixture"
@@ -74,11 +74,11 @@ describe("Apt5Plugin", () => {
   it.effect("registers account and service account methods", () =>
     Effect.gen(function* () {
       yield* addPlugin()
-      expect((yield* (yield* Integration.Service).get(Integration.ID.make("opencode")))?.methods).toEqual([
+      expect((yield* (yield* Integration.Service).get(Integration.ID.make("darkmatter")))?.methods).toEqual([
         {
           id: Integration.MethodID.make("device"),
           type: "oauth",
-          label: "OpenCode Console account",
+          label: "APT-5 Console account",
         },
         { type: "key", label: "API key (service account)" },
       ])
@@ -104,11 +104,11 @@ describe("Apt5Plugin", () => {
       yield* addPlugin(http)
       const integration = yield* Integration.Service
       const attempt = yield* integration.connection.oauth({
-        integrationID: Integration.ID.make("opencode"),
+        integrationID: Integration.ID.make("darkmatter"),
         methodID: Integration.MethodID.make("device"),
         inputs: {},
       })
-      expect(attempt.url).toBe("https://github.com/Joseph-2026/DarkMatter/console/device?user_code=user&client_id=opencode-cli")
+      expect(attempt.url).toBe("https://console.opencode.ai/console/device?user_code=user&client_id=opencode-cli")
     }),
   )
 
@@ -132,7 +132,7 @@ describe("Apt5Plugin", () => {
       const integration = yield* Integration.Service
       const error = yield* integration.connection
         .oauth({
-          integrationID: Integration.ID.make("opencode"),
+          integrationID: Integration.ID.make("darkmatter"),
           methodID: Integration.MethodID.make("device"),
           inputs: {},
         })
@@ -201,7 +201,7 @@ describe("Apt5Plugin", () => {
             draft.model.update(ProviderV2.ID.make("remote"), ModelV2.ID.make("stale"), () => {})
           })
           yield* credentials.create({
-            integrationID: Integration.ID.make("opencode"),
+            integrationID: Integration.ID.make("darkmatter"),
             value: Credential.Key.make({
               type: "key",
               key: "secret",
@@ -216,12 +216,12 @@ describe("Apt5Plugin", () => {
           const provider = required(
             yield* eventually(
               catalog.provider.get(ProviderV2.ID.make("remote")),
-              (item) => item?.integrationID === Integration.ID.make("opencode"),
+              (item) => item?.integrationID === Integration.ID.make("darkmatter"),
             ),
           )
           expect(provider).toMatchObject({
             name: "Remote",
-            integrationID: "opencode",
+            integrationID: "darkmatter",
             api: {
               type: "aisdk",
               package: "@ai-sdk/openai-compatible",
@@ -370,7 +370,7 @@ describe("Apt5Plugin", () => {
         const integrations = yield* Integration.Service
         yield* integrations.transform((editor) => {
           editor.method.update({
-            integrationID: Integration.ID.make("opencode"),
+            integrationID: Integration.ID.make("darkmatter"),
             method: { type: "env", names: ["CUSTOM_APT5_API_KEY"] },
           })
         })
@@ -428,7 +428,7 @@ describe("Apt5Plugin", () => {
     ),
   )
 
-  it.effect("ignores non-opencode providers and models", () =>
+  it.effect("ignores non-darkmatter providers and models", () =>
     withEnv({ APT5_API_KEY: undefined }, () =>
       Effect.gen(function* () {
         const catalog = yield* Catalog.Service
@@ -454,7 +454,7 @@ describe("Apt5Plugin", () => {
     ),
   )
 
-  it.effect("prefers gpt-5-nano as the opencode small model", () =>
+  it.effect("prefers gpt-5-nano as the darkmatter small model", () =>
     Effect.gen(function* () {
       const catalog = yield* Catalog.Service
       const providerID = ProviderV2.ID.opencode

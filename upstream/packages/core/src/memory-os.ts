@@ -17,7 +17,7 @@ export interface Entry {
   readonly value: unknown
 }
 
-export class Service extends Context.Service<Service, Interface>()("@opencode/MemoryOS") {}
+export class Service extends Context.Service<Service, Interface>()("/MemoryOS") {}
 
 export interface Interface {
   readonly put: (namespace: string, key: string, value: unknown) => Effect.Effect<Entry>

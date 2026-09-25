@@ -89,7 +89,7 @@ export interface Registration extends Agent {
   readonly privateKey: string
 }
 
-export class Service extends Context.Service<Service, Interface>()("@opencode/A2A") {}
+export class Service extends Context.Service<Service, Interface>()("/A2A") {}
 
 export interface Interface {
   readonly send: (
