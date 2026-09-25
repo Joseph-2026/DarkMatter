@@ -2031,9 +2031,9 @@ const layer = Layer.effect(
       }
 
       const free = preferFreeModel(s.providers)
-      if (free) return free
-
       const configured = Object.keys(cfg.provider ?? {})
+      if (configured.length === 0 && free) return free
+
       const provider = Object.values(s.providers).find((p) => configured.length === 0 || configured.includes(p.id))
       if (!provider) return yield* new NoProvidersError()
       const [model] = sort(Object.values(provider.models))
