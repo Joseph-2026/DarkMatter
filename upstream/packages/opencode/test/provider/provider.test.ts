@@ -379,6 +379,27 @@ test("preferFreeModel returns undefined without openrouter", () => {
   expect(result).toBeUndefined()
 })
 
+test("fromModelsDevProvider maps the upstream house provider to darkmatter", () => {
+  const info = Provider.fromModelsDevProvider({
+    id: "opencode",
+    name: "OpenCode Zen",
+    api: "https://example.com/v1",
+    models: {
+      "big-pickle": {
+        id: "big-pickle",
+        name: "Big Pickle",
+        tool_call: true,
+        modalities: { input: ["text"], output: ["text"] },
+        cost: { input: 0, output: 0 },
+        limit: { context: 1000, output: 100 },
+      },
+    },
+  } as unknown as ModelsDev.Provider)
+  expect(String(info.id)).toBe("darkmatter")
+  expect(info.name).toBe("APT-5")
+  expect(String(info.models["big-pickle"]?.providerID)).toBe("darkmatter")
+})
+
 it.instance("defaultModel returns first available model when no config set", () =>
   Effect.gen(function* () {
     yield* setProcessEnv("ANTHROPIC_API_KEY", "test-api-key")
