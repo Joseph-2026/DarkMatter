@@ -1321,12 +1321,18 @@ function fromModelsDevModel(provider: ModelsDev.Provider, model: ModelsDev.Model
 }
 
 export function fromModelsDevProvider(provider: ModelsDev.Provider): Info {
+  // Upstream catalog keys its house provider "opencode"; our catalog carries
+  // it as "darkmatter" with our display name. Normalize once here so every
+  // downstream id (provider record, model providerIDs) agrees. All other
+  // entries pass through untouched.
+  const source =
+    provider.id === "opencode" ? { ...provider, id: "darkmatter", name: "APT-5" } : provider
   const models: Record<string, Model> = {}
-  for (const [key, model] of Object.entries(provider.models)) {
-    models[key] = fromModelsDevModel(provider, model)
+  for (const [key, model] of Object.entries(source.models)) {
+    models[key] = fromModelsDevModel(source, model)
     for (const [mode, opts] of Object.entries(model.experimental?.modes ?? {})) {
       const id = `${model.id}-${mode}`
-      const base = fromModelsDevModel(provider, model)
+      const base = fromModelsDevModel(source, model)
       models[id] = {
         ...base,
         id: ModelV2.ID.make(id),
@@ -1338,10 +1344,10 @@ export function fromModelsDevProvider(provider: ModelsDev.Provider): Info {
     }
   }
   return {
-    id: ProviderV2.ID.make(provider.id),
+    id: ProviderV2.ID.make(source.id),
     source: "custom",
-    name: provider.name,
-    env: [...(provider.env ?? [])],
+    name: source.name,
+    env: [...(source.env ?? [])],
     options: {},
     models,
   }
