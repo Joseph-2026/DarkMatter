@@ -20,11 +20,11 @@ const PLIST_META = new Set([
 function systemManagedConfigDir(): string {
   switch (process.platform) {
     case "darwin":
-      return "/Library/Application Support/opencode"
+      return "/Library/Application Support/darkmatter"
     case "win32":
       return path.join(process.env.ProgramData || "C:\\ProgramData", "darkmatter")
     default:
-      return "/etc/opencode"
+      return "/etc/darkmatter"
   }
 }
 
