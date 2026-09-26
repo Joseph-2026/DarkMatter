@@ -17,6 +17,21 @@ production paths, every claim backed by evidence or CI.
 
 Repo: `https://github.com/Joseph-2026/DarkMatter` · default branch: `main`.
 
+## 0. Installing (user machines — verified 2026-09-26)
+
+NEVER `bun build --compile src/index.ts` directly — the binary will boot-broken
+(missing Solid transform, embedded UI, defines). Use the official pipeline:
+
+```sh
+cd upstream/packages/opencode
+bun run script/build.ts --single   # ~10 min, then smoke-tests itself
+cp dist/apt-5-linux-x64/bin/apt-5 ~/.local/bin/apt-5
+```
+
+`alias apt='apt-5'` in interactive shells only (`sudo apt`/`command apt`
+unaffected). Known: naive `bun build --compile` boots to
+`Error: Unexpected error / Effect.tryPromise` (packaging, not app logic).
+
 ## 2. Current state (2026-09-23 — post PR #5 merge `3c27b96`)
 
 | Item | State |
