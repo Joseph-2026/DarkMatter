@@ -3,6 +3,8 @@ import {
   DEFAULT_MEMORY_NAMESPACE,
   memoryEntryOptions,
   memoryEntryPreview,
+  parseMemoryJsonValue,
+  parseMemoryKey,
   parseMemoryNamespace,
 } from "../../src/component/dialog-memory-list"
 
@@ -26,5 +28,20 @@ describe("dialog memory list", () => {
       { id: "1", namespace: "project", key: "a", value: 2 },
     ])
     expect(options.map((option) => option.title)).toEqual(["a", "b"])
+  })
+
+  test("trims memory keys and rejects blanks", () => {
+    expect(parseMemoryKey(null)).toBeUndefined()
+    expect(parseMemoryKey("")).toBeUndefined()
+    expect(parseMemoryKey("   ")).toBeUndefined()
+    expect(parseMemoryKey("  theme  ")).toBe("theme")
+  })
+
+  test("parses JSON values and reports invalid JSON", () => {
+    expect(parseMemoryJsonValue('{"a":1}')).toEqual({ ok: true, value: { a: 1 } })
+    expect(parseMemoryJsonValue('"hello"')).toEqual({ ok: true, value: "hello" })
+    const invalid = parseMemoryJsonValue("{nope")
+    expect(invalid.ok).toBe(false)
+    if (!invalid.ok) expect(invalid.message.length).toBeGreaterThan(0)
   })
 })
