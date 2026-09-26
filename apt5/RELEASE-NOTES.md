@@ -16,6 +16,9 @@
 - **PR #35 — catalog mapping** — merge `36e5466f6` (2026-09-25T17:22:18Z, head `6efa97a44`). Upstream house data → darkmatter/APT-5 + mapping test.
 - **PR #36 — data coupling** — merge `b4fb5b617` (2026-09-25T18:09:45Z, head `15ebaad29`). fromModelsDevProvider mapping, transform branches, models sort.
 - **PR #37 — APT-5 logo** — merge `5cb189532` (2026-09-25T18:31:27Z, head `e6e60bd3d`). Block-letter splash, visually verified.
+- **PR #38 — catalog keys** — merge `ffe87bd4a` (2026-09-25T20:35, head `65add5cc9`). mapValues key remap + custom loader rename (darkmatter resolves end-to-end, verified by probe).
+- **PR #39 — demo tooling + GIF** — merge `e44f31a3c` (2026-09-26T06:26, head `9a1e8853a`). pty tour recorders, seed script, BOARDS.gif (real TUI).
+- **PR #40 — tui mutations 2** — merge `a0bf479ab` (2026-09-26T12:35, head `d3711aa90`). memory put/forget + a2a send/ack actions.
 
 ## v1.2.0 (2026-09-24) — A2A auth + swarm serving + surfaces
 
@@ -68,6 +71,10 @@ Tag `apt-5-v1.0.0` created on the green main HEAD; annotation records the exact 
 
 19/19 PRs merged (#1–#19), main CI green, no open PRs. Tag `apt-5-v1.1.0` created on the green main HEAD; annotation records the exact SHA.
 
-## Release (apt-5-v1.2.0) — criteria
+## Release (apt-5-v1.2.0) — shipped 2026-09-24
 
-23/23 PRs merged (#1–#23 above), main CI green, no open PRs. Tag `apt-5-v1.2.0` on the green main HEAD; annotation records the exact SHA (no pre-pin by design).
+23/23 PRs merged (#1–#23), main CI green, no open PRs. Tag `apt-5-v1.2.0` created on the green main HEAD; annotation records the exact SHA.
+
+## Release (apt-5-v1.3.0) — criteria
+
+40/40 PRs merged (#1–#40 above), main CI green, no open PRs. Tag `apt-5-v1.3.0` on the green main HEAD; annotation records the exact SHA (no pre-pin by design).
