@@ -19,6 +19,7 @@
 - **PR #38 — catalog keys** — merge `ffe87bd4a` (2026-09-25T20:35, head `65add5cc9`). mapValues key remap + custom loader rename (darkmatter resolves end-to-end, verified by probe).
 - **PR #39 — demo tooling + GIF** — merge `e44f31a3c` (2026-09-26T06:26, head `9a1e8853a`). pty tour recorders, seed script, BOARDS.gif (real TUI).
 - **PR #40 — tui mutations 2** — merge `a0bf479ab` (2026-09-26T12:35, head `d3711aa90`). memory put/forget + a2a send/ack actions.
+- **PR #41 — v1.3.0 notes** — head `1ff181eea` (administrative: this file; no code). Merge SHA recorded by the merge commit itself.
 
 ## v1.2.0 (2026-09-24) — A2A auth + swarm serving + surfaces
 
